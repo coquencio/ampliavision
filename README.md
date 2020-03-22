@@ -2,9 +2,9 @@
 
 # Setup
 ## Virtual env
-Create a virtual environment in the project folder by running in windows command promp:
+Create a virtual environment in the repository folder by running the following commands in windows command promp:
 ```sh
-$ python3 -m venv .
+$ py -m venv .
 $ "Scripts/activate.bat"
 ```
 ## Dependencies
@@ -18,7 +18,7 @@ TODO
 
 ## Run
 ```sh
-$ set FLASK_APP=src/app.py
+$ set FLASK_APP=src
 $ flask run
 ```
 
