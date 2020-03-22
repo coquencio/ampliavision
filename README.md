@@ -9,9 +9,7 @@ $ "Scripts/activate.bat"
 ```
 ## Dependencies
 ```sh
-$ pip install flask
-$ pip install pymysql
-$ pip install cryptography
+$ pip install e .
 ```
 ## Database
 TODO
