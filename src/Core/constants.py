@@ -8,3 +8,4 @@ class Connection:
 
 class SpUsers:
     Register = "UserRegistration"
+    Authenticate = "GetToken"
