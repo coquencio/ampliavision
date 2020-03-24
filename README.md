@@ -12,7 +12,9 @@ $ "Scripts/activate.bat"
 $ pip install e .
 ```
 ## Database
-TODO
+Configure database connection arguments in "src/Core/Constants.py" in the class named connection.
+
+Run sql scripts in Database folder.
 
 ## Run
 ```sh
