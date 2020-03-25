@@ -2,14 +2,13 @@ import hashlib
 from datetime import datetime
 from src.Core.constants import SpUsers
 from src.Helpers.serializer import JsonHelper
-from src.Helpers.sql import *
+from src.Helpers.sql import MySqlHelper
 
 
 class UsersService:
     def __init__(self):
         self.__sql_helper = MySqlHelper()
         self.hash = hashlib.new("ripemd160")
-        self.json_helper = JsonHelper
 
     def create_user(self, user_name, password):
         if not self.__validate_string(user_name):
@@ -33,7 +32,7 @@ class UsersService:
         user_name = "'"+user_name+"'"
         args = (user_name, password)
         token = self.__sql_helper.sp_get(SpUsers.Authenticate, args, True)
-        return self.json_helper.serialize_data_set(token)
+        return JsonHelper.serialize_data_set(token)
 
     def __encrypt(self, string):
         self.hash.update(string.encode('utf-8'))
