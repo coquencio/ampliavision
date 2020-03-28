@@ -12,7 +12,6 @@ NombreEmpresa varchar (60) not null,
 Docimicilio varchar (150),
 Telefono varchar(20)
 );
-
 Create table RolesEmpleados(
 RolID int primary key auto_increment,
 Descripcion varchar(20)
@@ -77,6 +76,27 @@ Foreign key (DerechoID) References Ojos(OjoID),
 Foreign key (TipoConjuntoID) References TipoConjunto(TipoConjuntoID)
 );
 
+insert into TipoConjunto (Descripcion) values ('Anterior');
+insert into TipoConjunto (Descripcion) values ('Total');
+insert into TipoConjunto (Descripcion) values ('Adaptación');
+
+Create table EnfermedadesVisuales(
+EnfermedadID int primary key auto_increment,
+Descripcion varchar(70) not null
+
+);
+insert into enfermedadesVisuales (Descripcion) values ('Miopía');
+insert into enfermedadesVisuales (Descripcion) values ('Astigmatismo');
+insert into enfermedadesVisuales (Descripcion) values ('Hipermetropía');
+insert into enfermedadesVisuales (Descripcion) values ('Presbicia');
+insert into enfermedadesVisuales (Descripcion) values ('Miopía con Astigmatismo');
+insert into enfermedadesVisuales (Descripcion) values ('Hipermetroía con Astigmatismo');
+insert into enfermedadesVisuales (Descripcion) values ('Miopía y Presbicia');
+insert into enfermedadesVisuales (Descripcion) values ('Hipermetropía y Presbicia');
+insert into enfermedadesVisuales (Descripcion) values ('Astigmatismo y Presbicia');
+insert into enfermedadesVisuales (Descripcion) values ('Miopía, Astigmatismo y Presbicia');
+insert into enfermedadesVisuales (Descripcion) values ('Hipermetropía, Astigmatismo y Presbicia');
+insert into enfermedadesVisuales (Descripcion) values ('Neutro');
 
 
 Create table Examenes(
@@ -89,10 +109,13 @@ Adaptacion int unique,
 FechaExamen date,
 RequiereLentes bit,
 ComproLentes bit,
+EnfermedadID int,
+Obervacion varchar(250),
 Foreign key (BeneficiarioID) References Beneficiarios(BeneficiarioID),
 Foreign key (Anterior) References ConjuntoOjos(ConjuntoID),
 Foreign key (Total) References ConjuntoOjos(ConjuntoID),
-Foreign key (Adaptacion) References ConjuntoOjos(ConjuntoID)
+Foreign key (Adaptacion) References ConjuntoOjos(ConjuntoID),
+foreign key(EnfermedadID) references EnfermedadesVisuales(EnfermedadID)
 );
 
 create table Materiales(
@@ -136,11 +159,7 @@ ColorID int primary key auto_increment,
 Descripcion varchar(20) not null
 );
 
-Create table EnfermedadesVisuales(
-EnfermedadID int primary key auto_increment,
-Descripcion varchar(30) not null
 
-);
 
 Create table CasosMaterialesISO(
 CasoID int primary key auto_increment,
@@ -169,16 +188,6 @@ Foreign key(ColorID) references Colores(ColorID),
 Foreign key(TamanioID) references Tamanios(TamanioID),
 Foreign key(ModeloID) references Modelos(ModeloID)
 );
-
-Create table EnfermedadesPorBeneficiarios(
-RelacionID int primary key auto_increment,
-BeneficiarioID int,
-EnfermedadID int,
-Foreign key(BeneficiarioID) references Beneficiarios(BeneficiarioID),
-Foreign key(EnfermedadID) references EnfermedadesVisuales(EnfermedadID)
-
-);
-
 
 Create table Ventas(
 VentaID int primary key auto_increment,
@@ -211,12 +220,6 @@ FechaAbono date,
 FechaRegistro date not null,
 Foreign key(VentaID) references ventas(VentaID)
 );
-
-
-
-
-
-
 
 
 
