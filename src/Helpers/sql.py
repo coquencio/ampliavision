@@ -1,5 +1,5 @@
 from src.Core.constants import Connection
-from src.Helpers.serializer import *
+from src.Helpers.serializer import JsonHelper
 import pymysql
 
 
