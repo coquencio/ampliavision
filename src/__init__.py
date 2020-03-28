@@ -8,4 +8,3 @@ app.register_blueprint(UserController)
 @app.route('/')
 def hello_world():
     return 'Hello, World!'
-
