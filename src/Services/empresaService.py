@@ -23,4 +23,8 @@ class EmpresaService:
 
         return False
 
+    def get_empresas(self):
+        empresas = self.__sql_helper.sp_get(SpEmpresas.Get_all)
+        return JsonHelper.serialize_data_set(empresas, "empresas")
+
 

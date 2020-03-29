@@ -17,3 +17,9 @@ def create_empresa():
         return Response(status=201, response="Empresa creada")
     except ValueError as err:
         return Response(status=400, response=err.args)
+
+
+@EmpresaController.route('/api/empresas', methods=['GET'])
+def get_all_empresas():
+    empresa_service = EmpresaService()
+    return empresa_service.get_empresas()

@@ -25,10 +25,11 @@ class MySqlHelper:
             cursor.execute("call " + sp_name + "()")
         else:
             cursor.execute("call " + sp_name + self.__build_string_params(args))
-            if not is_getting_single_row:
-                data = cursor.fetchall()
-            else:
-                data = cursor.fetchone()
+            
+        if not is_getting_single_row:
+            data = cursor.fetchall()
+        else:
+            data = cursor.fetchone()
         db.close()
         return data
 

@@ -19,6 +19,8 @@ class SpEmpresas:
     # Empresa ID
     Validate = "ValidaEmpresa"
 
+    Get_all = "seleccionaEmpresas"
+
 
 class SpBeneficiario:
     # Nombres
