@@ -169,4 +169,3 @@ class SpVentas:
     # LenteID
     # Beneficiario ID
     Register_and_get = "RegistraYSeleccionaVenta"
-    
