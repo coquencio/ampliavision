@@ -155,6 +155,7 @@ class SpLentes:
 
     GetAll = "SeleccionaLentes"
 
+
 class SpVentas:
     # Folio examen
     # Total venta
@@ -168,3 +169,4 @@ class SpVentas:
     # LenteID
     # Beneficiario ID
     Register_and_get = "RegistraYSeleccionaVenta"
+    
