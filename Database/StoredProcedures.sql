@@ -12,18 +12,17 @@ BEGIN
     SELECT Token FROM users where userName = name and password = pass;
 END //
 delimiter ;
-
-
 delimiter //
-CREATE PROCEDURE RegistraEmpresa(in nombre varchar(60),in Domicilio varchar(150), in telefono varchar(20))
+Create PROCEDURE RegistraEmpresa(in nombre varchar(60),in Domicilio varchar(150), in telefono varchar(20))
 BEGIN
-	INSERT INTO Empresas (Nombre, Domicilio, telefono) values(nombre, Domicilio, telefono);
+	INSERT INTO Empresas (Nombreempresa, Domicilio, telefono) values(nombre, Domicilio, telefono);
 END //
+
 delimiter ;
 delimiter //
-CREATE PROCEDURE RegistraBeneficiario(in nombres varchar(25),in apepat varchar(25), in apemat varchar(35),in fechanac date, ocupacion varchar(40), EmpresaID int)
+create PROCEDURE RegistraBeneficiario(in nombres varchar(25),in apepat varchar(25), in apemat varchar(35),in fechanac date, ocupacion varchar(40), EmpresaID int)
 BEGIN
-	INSERT into beneficiarios (nombres, appellidoPaterno, apellidoMaterno, FechaNacimiento, ocupacion, EmpresaID) values (nombres, apepat, apemat, fechanac, ocupacion, EmpresaID);
+	INSERT into beneficiarios (nombres, apellidoPaterno, apellidoMaterno, FechaNacimiento, ocupacion, EmpresaID) values (nombres, apepat, apemat, fechanac, ocupacion, EmpresaID);
 END //
 delimiter ;
 delimiter //
@@ -254,4 +253,12 @@ BEGIN
 	update ventas set EstaLiquidada = 1 where ventaID = ventaID;
 END //
 delimiter ;
+
+delimiter //
+create PROCEDURE validaEmpresa(in Id int)
+BEGIN
+	select count(*) from empresas where EmpresaId = Id;
+END //
+delimiter ;
+
 
