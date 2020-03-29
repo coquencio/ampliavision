@@ -4,7 +4,7 @@ from src.Services.usersService import UsersService
 UserController = Blueprint('users', __name__)
 
 
-@UserController.route('/api/users/create/<user_name>/<password>')
+@UserController.route('/api/users/create/<user_name>/<password>', methods=['POST'])
 def create_user(user_name, password):
     try:
         user_service = UsersService()
