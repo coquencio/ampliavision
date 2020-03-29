@@ -16,6 +16,9 @@ class SpEmpresas:
     # Telefono
     Register = "RegistraEmpresa"
 
+    # Empresa ID
+    Validate = "ValidaEmpresa"
+
 
 class SpBeneficiario:
     # Nombres
