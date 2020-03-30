@@ -31,4 +31,4 @@ class BeneficiariosService:
             raise KeyError("Empresa no encontrada")
 
         data = self.__sql_helper.sp_get(SpBeneficiario.get_by_empresa, str(empresa_id))
-        return serialize_data_set(data, "beneficiarios")
+        return serialize_data_set(data, "Beneficiarios")

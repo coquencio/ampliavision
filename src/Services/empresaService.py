@@ -26,5 +26,5 @@ class EmpresaService:
 
     def get_empresas(self):
         empresas = self.__sql_helper.sp_get(SpEmpresas.Get_all)
-        return serialize_data_set(empresas, "empresas")
+        return serialize_data_set(empresas, "Empresas")
 
