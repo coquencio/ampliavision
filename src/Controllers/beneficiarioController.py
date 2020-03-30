@@ -1,12 +1,20 @@
 from flask import Response, Blueprint, request
 from src.Services.beneficiariosService import BeneficiariosService
+from src.Services.usersService import UsersService
 
 BeneficiarioController = Blueprint('beneficiario', __name__)
+user_service = UsersService()
 
 
 @BeneficiarioController.route('/api/empresas/<int:empresa_id>/beneficiarios/create', methods=['POST'])
 def crea_beneficiario(empresa_id):
     try:
+        token = request.args.get('token')
+        if not token:
+            return Response(status=401)
+        if not user_service.token_validation(token):
+            return Response(status=401)
+
         data = request.get_json()
         nombre = data['nombres']
         apepat = data['apellidoPaterno']
