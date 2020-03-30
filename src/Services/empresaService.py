@@ -1,6 +1,6 @@
 from src.Helpers.sql import MySqlHelper
 from src.Core.constants import SpEmpresas
-from src.Helpers.serializer import *
+from src.Helpers.serializer import serialize_data_set
 
 
 class EmpresaService:
@@ -27,5 +27,4 @@ class EmpresaService:
     def get_empresas(self):
         empresas = self.__sql_helper.sp_get(SpEmpresas.Get_all)
         return serialize_data_set(empresas, "empresas")
-
 

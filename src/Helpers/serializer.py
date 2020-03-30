@@ -13,4 +13,3 @@ def serialize_data_set(data_set, key=None):
 
     to_serialize = {key: data_set}
     return json.dumps(to_serialize, default=__json_defaults)
-
