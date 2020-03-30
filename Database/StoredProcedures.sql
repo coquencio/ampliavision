@@ -261,3 +261,10 @@ BEGIN
 	select * from empresas;
 END //
 delimiter ;
+
+delimiter //
+create PROCEDURE seleccionaBeneficiariosPorEmpresa(in empresa_ID int)
+BEGIN
+	select * from beneficiarios where EmpresaID = empresa_ID;
+END //
+delimiter ;

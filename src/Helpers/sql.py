@@ -1,5 +1,5 @@
 from src.Core.constants import Connection
-from src.Helpers.serializer import JsonHelper
+from src.Helpers.serializer import *
 import pymysql
 
 
@@ -49,7 +49,7 @@ class MySqlHelper:
         cursor.execute(query)
         data_set = cursor.fetchall()
         db.close()
-        return JsonHelper.serialize_data_set(data_set, key)
+        return serialize_data_set(data_set, key)
 
     @staticmethod
     def __build_string_params(params):
