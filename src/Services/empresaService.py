@@ -18,7 +18,8 @@ class EmpresaService:
 
     def validate_empresa(self, empresa_id):
         empresa_id = int(empresa_id)
-        validation = self.__sql_helper.sp_get(SpEmpresas.Validate, str(empresa_id), True)
+        args = (str(empresa_id), )
+        validation = self.__sql_helper.sp_get(SpEmpresas.Validate, args, True)
         if validation['count(*)'] == 1:
             return True
 
@@ -26,5 +27,5 @@ class EmpresaService:
 
     def get_empresas(self):
         empresas = self.__sql_helper.sp_get(SpEmpresas.Get_all)
-        return serialize_data_set(empresas, "empresas")
+        return serialize_data_set(empresas, "Empresas")
 

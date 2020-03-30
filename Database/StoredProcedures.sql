@@ -268,3 +268,9 @@ BEGIN
 	select * from beneficiarios where EmpresaID = empresa_ID;
 END //
 delimiter ;
+delimiter //
+create PROCEDURE validaToken(in keyToken varchar(50))
+BEGIN
+	select count(*) as Result from users where token = keyToken;
+END //
+delimiter ;

@@ -9,6 +9,9 @@ class SpUsers:
     Register = "UserRegistration"
     Authenticate = "GetToken"
 
+    # Token
+    Authorize = 'validaToken'
+
 
 class SpEmpresas:
     # Nombre

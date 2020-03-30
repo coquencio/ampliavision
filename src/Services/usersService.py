@@ -34,6 +34,18 @@ class UsersService:
         token = self.__sql_helper.sp_get(SpUsers.Authenticate, args, True)
         return serialize_data_set(token)
 
+    def token_validation(self, token):
+        if len(str(token)) != 40:
+            return False
+
+        token = "'"+token+"'"
+        args = (token, )
+        result = self.__sql_helper.sp_get(SpUsers.Authorize, args, True)
+        if result['Result'] == 1:
+            return True
+
+        return False
+
     def __encrypt(self, string):
         self.hash.update(string.encode('utf-8'))
         return self.hash.hexdigest()
