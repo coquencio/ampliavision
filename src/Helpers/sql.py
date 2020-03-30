@@ -1,5 +1,5 @@
 from src.Core.constants import Connection
-from src.Helpers.serializer import JsonHelper
+from src.Helpers.serializer import *
 import pymysql
 
 
@@ -25,10 +25,11 @@ class MySqlHelper:
             cursor.execute("call " + sp_name + "()")
         else:
             cursor.execute("call " + sp_name + self.__build_string_params(args))
-            if not is_getting_single_row:
-                data = cursor.fetchall()
-            else:
-                data = cursor.fetchone()
+
+        if not is_getting_single_row:
+            data = cursor.fetchall()
+        else:
+            data = cursor.fetchone()
         db.close()
         return data
 
@@ -48,7 +49,7 @@ class MySqlHelper:
         cursor.execute(query)
         data_set = cursor.fetchall()
         db.close()
-        return JsonHelper.serialize_data_set(data_set, key)
+        return serialize_data_set(data_set, key)
 
     @staticmethod
     def __build_string_params(params):
