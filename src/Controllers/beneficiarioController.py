@@ -21,3 +21,15 @@ def crea_beneficiario(empresa_id):
     except KeyError as err:
         return Response(status=400, response=err.args)
 
+
+@BeneficiarioController.route('/api/empresas/<int:empresa_id>/beneficiarios', methods=['GET'])
+def get_by_empresa(empresa_id):
+    try:
+        beneficiario_service = BeneficiariosService()
+        return beneficiario_service.get_beneficiario_by_empresa(empresa_id)
+
+    except ValueError as err:
+        return Response(status=400, response=err.args)
+
+    except KeyError as err:
+        return Response(status=400, response=err.args)

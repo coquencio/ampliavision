@@ -31,6 +31,9 @@ class SpBeneficiario:
     # Empresa Id
     Register = "RegistraBeneficiario"
 
+    # Empresa Id
+    get_by_empresa = "seleccionaBeneficiariosPorEmpresa"
+
 
 class SpOjos:
     # Lado Id
