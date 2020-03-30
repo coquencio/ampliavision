@@ -4,6 +4,7 @@ from src.Services.usersService import UsersService
 
 BeneficiarioController = Blueprint('beneficiario', __name__)
 user_service = UsersService()
+beneficiario_service = BeneficiariosService()
 
 
 @BeneficiarioController.route('/api/empresas/<int:empresa_id>/beneficiarios/create', methods=['POST'])
@@ -21,7 +22,6 @@ def crea_beneficiario(empresa_id):
         apemat = data['apellidoMaterno']
         fechanac = data['fechaNacimiento']
         ocupacion = data['ocupacion']
-        beneficiario_service = BeneficiariosService()
         beneficiario_service.create_beneficiario(nombre, apepat, apemat, fechanac, ocupacion, empresa_id)
         return Response(status=201, response="Beneficiario creado satisfactoriamente")
     except ValueError as err:
@@ -33,7 +33,11 @@ def crea_beneficiario(empresa_id):
 @BeneficiarioController.route('/api/empresas/<int:empresa_id>/beneficiarios', methods=['GET'])
 def get_by_empresa(empresa_id):
     try:
-        beneficiario_service = BeneficiariosService()
+        token = request.args.get('token')
+        if not token:
+            return Response(status=401)
+        if not user_service.token_validation(token):
+            return Response(status=401)
         return beneficiario_service.get_beneficiario_by_empresa(empresa_id)
 
     except ValueError as err:

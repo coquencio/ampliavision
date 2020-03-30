@@ -35,6 +35,9 @@ class UsersService:
         return serialize_data_set(token)
 
     def token_validation(self, token):
+        if len(str(token)) != 40:
+            return False
+
         token = "'"+token+"'"
         args = (token, )
         result = self.__sql_helper.sp_get(SpUsers.Authorize, args, True)
