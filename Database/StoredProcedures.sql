@@ -34,9 +34,9 @@ BEGIN
 END //
 delimiter ;
 delimiter //
-CREATE PROCEDURE RegistraYSeleccionaConjuntoOjos(in izquierdo int,in derecho int, in tipo int,in dpLejos int, obl int)
+create PROCEDURE RegistraYSeleccionaConjuntoOjos(in izquierdo int,in derecho int, in tipo int,in dbLejos int, _obl int)
 BEGIN
-	insert into ConjuntoOjos (IzquierdoID, DerechoID, TipoConjuntoID, DpLejos, Obl) values (izquierdo, derecho, tipo, dbLejos, obl);
+	insert into ConjuntoOjos (IzquierdoID, DerechoID, TipoConjuntoID, DpLejos, Obl) values (izquierdo, derecho, tipo, dbLejos, _obl);
     Select ConjuntoID from ConjuntoOjos order By ConjuntoID desc Limit 1;
 END //
 delimiter ;

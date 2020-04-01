@@ -26,3 +26,26 @@ def create_and_get(lado):
         return ojos_service.register_and_get_single(lado_id, esfera, cilindro, eje, adiccion)
     except ValueError as err:
         return Response(status=400, response=err.args)
+
+
+@OjosController.route('/api/empresas/beneficiarios/ojos/conjunto/<string:tipo>', methods=['POST'])
+def create_and_get_pair(tipo):
+    if not tipo:
+        return Response(status=400)
+    if tipo == "anterior":
+        tipo_id = 1
+    elif tipo == "total":
+        tipo_id = 2
+    elif tipo == "adaptacion":
+        tipo_id = 3
+    else:
+        return Response(status=400)
+
+    data = request.get_json()
+    izquierdo_id = data['IzquierdoId']
+    derecho_id = data['DerechoId']
+    dp_lejos = data['DpLejos']
+    obl = data['Obl']
+    return ojos_service.register_and_get_pair(izquierdo_id, derecho_id, tipo_id, dp_lejos, obl)
+
+

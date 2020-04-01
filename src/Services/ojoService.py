@@ -17,3 +17,11 @@ class OjoService:
         data = serialize_data_set(self.__sql_helper.sp_get(SpOjos.Register_and_get_Single, args, True))
         return data
 
+    def register_and_get_pair(self, izquierdo_id, derecho_id, tipo_id, dp_lejos, obl):
+        args = (izquierdo_id, derecho_id, tipo_id, dp_lejos, obl)
+        for arg in args:
+            arg = str(arg)
+            if not int(arg):
+                raise ValueError("Missing arguments or invalid data type")
+        data = serialize_data_set(self.__sql_helper.sp_get(SpOjos.Register_and_get_pair, args, True))
+        return data
