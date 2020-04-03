@@ -44,7 +44,7 @@ delimiter ;
 delimiter //
 CREATE PROCEDURE RegistraExamen(in Folio varchar(10),in BeneficiarioID INT,in Anterior int,in Total int,in adaptacion int,in fechaExamen date,in requiereLentes bit,in comproLentes bit,in enfermedadID int,in obervacion varchar(250))
 BEGIN
-	insert into Examenes (Folio, beneficiarioID, anterior, total, adaptacion, fechaExamen, requiereLentes, comproLentes, enfermedadID, obervacion) values(folio, beneficiarioID, anterior, total, adaptacion, fechaExamen, requiereLentes, comproLentes, enfermedadID, observacion);
+	insert into Examenes (Folio, beneficiarioID, anterior, total, adaptacion, fechaExamen, requiereLentes, comproLentes, enfermedadID, observacion) values(folio, beneficiarioID, anterior, total, adaptacion, fechaExamen, requiereLentes, comproLentes, enfermedadID, observacion);
 END //
 delimiter ;
 delimiter //
