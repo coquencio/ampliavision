@@ -1,13 +1,19 @@
 from flask import Blueprint, Response, request
 from src.Services.ojoService import OjoService
+from src.Services.usersService import UsersService
 
 OjosController = Blueprint('ojos', __name__)
 ojos_service = OjoService()
-
+user_service = UsersService()
 
 @OjosController.route('/api/empresas/beneficiarios/ojos/<string:lado>', methods=['POST'])
 def create_and_get(lado):
     try:
+        token = request.args.get('token')
+        if not token:
+            return Response(status=401)
+        if not user_service.token_validation(token):
+            return Response(status=401)
         if not lado:
             return Response(status=400)
         if lado == "izquierdo":
@@ -30,6 +36,11 @@ def create_and_get(lado):
 
 @OjosController.route('/api/empresas/beneficiarios/ojos/conjunto/<string:tipo>', methods=['POST'])
 def create_and_get_pair(tipo):
+    token = request.args.get('token')
+    if not token:
+        return Response(status=401)
+    if not user_service.token_validation(token):
+        return Response(status=401)
     if not tipo:
         return Response(status=400)
     if tipo == "anterior":
