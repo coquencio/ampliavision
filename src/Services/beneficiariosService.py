@@ -2,12 +2,14 @@ from src.Helpers.sql import MySqlHelper
 from src.Core.constants import SpBeneficiario
 from src.Services.empresaService import EmpresaService
 from src.Helpers.serializer import serialize_data_set
+from src.Helpers.stringHelper import StringHelper
 
 
 class BeneficiariosService:
     def __init__(self):
         self.__sql_helper = MySqlHelper()
         self.__empresa_servicio = EmpresaService()
+        self.__string_helper = StringHelper()
 
     def create_beneficiario(self, nombres, ape_pat, ape_mat, fecha_nac, ocupacion, empresa_id):
 
@@ -17,11 +19,11 @@ class BeneficiariosService:
         if not nombres or not ape_mat or not ape_pat or not fecha_nac or not ocupacion:
             raise ValueError("Datos faltantes")
 
-        nombres = "'" + nombres + "'"
-        ape_pat = "'" + ape_pat + "'"
-        ape_mat = "'" + ape_mat + "'"
-        fecha_nac = "'" + fecha_nac + "'"
-        ocupacion = "'" + ocupacion + "'"
+        nombres = self.__string_helper.build_string(nombres)
+        ape_pat = self.__string_helper.build_string(ape_pat)
+        ape_mat = self.__string_helper.build_string(ape_mat)
+        fecha_nac = self.__string_helper.build_string(fecha_nac)
+        ocupacion = self.__string_helper.build_string(ocupacion)
         empresa_id = str(empresa_id)
         args = (nombres, ape_pat, ape_mat, fecha_nac, ocupacion, empresa_id)
         self.__sql_helper.sp_set(SpBeneficiario.Register, args)
