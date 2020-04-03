@@ -6,6 +6,7 @@ OjosController = Blueprint('ojos', __name__)
 ojos_service = OjoService()
 user_service = UsersService()
 
+
 @OjosController.route('/api/empresas/beneficiarios/ojos/<string:lado>', methods=['POST'])
 def create_and_get(lado):
     try:
