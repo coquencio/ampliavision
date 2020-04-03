@@ -34,9 +34,9 @@ BEGIN
 END //
 delimiter ;
 delimiter //
-CREATE PROCEDURE RegistraYSeleccionaConjuntoOjos(in izquierdo int,in derecho int, in tipo int,in dpLejos int, obl int)
+create PROCEDURE RegistraYSeleccionaConjuntoOjos(in izquierdo int,in derecho int, in tipo int,in dbLejos int, _obl int)
 BEGIN
-	insert into ConjuntoOjos (IzquierdoID, DerechoID, TipoConjuntoID, DpLejos, Obl) values (izquierdo, derecho, tipo, dbLejos, obl);
+	insert into ConjuntoOjos (IzquierdoID, DerechoID, TipoConjuntoID, DpLejos, Obl) values (izquierdo, derecho, tipo, dbLejos, _obl);
     Select ConjuntoID from ConjuntoOjos order By ConjuntoID desc Limit 1;
 END //
 delimiter ;
@@ -44,7 +44,7 @@ delimiter ;
 delimiter //
 CREATE PROCEDURE RegistraExamen(in Folio varchar(10),in BeneficiarioID INT,in Anterior int,in Total int,in adaptacion int,in fechaExamen date,in requiereLentes bit,in comproLentes bit,in enfermedadID int,in obervacion varchar(250))
 BEGIN
-	insert into Examenes (Folio, beneficiarioID, anterior, total, adaptacion, fechaExamen, requiereLentes, comproLentes, enfermedadID, obervacion) values(folio, beneficiarioID, anterior, total, adaptacion, fechaExamen, requiereLentes, comproLentes, enfermedadID, observacion);
+	insert into Examenes (Folio, beneficiarioID, anterior, total, adaptacion, fechaExamen, requiereLentes, comproLentes, enfermedadID, observacion) values(folio, beneficiarioID, anterior, total, adaptacion, fechaExamen, requiereLentes, comproLentes, enfermedadID, observacion);
 END //
 delimiter ;
 delimiter //

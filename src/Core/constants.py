@@ -44,7 +44,7 @@ class SpOjos:
     # Cilindro
     # Eje
     # Adiccion
-    Register_and_getSingle = "RegistraYSeleccionaOjo"
+    Register_and_get_Single = "RegistraYSeleccionaOjo"
 
     # Izquierdo id
     # Derecho id
@@ -106,6 +106,7 @@ class SpTamanios:
     Activate = "ActivaTamanio"
 
     GetAll = "SeleccionaTamanios"
+
 
 class SpModelos:
     # Descripcion
