@@ -17,6 +17,8 @@ def register(entity, description):
 
         general_service = GeneralService(entity)
         general_service.register(description)
+        return Response(status=201, response="Creado registro en " + entity)
+
     except ValueError as err:
         return Response(status=400, response=err.args)
     except KeyError:
@@ -39,6 +41,7 @@ def activation(entity, status, primary_key):
             general_service.active_status(primary_key)
         else:
             general_service.active_status(primary_key, True)
+        return Response(status=201, response="Se ha actualizado un registro en "+entity)
 
     except ValueError as err:
         return Response(status=400, response=err.args)

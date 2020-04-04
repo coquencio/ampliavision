@@ -8,7 +8,6 @@ class GeneralService:
     def __init__(self, entity):
         self.__sql_helper = MySqlHelper()
         self.__string_helper = StringHelper()
-        self.__constant = self.__entity_helper(entity)
         self.dictionary = {
             "marcas": SpMarcas,
             "colores": SpColores,
@@ -19,6 +18,7 @@ class GeneralService:
             "protecciones": SpProteccion,
             "lentes": SpLentes,
         }
+        self.__constant = self.__entity_helper(entity)
 
     def register(self, descripcion):
         if not descripcion:
