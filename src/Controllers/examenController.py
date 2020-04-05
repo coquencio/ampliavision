@@ -36,6 +36,11 @@ def create_examen():
 @ExamenController.route('/api/examenes/folio/<string:folio>', methods=['GET'])
 def get_by_folio(folio):
     try:
+        token = request.args.get('token')
+        if not token:
+            return Response(status=401)
+        if not user_service.token_validation(token):
+            return Response(status=401)
         data = examen_service.get_by_folio(folio)
         if not data:
             return Response(status=404, response="Examen not found")
@@ -47,6 +52,11 @@ def get_by_folio(folio):
 @ExamenController.route('/api/examenes/beneficiario/<int:beneficiario_id>', methods=['GET'])
 def get_by_beneficiario(beneficiario_id):
     try:
+        token = request.args.get('token')
+        if not token:
+            return Response(status=401)
+        if not user_service.token_validation(token):
+            return Response(status=401)
         data = examen_service.get_by_beneficiatio(beneficiario_id)
         if not data:
             return Response(status=404, response="Examen not found")
