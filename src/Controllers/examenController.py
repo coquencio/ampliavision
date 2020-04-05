@@ -31,3 +31,25 @@ def create_examen():
         return Response(status=201)
     except ValueError as err:
         return Response(status=400, response=err.args)
+
+
+@ExamenController.route('/api/examenes/folio/<string:folio>', methods=['GET'])
+def get_by_folio(folio):
+    try:
+        data = examen_service.get_by_folio(folio)
+        if not data:
+            return Response(status=404, response="Examen not found")
+        return data
+    except ValueError as err:
+        return Response(status=400, response=err.args)
+
+
+@ExamenController.route('/api/examenes/beneficiario/<int:beneficiario_id>', methods=['GET'])
+def get_by_beneficiario(beneficiario_id):
+    try:
+        data = examen_service.get_by_beneficiatio(beneficiario_id)
+        if not data:
+            return Response(status=404, response="Examen not found")
+        return data
+    except ValueError as err:
+        return Response(status=400, response=err.args)

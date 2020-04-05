@@ -1,6 +1,7 @@
 from src.Helpers.sql import MySqlHelper
 from src.Core.constants import SpExamen
 from src.Helpers.stringHelper import StringHelper
+from src.Helpers.serializer import serialize_data_set
 
 
 class ExamenService:
@@ -20,3 +21,25 @@ class ExamenService:
         args = (folio, beneficiario_id, anterior_id, total_id, adaptacion_id, fecha_examen, requiere_lentes,
                 compro_lentes, enfermedad_id, observaciones)
         self.__sql_helper.sp_set(SpExamen.Register, args)
+
+    def get_by_beneficiatio(self, beneficiario_id):
+        if not isinstance(beneficiario_id, int):
+            raise ValueError("Invalid beneficiario")
+        args = (str(beneficiario_id), )
+        data = self.__sql_helper.sp_get(SpExamen.Get_by_beneficiario, args)
+        if not data:
+            return False
+        data = serialize_data_set(data)
+        return data
+
+    def get_by_folio(self, folio):
+        if not folio:
+            raise ValueError("Missing folio")
+        if len(folio) > 10:
+            raise ValueError("Invalid folio")
+        args = (self.__string_helper.build_string(folio), )
+        data = self.__sql_helper.sp_get(SpExamen.Get_by_folio, args, True)
+        if not data:
+            return False
+        data = serialize_data_set(data)
+        return data
