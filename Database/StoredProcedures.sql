@@ -277,3 +277,28 @@ BEGIN
 	select count(*) as Result from users where token = keyToken;
 END //
 delimiter ;
+delimiter //
+create PROCEDURE seleccionaExamenPorFolio(in _folio varchar(10))
+BEGIN
+	select * from examenes where folio = _folio;
+END //
+delimiter ;
+delimiter //
+create PROCEDURE seleccionaExamenPorBeneficiario(in _beneficiarioId int)
+BEGIN
+	select * from examenes where beneficiarioId = _beneficiarioId;
+END //
+delimiter ;
+delimiter //
+create PROCEDURE conjuntoOjosPorId(in _conjunto_id int)
+BEGIN
+	select * from conjuntoOjos where conjuntoId = _conjunto_id ;
+END //
+delimiter ;
+
+delimiter //
+create PROCEDURE ojoPorId(in _ojoid int)
+BEGIN
+	select * from ojos where ojoId = _ojoid ;
+END //
+delimiter ;
