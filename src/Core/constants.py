@@ -53,6 +53,12 @@ class SpOjos:
     # Obl
     Register_and_get_pair = "RegistraYSeleccionaConjuntoOjos"
 
+    # Conjunto id
+    Get_pair = "conjuntoOjosPorId"
+
+    # Ojo id
+    Get_single = "ojoPorId"
+
 
 class SpExamen:
     # Folio
@@ -67,6 +73,12 @@ class SpExamen:
     # Observaciones
 
     Register = "RegistraExamen"
+
+    # Beneficiario id
+    Get_by_beneficiario = "seleccionaExamenPorBeneficiario"
+
+    # Folio
+    Get_by_folio = "seleccionaExamenPorFolio"
 
 
 class SpMarcas:
