@@ -1,4 +1,3 @@
-
 delimiter //
 CREATE PROCEDURE UserRegistration(in name varchar(30),in pass varchar(40),in tok varchar (50))
 BEGIN
@@ -12,18 +11,17 @@ BEGIN
     SELECT Token FROM users where userName = name and password = pass;
 END //
 delimiter ;
-
-
 delimiter //
-CREATE PROCEDURE RegistraEmpresa(in nombre varchar(60),in Domicilio varchar(150), in telefono varchar(20))
+Create PROCEDURE RegistraEmpresa(in nombre varchar(60),in Domicilio varchar(150), in telefono varchar(20))
 BEGIN
-	INSERT INTO Empresas (Nombre, Domicilio, telefono) values(nombre, Domicilio, telefono);
+	INSERT INTO Empresas (Nombreempresa, Domicilio, telefono) values(nombre, Domicilio, telefono);
 END //
+
 delimiter ;
 delimiter //
-CREATE PROCEDURE RegistraBeneficiario(in nombres varchar(25),in apepat varchar(25), in apemat varchar(35),in fechanac date, ocupacion varchar(40), EmpresaID int)
+create PROCEDURE RegistraBeneficiario(in nombres varchar(25),in apepat varchar(25), in apemat varchar(35),in fechanac date, ocupacion varchar(40), EmpresaID int)
 BEGIN
-	INSERT into beneficiarios (nombres, appellidoPaterno, apellidoMaterno, FechaNacimiento, ocupacion, EmpresaID) values (nombres, apepat, apemat, fechanac, ocupacion, EmpresaID);
+	INSERT into beneficiarios (nombres, apellidoPaterno, apellidoMaterno, FechaNacimiento, ocupacion, EmpresaID) values (nombres, apepat, apemat, fechanac, ocupacion, EmpresaID);
 END //
 delimiter ;
 delimiter //
@@ -42,7 +40,7 @@ END //
 delimiter ;
 
 delimiter //
-CREATE PROCEDURE RegistraExamen(in Folio varchar(10),in BeneficiarioID INT,in Anterior int,in Total int,in adaptacion int,in fechaExamen date,in requiereLentes bit,in comproLentes bit,in enfermedadID int,in obervacion varchar(250))
+create PROCEDURE RegistraExamen(in Folio varchar(10),in BeneficiarioID INT,in Anterior int,in Total int,in adaptacion int,in fechaExamen date,in requiereLentes bit,in comproLentes bit,in enfermedadID int,in obervacion varchar(250))
 BEGIN
 	insert into Examenes (Folio, beneficiarioID, anterior, total, adaptacion, fechaExamen, requiereLentes, comproLentes, enfermedadID, observacion) values(folio, beneficiarioID, anterior, total, adaptacion, fechaExamen, requiereLentes, comproLentes, enfermedadID, observacion);
 END //
@@ -80,16 +78,16 @@ BEGIN
 END //
 delimiter ;
 delimiter //
-CREATE PROCEDURE DesactivaColor(in colorID int)
+create PROCEDURE DesactivaColor(in _colorID int)
 BEGIN
-    update Colores set EstaActivo = 0 where ColorID= ColorID;
+    update Colores set EstaActivo = 0 where ColorID= _ColorID;
 END //
 delimiter ;
 
 delimiter //
-CREATE PROCEDURE ActivaColor(in ColorID int)
+create PROCEDURE ActivaColor(in _ColorID int)
 BEGIN
-	update colores set EstaActivo = 1 where colorID = ColorID;
+	update colores set EstaActivo = 1 where colorID = _ColorID;
 END //
 delimiter ;
 
@@ -107,16 +105,16 @@ BEGIN
 END //
 delimiter ;
 delimiter //
-CREATE PROCEDURE DesactivaTamanio(in tamanioID int)
+create PROCEDURE DesactivaTamanio(in _tamanioID int)
 BEGIN
-    update tamanios set EstaActivo = 0 where tamanioID= tamanioID;
+    update tamanios set EstaActivo = 0 where tamanioID= _tamanioID;
 END //
 delimiter ;
 
 delimiter //
-CREATE PROCEDURE ActivaTamanio(in ColorID int)
+create PROCEDURE ActivaTamanio(in _ColorID int)
 BEGIN
-	update tamanios set EstaActivo = 1 where tamanioID= TamanioID;
+	update tamanios set EstaActivo = 1 where tamanioID= _ColorID ;
 END //
 delimiter ;
 
@@ -133,16 +131,16 @@ BEGIN
 END //
 delimiter ;
 delimiter //
-CREATE PROCEDURE DesactivaModelo(in modeloID int)
+create PROCEDURE DesactivaModelo(in _modeloID int)
 BEGIN
-    update modelos set EstaActivo = 0 where modeloID = modeloID;
+    update modelos set EstaActivo = 0 where modeloID = _modeloID;
 END //
 delimiter ;
 
 delimiter //
-CREATE PROCEDURE ActivaModelo(in modeloID int)
+create PROCEDURE ActivaModelo(in _modeloID int)
 BEGIN
-	update modelos set EstaActivo = 1 where modeloID = modeloID;
+	update modelos set EstaActivo = 1 where modeloID = _modeloID;
 END //
 delimiter ;
 
@@ -166,16 +164,16 @@ BEGIN
 END //
 delimiter ;
 delimiter //
-CREATE PROCEDURE DesactivaMaterial(in MaterialID int)
+create PROCEDURE DesactivaMaterial(in _MaterialID int)
 BEGIN
-    update materiales set EstaActivo = 0 where MaterialID = MaterialID;
+    update materiales set EstaActivo = 0 where MaterialID = _MaterialID;
 END //
 delimiter ;
 
 delimiter //
-CREATE PROCEDURE ActivaMaterial(in materialID int)
+create PROCEDURE ActivaMaterial(in _materialID int)
 BEGIN
-	update materiales set EstaActivo = 1 where materialID = materialID;
+	update materiales set EstaActivo = 1 where materialID = _materialID;
 END //
 delimiter ;
 
@@ -193,16 +191,16 @@ BEGIN
 END //
 delimiter ;
 delimiter //
-CREATE PROCEDURE DesactivaProteccion(in ProteccionID int)
+create PROCEDURE DesactivaProteccion(in _ProteccionID int)
 BEGIN
-    update protecciones set EstaActivo = 0 where ProteccionID = ProteccionID;
+    update protecciones set EstaActivo = 0 where ProteccionID = _ProteccionID;
 END //
 delimiter ;
 
 delimiter //
-CREATE PROCEDURE ActivaProteccion(in ProteccionID int)
+create PROCEDURE ActivaProteccion(in _ProteccionID int)
 BEGIN
-	update protecciones set EstaActivo = 1 where ProteccionID = ProteccionID;
+	update protecciones set EstaActivo = 1 where ProteccionID = _ProteccionID;
 END //
 delimiter ;
 
@@ -219,16 +217,16 @@ BEGIN
 END //
 delimiter ;
 delimiter //
-CREATE PROCEDURE DesactivaLente(in lenteID int)
+create PROCEDURE DesactivaLente(in _lenteID int)
 BEGIN
-    update tipolente set EstaActivo = 0 where lenteID = lenteID;
+    update tipolente set EstaActivo = 0 where lenteID = _lenteID;
 END //
 delimiter ;
 
 delimiter //
-CREATE PROCEDURE ActivaLente(in lenteID int)
+create PROCEDURE ActivaLente(in _lenteID int)
 BEGIN
-	update tipolente set EstaActivo = 1 where lenteID = lenteID;
+	update tipolente set EstaActivo = 1 where lenteID = _lenteID;
 END //
 delimiter ;
 
@@ -249,19 +247,24 @@ END //
 delimiter ;
 
 delimiter //
-CREATE PROCEDURE liquidaVenta(in ventaID int)
+create PROCEDURE liquidaVenta(in _ventaID int)
 BEGIN
-	update ventas set EstaLiquidada = 1 where ventaID = ventaID;
+	update ventas set EstaLiquidada = 1 where ventaID = _ventaID;
 END //
 delimiter ;
 
+delimiter //
+create PROCEDURE validaEmpresa(in Id int)
+BEGIN
+	select count(*) from empresas where EmpresaId = Id;
+END //
+delimiter ;
 delimiter //
 create PROCEDURE seleccionaEmpresas()
 BEGIN
 	select * from empresas;
 END //
 delimiter ;
-
 delimiter //
 create PROCEDURE seleccionaBeneficiariosPorEmpresa(in empresa_ID int)
 BEGIN
@@ -269,7 +272,7 @@ BEGIN
 END //
 delimiter ;
 delimiter //
-create PROCEDURE validaToken(in keyToken varchar(50))
+create PROCEDURE validaToken(in keyToken varchar(40))
 BEGIN
 	select count(*) as Result from users where token = keyToken;
 END //
