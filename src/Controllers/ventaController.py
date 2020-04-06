@@ -10,6 +10,11 @@ VentaController = Blueprint('veta', __name__)
 @VentaController.route('/api/venta', methods=['POST'])
 def create_and_get():
     try:
+        token = request.args.get('token')
+        if not token:
+            return Response(status=401)
+        if not user_service.token_validation(token):
+            return Response(status=401)
         data = request.get_json()
         folio = data['Folio']
         total = data['TotalVenta']
