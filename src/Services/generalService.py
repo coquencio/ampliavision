@@ -13,7 +13,6 @@ class GeneralService:
             "colores": SpColores,
             "tamanios": SpTamanios,
             "modelos": SpModelos,
-            "armazones": SpArmazon,
             "materiales": SpMaterial,
             "protecciones": SpProteccion,
             "lentes": SpLentes,
