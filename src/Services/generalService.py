@@ -1,7 +1,7 @@
 from src.Helpers.sql import MySqlHelper
 from src.Helpers.serializer import serialize_data_set
 from src.Helpers.stringHelper import StringHelper
-from src.Core.constants import *
+from src.Core.constants import SpMarcas, SpColores, SpTamanios, SpModelos, SpMaterial, SpProteccion, SpLentes
 
 
 class GeneralService:
