@@ -25,3 +25,23 @@ class OjoService:
                 raise ValueError("Missing arguments or invalid data type")
         data = serialize_data_set(self.__sql_helper.sp_get(SpOjos.Register_and_get_pair, args, True))
         return data
+
+    def get_single(self, ojo_id):
+        if not isinstance(ojo_id, int):
+            raise ValueError("Invalid ojo id")
+        args = (ojo_id, )
+        data = self.__sql_helper.sp_get(SpOjos.Get_single, args, True)
+        if not data:
+            return False
+
+        return serialize_data_set(data)
+
+    def get_pair(self, pair_id):
+        if not isinstance(pair_id, int):
+            raise ValueError("Invalid ojo id")
+        args = (pair_id,)
+        data = self.__sql_helper.sp_get(SpOjos.Get_pair, args, True)
+        if not data:
+            return False
+
+        return serialize_data_set(data)
