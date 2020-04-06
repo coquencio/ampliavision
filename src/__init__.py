@@ -6,6 +6,7 @@ from src.Controllers.ojosController import OjosController
 from src.Controllers.examenController import ExamenController
 from src.Controllers.generalController import GeneralController
 from src.Controllers.armazonController import ArmazonController
+from src.Controllers.ventaController import VentaController
 
 app = Flask(__name__)
 app.register_blueprint(UserController)
@@ -15,6 +16,7 @@ app.register_blueprint(OjosController)
 app.register_blueprint(ExamenController)
 app.register_blueprint(GeneralController)
 app.register_blueprint(ArmazonController)
+app.register_blueprint(VentaController)
 
 
 @app.route('/')
