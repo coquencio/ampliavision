@@ -5,6 +5,15 @@ from src.Helpers.serializer import serialize_data_set
 
 class OjoService:
     def __init__(self):
+        self.lado_dictionary = {
+            "izquierdo": 1,
+            "derecho": 2
+        }
+        self.tipo_dictionary = {
+            "anterior": 1,
+            "total": 2,
+            "adaptacion": 3,
+        }
         self.__sql_helper = MySqlHelper()
 
     def register_and_get_single(self, lado_id, esfera, cilindro, eje, adiccion):

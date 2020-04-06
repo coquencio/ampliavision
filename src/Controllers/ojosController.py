@@ -17,13 +17,7 @@ def create_and_get(lado):
             return Response(status=401)
         if not lado:
             return Response(status=400)
-        if lado == "izquierdo":
-            lado_id = 1
-        elif lado == "derecho":
-            lado_id = 2
-        else:
-            return Response(status=400)
-
+        lado_id = ojos_service.lado_dictionary[lado]
         data = request.get_json()
         esfera = data['Esfera']
         cilindro = data['Cilindro']
@@ -33,6 +27,8 @@ def create_and_get(lado):
         return ojos_service.register_and_get_single(lado_id, esfera, cilindro, eje, adiccion)
     except ValueError as err:
         return Response(status=400, response=err.args)
+    except KeyError:
+        return Response(status=400, response="Invalid lado")
 
 
 @OjosController.route('/api/empresas/beneficiarios/ojos/conjunto/<string:tipo>', methods=['POST'])
@@ -45,14 +41,7 @@ def create_and_get_pair(tipo):
             return Response(status=401)
         if not tipo:
             return Response(status=400)
-        if tipo == "anterior":
-            tipo_id = 1
-        elif tipo == "total":
-            tipo_id = 2
-        elif tipo == "adaptacion":
-            tipo_id = 3
-        else:
-            return Response(status=400)
+        tipo_id = ojos_service.tipo_dictionary[tipo]
 
         data = request.get_json()
         izquierdo_id = data['IzquierdoId']
@@ -62,6 +51,8 @@ def create_and_get_pair(tipo):
         return ojos_service.register_and_get_pair(izquierdo_id, derecho_id, tipo_id, dp_lejos, obl)
     except ValueError as err:
         return Response(status=400, response=err.args)
+    except KeyError:
+        return Response(status=400, response="Invalid tipo")
 
 
 @OjosController.route('/api/ojos/conjuntos/<int:conjunto_id>', methods=['GET'])
