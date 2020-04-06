@@ -156,9 +156,9 @@ EstaActivo bit not null
 
 Create table colores(
 ColorID int primary key auto_increment,
-Descripcion varchar(20) not null
+Descripcion varchar(20) not null,
+EstaActivo bit not null
 );
-
 
 
 Create table CasosMaterialesISO(
