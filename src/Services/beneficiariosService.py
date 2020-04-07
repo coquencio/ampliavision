@@ -32,7 +32,8 @@ class BeneficiariosService:
         if not self.__empresa_servicio.validate_empresa(empresa_id):
             raise KeyError("Empresa no encontrada")
 
-        data = self.__sql_helper.sp_get(SpBeneficiario.get_by_empresa, str(empresa_id))
+        args = (str(empresa_id), )
+        data = self.__sql_helper.sp_get(SpBeneficiario.get_by_empresa, args)
         return serialize_data_set(data, "Beneficiarios")
 
     def validate_existance(self, beneficiario_id):
