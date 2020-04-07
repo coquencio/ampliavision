@@ -1,4 +1,3 @@
-
 delimiter //
 CREATE PROCEDURE UserRegistration(in name varchar(30),in pass varchar(40),in tok varchar (50))
 BEGIN
@@ -152,9 +151,9 @@ BEGIN
 END //
 delimiter ;
 delimiter //
-CREATE PROCEDURE RegistraYSeleccionaArmazon(in MarcaID int, in ColorID int, in TamanioID int, in ModeloID int)
+CREATE PROCEDURE RegistraYSeleccionaArmazon(in MarcaID int, in ColorID int, in TamanioID int, in ModeloID int, in _DetalleEnArmazon varchar(35))
 BEGIN
-	insert into armazones (MarcaID, ColorID, TamanioID, ModeloID) values (marcaID, ColorID, TamanioID, ModeloID);
+	insert into armazones (MarcaID, ColorID, TamanioID, ModeloID, DetalleEnArmazon ) values (marcaID, ColorID, TamanioID, ModeloID, _DetalleEnArmazon);
     select ArmazonID from Armazones order by armazonID desc limit 1;
 END //
 delimiter ;
@@ -238,11 +237,11 @@ BEGIN
 END //
 delimiter ;
 delimiter //
-CREATE PROCEDURE RegistraYSeleccionaVenta(in FolioExamen varchar(10),in totalVenta decimal(13, 2), in Anticipo decimal(13, 2),in Periodicidad int, in abonos decimal(13, 2), in fechaVenta date, in armazonID int, in materialID int, in proteccionID int, in lenteID int, in beneficiarioID int)
+create PROCEDURE RegistraYSeleccionaVenta(in FolioExamen varchar(10),in totalVenta decimal(13, 2), in Anticipo decimal(13, 2),in Periodicidad int, in abonos decimal(13, 2), in fechaVenta date, in armazonID int, in materialID int, in proteccionID int, in lenteID int, in beneficiarioID int)
 BEGIN
-	DECLARE ExamenID INT DEFAULT 0;
-	SET ExamenID = (select ExamenID from Examenes where folio = FolioExamen);
-    insert into Ventas (folioExamen, totalVenta, anticipo, periodicidadDias, Abonos, fechaVenta, EstaLiquidada, armazonID, materialID, ProteccionID, LenteID, BeneficiarioID, ExamenID) values (folioExamen, totalVenta, anticipo, periodicidad, abonos, fechaventa, 0, armazonID, materialID, proteccionID, lenteID, beneficiarioID, examenID);
+	
+	select @ExamenID := ExamenID from Examenes where folio = 'Qwerty1232';
+    insert into Ventas (folioExamen, totalVenta, anticipo, periodicidadDias, Abonos, fechaVenta, EstaLiquidada, armazonID, materialID, ProteccionID, LenteID, BeneficiarioID, ExamenID) values (folioExamen, totalVenta, anticipo, periodicidad, abonos, fechaventa, 0, armazonID, materialID, proteccionID, lenteID, beneficiarioID, @ExamenID);
 	select ventaID from ventas order by ventaID desc limit 1;
 END //
 delimiter ;
@@ -338,11 +337,23 @@ BEGIN
 	insert into CasosPorBeneficiario (BeneficiarioId, casoId) values (_beneficiarioId, _casoId);
 END //
 delimiter ;
+
 delimiter //
 create PROCEDURE validaBeneficiario(in _beneficiarioId int)
 BEGIN
 	select count(*) as count from beneficiarios where beneficiarioid =  _beneficiarioId;
 END //
 delimiter ;
+delimiter //
+create PROCEDURE seleccionaResumenVentasPorEmpresa(in _empresaId int)
+BEGIN
+		select v.ventaId as VentaId, v.FolioExamen, b.nombres as Nombres,  b.apellidoPaterno as Apellido, b.Ocupacion as Puesto, ex.RequiereLentes, ex.comprolentes,  m.descripcion as Material, p.descripcion as Proteccion, t.descripcion as Lente, v.totalventa as Total, v.anticipo as Aticipo, v.abonos as Abonos from ventas v inner join beneficiarios b on v.beneficiarioId = b.beneficiarioId inner join materiales m on v.materialId = m.materialId inner join protecciones p on v.proteccionId = p.proteccionId inner join tipolente t on v.lenteId = t.lenteId left join examenes ex on v.examenId= ex.ExamenId where b.empresaId = _empresaId;
+END //
+delimiter ;
 
-
+delimiter //
+create PROCEDURE seleccionaDetallesDeArmazonPorVenta(in _ventaId int)
+BEGIN
+	select a.armazonId as Id, m.Descripcion as Marca, c.descripcion as Color, t.descripcion as Tamanio, mo.descripcion as Modelo, a.detalleenarmazon as Detalle from ventas v inner join armazones a on v.armazonId = a.armazonId inner join marcasarmazones m on a.marcaId = m.marcaId inner join colores c on a.colorId = c.colorId inner join tamanios t on a.tamanioId = t.tamanioId inner join modelos mo on a.modeloId = mo.modeloId where v.ventaId = _ventaId;
+END //
+delimiter ;
