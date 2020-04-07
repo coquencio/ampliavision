@@ -17,9 +17,9 @@ def create_empresa():
             return Response(status=401)
 
         data = request.get_json()
-        nombre = data['nombre']
-        domicilio = data['domicilio']
-        telefono = data['telefono']
+        nombre = data['Nombre']
+        domicilio = data['Domicilio']
+        telefono = data['Telefono']
         empresa_service.create_empresa(nombre, domicilio, telefono)
         return Response(status=201, response="Empresa creada")
     except ValueError as err:
