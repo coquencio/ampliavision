@@ -38,7 +38,7 @@ class BeneficiariosService:
     def validate_existance(self, beneficiario_id):
         if not isinstance(beneficiario_id, int):
             return False
-        args = (str(beneficiario_id))
+        args = (str(beneficiario_id), )
 
         data = self.__sql_helper.sp_get(SpBeneficiario.Validate, args, True)
         if data['count'] == 0:
