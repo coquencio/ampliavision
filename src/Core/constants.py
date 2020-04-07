@@ -80,6 +80,9 @@ class SpExamen:
     # Folio
     Get_by_folio = "seleccionaExamenPorFolio"
 
+    # Empresa Id
+    Get_summary_by_empresa = "GetResumenExamenesPorEmpresa"
+
 
 class SpMarcas:
     # Descripcion
@@ -193,3 +196,15 @@ class SpVentas:
     # LenteID
     # Beneficiario ID
     Register_and_get = "RegistraYSeleccionaVenta"
+
+
+class SpCasosIso:
+
+    Get_active = "SeleccionaCasosActivos"
+
+    # Beneficiario Id
+    Get_by_beneficiario = "SeleccionaCasosPorBeneficiario"
+
+    # Beneficiario Id
+    # Caso Id
+    Create_relation = "RegistraCasosPorBeneficiario"
