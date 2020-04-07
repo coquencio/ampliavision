@@ -338,6 +338,11 @@ BEGIN
 	insert into CasosPorBeneficiario (BeneficiarioId, casoId) values (_beneficiarioId, _casoId);
 END //
 delimiter ;
-
+delimiter //
+create PROCEDURE validaBeneficiario(in _beneficiarioId int)
+BEGIN
+	select count(*) as count from beneficiarios where beneficiarioid =  _beneficiarioId;
+END //
+delimiter ;
 
 
