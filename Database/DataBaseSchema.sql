@@ -39,7 +39,6 @@ Foreign key (EmpresaID) REFERENCES Empresas(EmpresaID)
 );
 
 
-
 create table Lados(
 LadoID int primary key auto_increment,
 Descripcion varchar(10) not null
@@ -160,12 +159,18 @@ Descripcion varchar(20) not null,
 EstaActivo bit not null
 );
 
-
 Create table CasosMaterialesISO(
 CasoID int primary key auto_increment,
-Descripcion varchar(30) not null
+Descripcion varchar(30) not null,
+estaActivo bit not null
 
 );
+
+insert into CasosMaterialesISO (Descripcion, estaActivo) values ('Armazón Oftálmico', 1);
+insert into CasosMaterialesISO (Descripcion, estaActivo) values ('Armazón Solar', 1);
+insert into CasosMaterialesISO (Descripcion, estaActivo) values ('Cambio de micas', 1);
+insert into CasosMaterialesISO (Descripcion, estaActivo) values ('Lente de contacto', 1);
+insert into CasosMaterialesISO (Descripcion, estaActivo) values ('Accesorios', 1);
 
 Create table CasosPorBeneficiario(
 CasoPorBeneficiarioID int primary key auto_increment,
@@ -220,16 +225,3 @@ FechaAbono date,
 FechaRegistro date not null,
 Foreign key(VentaID) references ventas(VentaID)
 );
-
-
-
-
-
-
-
-
-
-
-
-
-
