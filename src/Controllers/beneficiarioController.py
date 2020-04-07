@@ -17,11 +17,11 @@ def crea_beneficiario(empresa_id):
             return Response(status=401)
 
         data = request.get_json()
-        nombre = data['nombres']
-        apepat = data['apellidoPaterno']
-        apemat = data['apellidoMaterno']
-        fechanac = data['fechaNacimiento']
-        ocupacion = data['ocupacion']
+        nombre = data['Nombres']
+        apepat = data['ApellidoPaterno']
+        apemat = data['ApellidoMaterno']
+        fechanac = data['FechaNacimiento']
+        ocupacion = data['Ocupacion']
         beneficiario_service.create_beneficiario(nombre, apepat, apemat, fechanac, ocupacion, empresa_id)
         return Response(status=201, response="Beneficiario creado satisfactoriamente")
     except ValueError as err:
