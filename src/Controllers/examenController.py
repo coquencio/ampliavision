@@ -63,3 +63,19 @@ def get_by_beneficiario(beneficiario_id):
         return data
     except ValueError as err:
         return Response(status=400, response=err.args)
+
+
+@ExamenController.route('/api/examenes/resumen/<int:empresa_id>', methods=['GET'])
+def get_summary(empresa_id):
+    try:
+        token = request.args.get('token')
+        if not token:
+            return Response(status=401)
+        if not user_service.token_validation(token):
+            return Response(status=401)
+        data = examen_service.get_summary_by_empresa(empresa_id)
+        if not data:
+            return Response(status=404, response="Examenes not found")
+        return data
+    except ValueError as err:
+        return Response(status=400, response=err.args)

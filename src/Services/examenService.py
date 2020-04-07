@@ -43,3 +43,11 @@ class ExamenService:
             return False
         data = serialize_data_set(data)
         return data
+
+    def get_summary_by_empresa(self, empresa_id):
+        if not isinstance(empresa_id, int):
+            raise ValueError("Invalid Id")
+        args = str(empresa_id)
+        data = self.__sql_helper.sp_get(SpExamen.Get_summary_by_empresa, args)
+        print(data)
+        return serialize_data_set(data, "Examenes")

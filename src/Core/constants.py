@@ -37,6 +37,9 @@ class SpBeneficiario:
     # Empresa Id
     get_by_empresa = "seleccionaBeneficiariosPorEmpresa"
 
+    # Beneficiario Id
+    Validate = "validaBeneficiario"
+
 
 class SpOjos:
     # Lado Id
@@ -79,6 +82,9 @@ class SpExamen:
 
     # Folio
     Get_by_folio = "seleccionaExamenPorFolio"
+
+    # Empresa Id
+    Get_summary_by_empresa = "GetResumenExamenesPorEmpresa"
 
 
 class SpMarcas:
@@ -193,3 +199,15 @@ class SpVentas:
     # LenteID
     # Beneficiario ID
     Register_and_get = "RegistraYSeleccionaVenta"
+
+
+class SpCasosIso:
+
+    Get_active = "SeleccionaCasosActivos"
+
+    # Beneficiario Id
+    Get_by_beneficiario = "SeleccionaCasosPorBeneficiario"
+
+    # Beneficiario Id
+    # Caso Id
+    Create_relation = "RegistraCasosPorBeneficiario"
