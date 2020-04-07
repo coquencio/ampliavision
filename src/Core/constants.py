@@ -144,7 +144,11 @@ class SpArmazon:
     # Color ID
     # Tamanio ID
     # Modelo ID
+    # Detalle En Armazon
     Register_and_get = "RegistraYSeleccionaArmazon"
+
+    # Venta Id
+    Get_summary = "seleccionaDetallesDeArmazonPorVenta"
 
 
 class SpMaterial:
@@ -199,6 +203,9 @@ class SpVentas:
     # LenteID
     # Beneficiario ID
     Register_and_get = "RegistraYSeleccionaVenta"
+
+    # Empresa Id
+    Get_summary_by_empresa = "seleccionaResumenVentasPorEmpresa"
 
 
 class SpCasosIso:

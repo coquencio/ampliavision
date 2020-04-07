@@ -33,3 +33,19 @@ def create_and_get():
         return Response(status=400, response=err.args)
     except KeyError as err:
         return Response(status=400, response=err.args)
+
+
+@VentaController.route('/api/empresas/<int:empresa_id>/ventas', methods=['GET'])
+def get_summary_by_empresa(empresa_id):
+    try:
+        token = request.args.get('token')
+        if not token:
+            return Response(status=401)
+        if not user_service.token_validation(token):
+            return Response(status=401)
+        data = venta_service.get_summary_by_company(empresa_id)
+        if not data:
+            return Response(status=404)
+        return data
+    except ValueError as err:
+        return Response(status=400, response=err.args)
