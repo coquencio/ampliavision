@@ -37,6 +37,9 @@ class SpBeneficiario:
     # Empresa Id
     get_by_empresa = "seleccionaBeneficiariosPorEmpresa"
 
+    # Beneficiario Id
+    Validate = "validaBeneficiario"
+
 
 class SpOjos:
     # Lado Id
