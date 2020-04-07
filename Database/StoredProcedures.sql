@@ -1,3 +1,4 @@
+
 delimiter //
 CREATE PROCEDURE UserRegistration(in name varchar(30),in pass varchar(40),in tok varchar (50))
 BEGIN
@@ -302,3 +303,41 @@ BEGIN
 	select * from ojos where ojoId = _ojoid ;
 END //
 delimiter ;
+
+delimiter //
+create PROCEDURE GetResumenExamenesPorEmpresa(in _EmpresaId int)
+BEGIN
+
+select e.folio, b.Nombres, b.Apellidopaterno, b.ocupacion, ev.descripcion as enfermedad,  YEAR(CURDATE()) - YEAR(fechanacimiento) -
+IF(STR_TO_DATE(CONCAT(YEAR(CURDATE()), '-', MONTH(fechanacimiento), '-', DAY(fechanacimiento)) ,'%Y-%c-%e') > CURDATE(), 1, 0)
+AS edad, e.requiereLentes from examenes e 
+    inner join enfermedadesvisuales ev 
+    on e.enfermedadId = ev.enfermedadId 
+    inner join beneficiarios b 
+    on e.beneficiarioId = b.beneficiarioId
+    where b.empresaId = _empresaId;
+	
+END //
+delimiter ;
+delimiter //
+create PROCEDURE SeleccionaCasosActivos()
+BEGIN
+	select * from CasosMaterialesISO where estaActivo = 1;  
+END //
+delimiter ;
+
+delimiter //
+create PROCEDURE SeleccionaCasosPorBeneficiario(in _beneficiarioId int)
+BEGIN
+	select * from CasosPorBeneficiario where beneficiarioId = _beneficiarioId;
+END //
+delimiter ;
+delimiter //
+create PROCEDURE RegistraCasosPorBeneficiario(in _beneficiarioId int, in _casoId int)
+BEGIN
+	insert into CasosPorBeneficiario (BeneficiarioId, casoId) values (_beneficiarioId, _casoId);
+END //
+delimiter ;
+
+
+

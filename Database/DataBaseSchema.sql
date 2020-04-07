@@ -22,7 +22,7 @@ EmpleadoID int primary key auto_increment,
 Nombres varchar (25) not null,
 ApellidoPaterno varchar (15) not null,
 ApellidoMaterno varchar(15),
-EstaActivo bit,
+EstaActivo TINYINT(1),
 RolID int not null,
 FOREIGN KEY (RolID) REFERENCES RolesEmpleados(RolID)
 );
@@ -106,8 +106,8 @@ Anterior int unique,
 Total int unique,
 Adaptacion int unique,
 FechaExamen date,
-RequiereLentes bit,
-ComproLentes bit,
+RequiereLentes TINYINT(1),
+ComproLentes TINYINT(1),
 EnfermedadID int,
 Obervacion varchar(250),
 Foreign key (BeneficiarioID) References Beneficiarios(BeneficiarioID),
@@ -120,49 +120,49 @@ foreign key(EnfermedadID) references EnfermedadesVisuales(EnfermedadID)
 create table Materiales(
 MaterialID int primary key auto_increment,
 Descripcion varchar(40) not null,
-EstaActivo bit not null
+EstaActivo TINYINT(1) not null
 );
 
 Create table Protecciones(
 ProteccionID int primary key auto_increment,
 Descripcion varchar(40) not null,
-EstaActivo bit not null
+EstaActivo TINYINT(1) not null
 );
 
 Create table Tamanios(
 TamanioID int primary key auto_increment,
 Descripcion varchar(40) not null,
-EstaActivo bit not null
+EstaActivo TINYINT(1) not null
 );
 
 Create table Modelos(
 ModeloID int primary key auto_increment,
 Descripcion varchar(40) not null,
-EstaActivo bit not null
+EstaActivo TINYINT(1) not null
 );
 
 Create table MarcasArmazones(
 MarcaID int primary key auto_increment,
 Descripcion varchar(20) not null,
-EstaActivo bit not null
+EstaActivo TINYINT(1) not null
 );
 
 Create table TipoLente(
 LenteID int primary key auto_increment,
 Descripcion varchar(40) not null,
-EstaActivo bit not null
+EstaActivo TINYINT(1) not null
 );
 
 Create table colores(
 ColorID int primary key auto_increment,
 Descripcion varchar(20) not null,
-EstaActivo bit not null
+EstaActivo TINYINT(1) not null
 );
 
 Create table CasosMaterialesISO(
 CasoID int primary key auto_increment,
 Descripcion varchar(30) not null,
-estaActivo bit not null
+estaActivo TINYINT(1) not null
 
 );
 
@@ -202,7 +202,7 @@ Anticipo decimal(13,2),
 PeriodicidadDias int,
 Abonos decimal(13,2),
 fechaVenta date not null,
-EstaLiquidada bit,
+EstaLiquidada TINYINT(1),
 ArmazonId int,
 MaterialID int,
 ProteccionID int,
