@@ -207,6 +207,23 @@ class SpVentas:
     # Empresa Id
     Get_summary_by_empresa = "seleccionaResumenVentasPorEmpresa"
 
+    # Venta Id
+    # Monto
+    # Fecha abono
+    Bill_registration = "registraAbono"
+
+    # Venta Id
+    Get_abono_by_venta = "seleccionaAbonosPorVenta"
+
+    # Venta Id
+    Get_abono_sum_by_venta = "seleccionaSumAbonosPorVenta"
+
+    # Abono Id
+    Delete_abono = "borraAbono"
+
+    # Venta Id
+    Get_total_of_sale = "SelectSaldoVenta"
+
 
 class SpCasosIso:
 
@@ -218,3 +235,4 @@ class SpCasosIso:
     # Beneficiario Id
     # Caso Id
     Create_relation = "RegistraCasosPorBeneficiario"
+

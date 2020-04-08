@@ -357,3 +357,35 @@ BEGIN
 	select a.armazonId as Id, m.Descripcion as Marca, c.descripcion as Color, t.descripcion as Tamanio, mo.descripcion as Modelo, a.detalleenarmazon as Detalle from ventas v inner join armazones a on v.armazonId = a.armazonId inner join marcasarmazones m on a.marcaId = m.marcaId inner join colores c on a.colorId = c.colorId inner join tamanios t on a.tamanioId = t.tamanioId inner join modelos mo on a.modeloId = mo.modeloId where v.ventaId = _ventaId;
 END //
 delimiter ;
+
+delimiter //
+create PROCEDURE registraAbono(in _ventaId int, in _monto decimal(13,2), in _fechaAbono date)
+BEGIN
+	insert into abonos (ventaId, monto, fechaAbono, fechaRegistro) values (_ventaId, _monto, _fechaAbono, curdate());
+END //
+delimiter ;
+delimiter //
+create PROCEDURE seleccionaAbonosPorVenta(in _ventaId int)
+BEGIN
+	Select * from abonos where ventaid = _ventaId;
+END //
+delimiter ;
+delimiter //
+create PROCEDURE seleccionaSumAbonosPorVenta(in _ventaId int)
+BEGIN
+	Select sum(Monto) from abonos where ventaid = _ventaId;
+END //
+delimiter ;
+delimiter //
+create PROCEDURE borraAbono(in _abonoId int)
+BEGIN
+	delete from abonos where abonoId = _abonoId;
+END //
+delimiter ;
+
+delimiter //
+create PROCEDURE SelectSaldoVenta(in _ventaId int)
+BEGIN
+	select totalVenta as total from ventas where ventaId = _ventaId;
+END //
+delimiter ;
