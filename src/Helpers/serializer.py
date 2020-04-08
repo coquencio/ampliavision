@@ -1,3 +1,4 @@
+import decimal
 import json
 import datetime
 
@@ -5,6 +6,8 @@ import datetime
 def __json_defaults(o):
     if isinstance(o, (datetime.datetime, datetime.date)):
         return o.strftime("%Y-%m-%d")
+    if isinstance(o, decimal.Decimal):
+        return float(o)
 
 
 def serialize_data_set(data_set, key=None):

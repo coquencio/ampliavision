@@ -20,8 +20,25 @@ def register_and_get():
         color_id = data['ColorId']
         tamanio_id = data['TamanioId']
         modelo_id = data['ModeloId']
+        detalle_armazon = data['DetalleEnArmazon ']
 
         args = (marca_id, color_id, tamanio_id, modelo_id)
-        return armazon_service.register_and_get(args)
+        return armazon_service.register_and_get(args, detalle_armazon)
+    except ValueError as err:
+        return Response(status=400, response=err.args)
+
+
+@ArmazonController.route('/api/ventas/<int:venta_id>/armazon', methods=['GET'])
+def get_by_venta(venta_id):
+    try:
+        token = request.args.get('token')
+        if not token:
+            return Response(status=401)
+        if not user_service.token_validation(token):
+            return Response(status=401)
+        data = armazon_service.get_summary(venta_id)
+        if not data:
+            return Response(status=404)
+        return data
     except ValueError as err:
         return Response(status=400, response=err.args)

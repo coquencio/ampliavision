@@ -144,7 +144,11 @@ class SpArmazon:
     # Color ID
     # Tamanio ID
     # Modelo ID
+    # Detalle En Armazon
     Register_and_get = "RegistraYSeleccionaArmazon"
+
+    # Venta Id
+    Get_summary = "seleccionaDetallesDeArmazonPorVenta"
 
 
 class SpMaterial:
@@ -200,6 +204,26 @@ class SpVentas:
     # Beneficiario ID
     Register_and_get = "RegistraYSeleccionaVenta"
 
+    # Empresa Id
+    Get_summary_by_empresa = "seleccionaResumenVentasPorEmpresa"
+
+    # Venta Id
+    # Monto
+    # Fecha abono
+    Bill_registration = "registraAbono"
+
+    # Venta Id
+    Get_abono_by_venta = "seleccionaAbonosPorVenta"
+
+    # Venta Id
+    Get_abono_sum_by_venta = "seleccionaSumAbonosPorVenta"
+
+    # Abono Id
+    Delete_abono = "borraAbono"
+
+    # Venta Id
+    Get_total_of_sale = "SelectSaldoVenta"
+
 
 class SpCasosIso:
 
@@ -211,3 +235,4 @@ class SpCasosIso:
     # Beneficiario Id
     # Caso Id
     Create_relation = "RegistraCasosPorBeneficiario"
+

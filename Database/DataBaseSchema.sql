@@ -184,6 +184,7 @@ Foreign key(CasoID) references CasosMaterialesISO(CasoID)
 
 Create table Armazones(
 ArmazonID int primary key auto_increment,
+DetalleEnArmazon varchar(35),
 MarcaID int,
 ColorID int,
 TamanioID int,
@@ -193,6 +194,7 @@ Foreign key(ColorID) references Colores(ColorID),
 Foreign key(TamanioID) references Tamanios(TamanioID),
 Foreign key(ModeloID) references Modelos(ModeloID)
 );
+
 
 Create table Ventas(
 VentaID int primary key auto_increment,
