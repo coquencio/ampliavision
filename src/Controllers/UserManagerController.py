@@ -14,7 +14,7 @@ def create_user(user_name, password):
         return Response(status=400, response=err.args)
 
 
-@UserController.route('/api/login/<user_name>/<password>')
+@UserController.route('/api/login/<user_name>/<password>', methods=['GET'])
 def authenticate(user_name, password):
     try:
         token = user_service.user_authentication(user_name, password)

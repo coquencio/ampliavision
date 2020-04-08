@@ -9,7 +9,6 @@ from src.Helpers.stringHelper import StringHelper
 class UsersService:
     def __init__(self):
         self.__sql_helper = MySqlHelper()
-        self.hash = hashlib.new("ripemd160")
         self.__string_helper = StringHelper()
 
     def create_user(self, user_name, password):
@@ -48,9 +47,10 @@ class UsersService:
 
         return False
 
-    def __encrypt(self, string):
-        self.hash.update(string.encode('utf-8'))
-        return self.hash.hexdigest()
+    @staticmethod
+    def __encrypt(string):
+        string = hashlib.sha1(string.encode('utf-8')).hexdigest()
+        return string
 
     @staticmethod
     def __validate_string(string):
