@@ -1,0 +1,89 @@
+from flask import Blueprint, Response, request
+from src.Services.ojoService import OjoService
+from src.Services.usersService import UsersService
+
+OjosController = Blueprint('ojos', __name__)
+ojos_service = OjoService()
+user_service = UsersService()
+
+
+@OjosController.route('/api/empresas/beneficiarios/ojos/<string:lado>', methods=['POST'])
+def create_and_get(lado):
+    try:
+        token = request.args.get('token')
+        if not token:
+            return Response(status=401)
+        if not user_service.token_validation(token):
+            return Response(status=401)
+        if not lado:
+            return Response(status=400)
+        lado_id = ojos_service.lado_dictionary[lado]
+        data = request.get_json()
+        esfera = data['Esfera']
+        cilindro = data['Cilindro']
+        eje = data['Eje']
+        adiccion = data['Adiccion']
+
+        return ojos_service.register_and_get_single(lado_id, esfera, cilindro, eje, adiccion)
+    except ValueError as err:
+        return Response(status=400, response=err.args)
+    except KeyError:
+        return Response(status=400, response="Invalid lado")
+
+
+@OjosController.route('/api/empresas/beneficiarios/ojos/conjunto/<string:tipo>', methods=['POST'])
+def create_and_get_pair(tipo):
+    try:
+        token = request.args.get('token')
+        if not token:
+            return Response(status=401)
+        if not user_service.token_validation(token):
+            return Response(status=401)
+        if not tipo:
+            return Response(status=400)
+        tipo_id = ojos_service.tipo_dictionary[tipo]
+
+        data = request.get_json()
+        izquierdo_id = data['IzquierdoId']
+        derecho_id = data['DerechoId']
+        dp_lejos = data['DpLejos']
+        obl = data['Obl']
+        return ojos_service.register_and_get_pair(izquierdo_id, derecho_id, tipo_id, dp_lejos, obl)
+    except ValueError as err:
+        return Response(status=400, response=err.args)
+    except KeyError:
+        return Response(status=400, response="Invalid tipo")
+
+
+@OjosController.route('/api/ojos/conjuntos/<int:conjunto_id>', methods=['GET'])
+def get_pair(conjunto_id):
+    try:
+        token = request.args.get('token')
+        if not token:
+            return Response(status=401)
+        if not user_service.token_validation(token):
+            return Response(status=401)
+        data = ojos_service.get_pair(conjunto_id)
+        if not data:
+            return Response(status=404, response="Not found")
+
+        return data
+    except ValueError as err:
+        return Response(status=400, response=err.args)
+
+
+@OjosController.route('/api/ojos/<int:ojo_id>', methods=['GET'])
+def get_single(ojo_id):
+    try:
+        token = request.args.get('token')
+        if not token:
+            return Response(status=401)
+        if not user_service.token_validation(token):
+            return Response(status=401)
+        data = ojos_service.get_single(ojo_id)
+        if not data:
+            return Response(status=404, response="Not found")
+
+        return data
+    except ValueError as err:
+        return Response(status=400, response=err.args)

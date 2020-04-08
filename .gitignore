@@ -9,6 +9,7 @@ __pycache__/
 # Distribution / packaging
 .Python
 Scripts/
+.idea/
 pyvenv.cfg
 build/
 develop-eggs/
