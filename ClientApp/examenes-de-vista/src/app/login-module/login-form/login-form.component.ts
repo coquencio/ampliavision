@@ -1,6 +1,8 @@
 import { Component, OnInit} from '@angular/core';
-import { LoginService } from 'src/app/services/login-service.service';
+import { LoginService } from 'src/app/services/login/login-service.service';
 import { Store } from '@ngrx/store';
+import { Router } from '@angular/router';
+import { AuthorizationService } from 'src/app/services/authorization/authorization.service';
 
 @Component({
   selector: 'app-login-form',
@@ -9,13 +11,20 @@ import { Store } from '@ngrx/store';
 })
 export class LoginFormComponent implements OnInit {
 
-  constructor(private _loginService: LoginService, private store:Store<any>) { }
+  constructor(
+    private _loginService: LoginService,
+     private store:Store<any>,
+     private router: Router,
+     private authorizationService: AuthorizationService) { }
   
   imagePath: string = 'assets/img/logo.JPG';
   errorMessage : string;
   userName : string ;
   password: string;
   token: string;
+  ngOnInit(): void {
+    this.authorizationService.authorize()
+  }
 
   private validateFields(): boolean{
     if (this.userName == undefined || this.userName == ''){
@@ -36,13 +45,14 @@ export class LoginFormComponent implements OnInit {
   private getToken(user: String, password: String) : void{
     this._loginService.Login(user, password).subscribe(
       r => {
-        this.token = r.Token
+        this.token = r.Token;
         this.store.dispatch({
           type:'SET_TOKEN',
           payload: r.Token
         });
+        console.log('ok')
+        this.router.navigate(['Inicio']);
       },
-
       err=>{
         this.errorMessage = err.error;
       }
@@ -54,8 +64,4 @@ export class LoginFormComponent implements OnInit {
       this.getToken(this.userName, this.password);
     }
   }
-
-  ngOnInit(): void {
-  }
-
 }
