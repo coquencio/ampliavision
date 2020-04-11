@@ -1,5 +1,4 @@
 from flask import Flask
-from flask_cors import CORS
 from src.Controllers.UserManagerController import UserController
 from src.Controllers.empresaController import EmpresaController
 from src.Controllers.beneficiarioController import BeneficiarioController
@@ -21,8 +20,6 @@ app.register_blueprint(GeneralController)
 app.register_blueprint(ArmazonController)
 app.register_blueprint(VentaController)
 app.register_blueprint(IsoController)
-# CORS
-CORS(app)
 
 
 @app.route('/')
