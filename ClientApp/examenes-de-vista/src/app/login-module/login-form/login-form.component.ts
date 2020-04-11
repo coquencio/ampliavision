@@ -50,7 +50,6 @@ export class LoginFormComponent implements OnInit {
           type:'SET_TOKEN',
           payload: r.Token
         });
-        console.log('ok')
         this.router.navigate(['Inicio']);
       },
       err=>{
