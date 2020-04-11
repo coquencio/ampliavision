@@ -21,6 +21,7 @@ app.register_blueprint(GeneralController)
 app.register_blueprint(ArmazonController)
 app.register_blueprint(VentaController)
 app.register_blueprint(IsoController)
+# CORS
 CORS(app)
 
 
