@@ -10,7 +10,7 @@ export class AuthorizationService {
   constructor(private store: Store<any>, private router: Router) { }
 
   authorize(): void{
-    let isLogged: Boolean;
+    let isLogged: boolean;
     isLogged = false;
     if (localStorage.getItem('token') !== null){
       if (localStorage.getItem('token') !== ''){

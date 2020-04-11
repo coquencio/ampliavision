@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { IToken } from '../../Interfaces/tokenInterface';
-import { AppSettings } from '../../core/constants'
+import { AppSettings } from '../../core/constants';
+
 @Injectable({
   providedIn: 'root'
 })
