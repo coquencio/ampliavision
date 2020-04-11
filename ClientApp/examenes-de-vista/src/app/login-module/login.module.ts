@@ -14,7 +14,7 @@ import { reducer } from './state/login.reducer';
     CommonModule,
     FormsModule,
     RouterModule.forRoot([
-      {path:'Login', component:LoginFormComponent}
+      {path: 'Login', component: LoginFormComponent}
     ]),
     StoreModule.forFeature('login', reducer)
   ]

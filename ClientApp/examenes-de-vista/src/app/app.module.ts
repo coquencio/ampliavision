@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { LoginModule } from './login-module/login.module';
 import { HttpClientModule } from '@angular/common/http';
 import { StoreModule } from '@ngrx/store';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,10 @@ import { StoreModule } from '@ngrx/store';
     LoginModule,
     HttpClientModule,
     StoreModule.forRoot({}),
+    RouterModule.forRoot([
+      {path: 'Inicio', component: AppComponent},
+      {path: '',   redirectTo: '/Inicio', pathMatch: 'full'}
+    ])
   ],
   providers: [],
   bootstrap: [AppComponent]
