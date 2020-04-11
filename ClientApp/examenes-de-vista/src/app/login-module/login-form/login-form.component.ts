@@ -1,7 +1,6 @@
 import { Component, OnInit} from '@angular/core';
 import { LoginService } from 'src/app/services/login-service.service';
-import { Observable } from 'rxjs';
-import { IToken } from 'src/app/Interfaces/FolioInterface';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-login-form',
@@ -10,8 +9,8 @@ import { IToken } from 'src/app/Interfaces/FolioInterface';
 })
 export class LoginFormComponent implements OnInit {
 
-  constructor(private _loginService: LoginService) { }
-
+  constructor(private _loginService: LoginService, private store:Store<any>) { }
+  
   imagePath: string = 'assets/img/logo.JPG';
   errorMessage : string;
   userName : string ;
@@ -38,11 +37,14 @@ export class LoginFormComponent implements OnInit {
     this._loginService.Login(user, password).subscribe(
       r => {
         this.token = r.Token
+        this.store.dispatch({
+          type:'SET_TOKEN',
+          payload: r.Token
+        });
       },
 
       err=>{
         this.errorMessage = err.error;
-        
       }
     );
   }
