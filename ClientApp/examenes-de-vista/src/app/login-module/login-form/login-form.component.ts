@@ -12,47 +12,48 @@ import { AuthorizationService } from 'src/app/services/authorization/authorizati
 export class LoginFormComponent implements OnInit {
 
   constructor(
-    private _loginService: LoginService,
-     private store:Store<any>,
-     private router: Router,
-     private authorizationService: AuthorizationService) { }
-  
-  imagePath: string = 'assets/img/logo.JPG';
-  errorMessage : string;
-  userName : string ;
+    private loginService: LoginService,
+    private store: Store<any>,
+    private router: Router,
+    private authorizationService: AuthorizationService
+  ){ }
+  imagePath = 'assets/img/logo.JPG';
+  errorMessage: string;
+  userName: string ;
   password: string;
   token: string;
+
   ngOnInit(): void {
-    this.authorizationService.authorize()
+    this.authorizationService.authorize();
   }
 
   private validateFields(): boolean{
-    if (this.userName == undefined || this.userName == ''){
-      this.errorMessage = "Nombre de usuario requerido"
+    if (this.userName === undefined || this.userName === ''){
+      this.errorMessage = 'Nombre de usuario requerido';
       return false;
     }
     if (this.userName.length < 5){
-      this.errorMessage="Usuario debe de contener más de 5 caracteres"
+      this.errorMessage = 'Usuario debe de contener más de 5 caracteres';
       return false;
     }
-    if(this.password == undefined || this.password == ''){
-      this.errorMessage="Contraseña requerida"
+    if (this.password === undefined || this.password === ''){
+      this.errorMessage = 'Contraseña requerida';
       return false;
     }
     return true;
-  } 
+  }
 
-  private getToken(user: String, password: String) : void{
-    this._loginService.Login(user, password).subscribe(
+  private getToken(user: string, password: string): void{
+    this.loginService.Login(user, password).subscribe(
       r => {
         this.token = r.Token;
         this.store.dispatch({
-          type:'SET_TOKEN',
+          type: 'SET_TOKEN',
           payload: r.Token
         });
         this.router.navigate(['Inicio']);
       },
-      err=>{
+      err => {
         this.errorMessage = err.error;
       }
     );

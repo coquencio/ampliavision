@@ -12,8 +12,8 @@ export class AppComponent {
   title = 'examenes-de-vista';
   ngOnInit(): void {
     this.authorizationService.authorize();
-    }
   }
+}
 
 
 

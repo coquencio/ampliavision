@@ -19,7 +19,7 @@ import { RouterModule } from '@angular/router';
     HttpClientModule,
     StoreModule.forRoot({}),
     RouterModule.forRoot([
-      {path:'Inicio', component:AppComponent},
+      {path: 'Inicio', component: AppComponent},
       {path: '',   redirectTo: '/Inicio', pathMatch: 'full'}
     ])
   ],

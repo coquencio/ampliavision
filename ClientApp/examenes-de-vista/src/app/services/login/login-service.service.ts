@@ -8,9 +8,9 @@ import { AppSettings } from '../../core/constants'
 })
 export class LoginService {
 
-  constructor(private _httpClient : HttpClient){ }
+  constructor(private httpClient: HttpClient){ }
 
-  Login (userName: String, password: String):Observable<IToken>{
-    return this._httpClient.get<IToken>(AppSettings.BASE_ADDRESS+'login/'+userName+'/'+password);
+  Login(userName: string, password: string): Observable<IToken>{
+    return this.httpClient.get<IToken>(AppSettings.BASE_ADDRESS + 'login/' + userName + '/' + password);
   }
 }

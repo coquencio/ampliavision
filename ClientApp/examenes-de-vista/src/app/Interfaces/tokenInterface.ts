@@ -1,3 +1,3 @@
 export interface IToken{
-    Token : string
+    Token: string;
 }
