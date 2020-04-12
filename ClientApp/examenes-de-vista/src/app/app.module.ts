@@ -7,10 +7,12 @@ import { LoginModule } from './login-module/login.module';
 import { HttpClientModule } from '@angular/common/http';
 import { StoreModule } from '@ngrx/store';
 import { RouterModule } from '@angular/router';
+import { NavbarComponent } from './root-components/navbar/navbar.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,
@@ -19,8 +21,6 @@ import { RouterModule } from '@angular/router';
     HttpClientModule,
     StoreModule.forRoot({}),
     RouterModule.forRoot([
-      {path: 'Inicio', component: AppComponent},
-      {path: '',   redirectTo: '/Inicio', pathMatch: 'full'}
     ])
   ],
   providers: [],

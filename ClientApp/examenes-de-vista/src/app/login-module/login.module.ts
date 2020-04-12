@@ -17,6 +17,7 @@ import { reducer } from './state/login.reducer';
       {path: 'Login', component: LoginFormComponent}
     ]),
     StoreModule.forFeature('login', reducer)
-  ]
+  ],
+  exports: [LoginFormComponent]
 })
 export class LoginModule { }

@@ -1,19 +1,22 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthorizationService {
 
-  constructor(private store: Store<any>, private router: Router) { }
+  constructor(private store: Store<any>) { }
 
-  authorize(): void{
+  IsLogged(): boolean{
     let isLogged: boolean;
     isLogged = false;
     if (localStorage.getItem('token') !== null){
       if (localStorage.getItem('token') !== ''){
+        this.store.dispatch({
+          type: 'SET_TOKEN',
+          payload: localStorage.getItem('token')
+        });
         isLogged = true;
       }
     }
@@ -31,15 +34,6 @@ export class AuthorizationService {
         }
       );
     }
-    if (!isLogged){
-      if (this.router.url !== '/Login'){
-        this.router.navigate(['/Login']);
-      }
-    }
-    else{
-      if (this.router.url === '/Login'){
-        this.router.navigate(['/Inicio']);
-      }
-    }
+    return isLogged;
   }
 }

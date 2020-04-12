@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { AuthorizationService } from './services/authorization/authorization.service';
 
 @Component({
   selector: 'app-root',
@@ -7,11 +6,9 @@ import { AuthorizationService } from './services/authorization/authorization.ser
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  constructor(
-    private authorizationService: AuthorizationService){}
-  title = 'examenes-de-vista';
+  constructor(){}
+
   ngOnInit(): void {
-    this.authorizationService.authorize();
   }
 }
 
