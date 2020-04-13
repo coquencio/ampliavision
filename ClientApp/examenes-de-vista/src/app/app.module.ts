@@ -8,6 +8,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { StoreModule } from '@ngrx/store';
 import { RouterModule } from '@angular/router';
 import { NavbarComponent } from './root-components/navbar/navbar.component';
+import { EmpresasModule } from './empresas/empresas.module';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { NavbarComponent } from './root-components/navbar/navbar.component';
     BrowserModule,
     AppRoutingModule,
     LoginModule,
+    EmpresasModule,
     HttpClientModule,
     StoreModule.forRoot({}),
     RouterModule.forRoot([
