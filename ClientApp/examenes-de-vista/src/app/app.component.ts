@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthorizationService } from './services/authorization/authorization.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -8,10 +9,16 @@ import { AuthorizationService } from './services/authorization/authorization.ser
 })
 export class AppComponent {
   constructor(
-    private authorizationService: AuthorizationService){}
-  title = 'examenes-de-vista';
+    private authorizationService: AuthorizationService,
+    private router: Router 
+  ){}
+  
+  islogged: boolean;
   ngOnInit(): void {
-    this.authorizationService.authorize();
+    this.islogged = this.authorizationService.IsLogged();
+    if (!this.islogged){
+      this.router.navigate(['/Login']);
+    }
   }
 }
 

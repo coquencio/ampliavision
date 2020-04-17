@@ -1,0 +1,19 @@
+<p>Selecciona una empresa con la cual trabajar</p>
+<table class="table table-hover table-sm">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Empresa</th>
+        <th scope="col">Domicilio</th>
+        <th scope="col">Telefono</th>
+      </tr>
+    </thead>
+    <tbody *ngIf="empresas">
+      <tr *ngFor="let empresa of empresas.Empresas" (click)="setEmpresa(empresa.EmpresaID, empresa.NombreEmpresa)">
+        <th scope="row">{{empresa.EmpresaID}}</th>
+        <td>{{empresa.NombreEmpresa}}</td>
+        <td>{{empresa.Domicilio}}</td>
+        <td>{{empresa.Telefono}}</td>
+      </tr>
+    </tbody>
+  </table>

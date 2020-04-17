@@ -3,6 +3,7 @@ import { LoginService } from 'src/app/services/login/login-service.service';
 import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
 import { AuthorizationService } from 'src/app/services/authorization/authorization.service';
+import { AppComponent } from 'src/app/app.component';
 
 @Component({
   selector: 'app-login-form',
@@ -22,9 +23,11 @@ export class LoginFormComponent implements OnInit {
   userName: string ;
   password: string;
   token: string;
-
+  
   ngOnInit(): void {
-    this.authorizationService.authorize();
+    if (this.authorizationService.IsLogged()){
+      this.router.navigate(['']);
+    }
   }
 
   private validateFields(): boolean{
@@ -51,7 +54,7 @@ export class LoginFormComponent implements OnInit {
           type: 'SET_TOKEN',
           payload: r.Token
         });
-        this.router.navigate(['Inicio']);
+        window.location.reload();
       },
       err => {
         this.errorMessage = err.error;
