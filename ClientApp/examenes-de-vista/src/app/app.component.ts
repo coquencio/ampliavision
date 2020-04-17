@@ -8,6 +8,10 @@ import { Component } from '@angular/core';
 export class AppComponent {
   constructor(){}
 
+  empresa;
+  reloading(event){
+      this.empresa = event;
+  }
   ngOnInit(): void {
   }
 }

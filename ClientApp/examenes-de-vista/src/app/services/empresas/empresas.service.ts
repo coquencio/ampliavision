@@ -19,7 +19,6 @@ export class EmpresasService {
     this.store.select('login').subscribe(
       l => token = l.token
     );
-    console.log(token);
     return token;
   }  
   GetEmpresas(): Observable<IEmpresas>{

@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { IEmpresas } from 'src/app/Interfaces/empresasInterface';
 import { EmpresasService } from 'src/app/services/empresas/empresas.service';
 import { Store } from '@ngrx/store';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-lista-empresas',
@@ -13,9 +14,13 @@ export class ListaEmpresasComponent implements OnInit {
   empresas: IEmpresas;
   constructor(
     private empresaService: EmpresasService,
-    private store: Store<any>
+    private store: Store<any>,
+    private router: Router
     ) { }
 
+  @Output()
+  reload = new EventEmitter();
+  
   ngOnInit(): void {
     this.empresaService.GetEmpresas().subscribe(
       r => {this.empresas = r;}
@@ -29,6 +34,10 @@ export class ListaEmpresasComponent implements OnInit {
         id: empresaId,
         nombre: nombreEmpresa
       }
+    });
+    this.reload.emit({
+      id: empresaId,
+      nombre: nombreEmpresa
     });
   }
 
