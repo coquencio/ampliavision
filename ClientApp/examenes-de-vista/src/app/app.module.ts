@@ -29,7 +29,8 @@ import { FormsModule } from '@angular/forms';
     StoreModule.forFeature('empresa', reducerEmpresa),
     RouterModule.forRoot([
       {path: '', component:AppComponent},
-      {path: 'Login', component: LoginFormComponent}
+      {path: 'Login', component: LoginFormComponent},
+      {path: 'Empresas', component: ListaEmpresasComponent},
     ])
   ],
   providers: [],

@@ -17,9 +17,6 @@ export class ListaEmpresasComponent implements OnInit {
     private store: Store<any>,
     private router: Router
     ) { }
-
-  @Output()
-  reload = new EventEmitter();
   
   ngOnInit(): void {
     this.empresaService.GetEmpresas().subscribe(
@@ -34,10 +31,6 @@ export class ListaEmpresasComponent implements OnInit {
         id: empresaId,
         nombre: nombreEmpresa
       }
-    });
-    this.reload.emit({
-      id: empresaId,
-      nombre: nombreEmpresa
     });
   }
 

@@ -1,7 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { AuthorizationService } from 'src/app/services/authorization/authorization.service';
-import { Router } from '@angular/router';
+import { Component, OnInit} from '@angular/core';
 import { Store, select } from '@ngrx/store';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -11,26 +10,23 @@ import { Store, select } from '@ngrx/store';
 export class NavbarComponent implements OnInit {
 
   constructor(
-    private authorizationService: AuthorizationService,
-    private router: Router,
-    private store: Store<any>) { }
+    private store: Store<any>,
+    private router: Router
+    ) { }
   
-  islogged: boolean;
-  @Input() nombreEmpresa: string;
-  @Input() empresaId: number;
+  nombreEmpresa: string;
+  empresaId: number;
   
   ngOnInit(): void {
-    this.islogged = this.authorizationService.IsLogged();
-    if (!this.islogged){
-      this.router.navigate(['/Login']);
-    }
-
-    this.store.pipe(select('empresas')).subscribe(
+    this.store.pipe(select('empresa')).subscribe(
       e => {
         if (e){
           this.nombreEmpresa = e.nombreEmpresa;
         }
       }
     );
+    if (!this.nombreEmpresa){
+      this.router.navigate(['Empresas']);
+    }
   }
 }
