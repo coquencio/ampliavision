@@ -4,6 +4,7 @@ export interface IResumenExamenes{
 
 interface IResumenExamen{
     folio: string;
+    BeneficiarioId: number;
     Nombres: string;
     Apellidopaterno: string;
     ocupacion: string;
