@@ -23,17 +23,17 @@ export class IsoService {
   }
   AddNewRelation(beneficiarioId: number, casoId: number): Observable<any>{
     const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
-    let url = 'iso/create/' + beneficiarioId + '/' + casoId + '?token=' + this.token;
+    const url = 'iso/create/' + beneficiarioId + '/' + casoId + '?token=' + this.token;
     return this.client.post(AppSettings.BASE_ADDRESS + url,{}, {headers, responseType: 'text'});
   }
 
   GetIsosByEmployee(beneficiarioId: number): Observable<IIsosBeneficiario>{
-    let url = 'iso/active/' + beneficiarioId + '?token=' + this.token;
+    const url = 'iso/active/' + beneficiarioId + '?token=' + this.token;
     return this.client.get<IIsosBeneficiario>(AppSettings.BASE_ADDRESS + url);
   }
 
   DeleteIsosRelation(relationId: number): Observable<any>{
-  let url = 'iso/delete/' + relationId + '?token=' + this.token;
+  const url = 'iso/delete/' + relationId + '?token=' + this.token;
     return this.client.delete(AppSettings.BASE_ADDRESS + url);
   }
 }

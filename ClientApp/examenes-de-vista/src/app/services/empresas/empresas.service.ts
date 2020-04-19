@@ -12,7 +12,6 @@ import { TokenService } from '../token/token.service';
 export class EmpresasService {
   constructor(
     private httpClient: HttpClient,
-    private store: Store<any>,
     private tokenService: TokenService
     ) { }
 

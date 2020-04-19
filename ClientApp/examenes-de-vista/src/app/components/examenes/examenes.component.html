@@ -1,0 +1,80 @@
+<hr>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <form>
+                <label>
+                    <h5>Registro de empleado para empresa: Dormirey</h5>
+                </label>
+                <div class="form-group">
+                    <label>Nombre(s)</label>
+                    <input [(ngModel)]="beneficiarioRegistro.Nombres" name="Nombres" type="text" class="form-control" placeholder="Nombre(s)">
+                </div>
+                <div class="form-group">
+                    <label>Apellido paterno</label>
+                    <input [(ngModel)]="beneficiarioRegistro.ApellidoPaterno" name="ApellidoPaterno" type="text" class="form-control" placeholder="Apellido paterno">
+                </div>
+                <div class="form-group">
+                    <label>Apellido materno</label>
+                    <input [(ngModel)]="beneficiarioRegistro.ApellidoMaterno" name="ApellidoMaterno" type="text" class="form-control" placeholder="Apellido materno">
+                </div>
+                <div class="form-group">
+                    <label>Ocupación</label>
+                    <input [(ngModel)]="beneficiarioRegistro.Ocupacion" name="Ocupacion" type="text" class="form-control" placeholder="Ocupación">
+                </div>
+                <div class="form-group">
+                    <label>Fecha de nacimiento</label>
+                    <input [(ngModel)]="beneficiarioRegistro.FechaNacimiento" name="Nacimiento" type="date" class="form-control">   
+                </div>
+                <button (click)="BeneficiarioRegistration()" class="btn btn-primary">Registra empleado</button>
+                <hr>
+            </form>
+        </div>
+        <div class="col">
+            <h5>Empleados de Dormirey</h5>
+            <table *ngIf="beneficiariosEmpresa" class="table table-hover table-sm">
+                <thead>
+                    <tr>
+                        <th scope="col">Nombre(s)</th>
+                        <th scope="col">Apellido paterno</th>
+                        <th scope="col">Apellido materno</th>
+                        <th scope="col">Fecha de nacimiento</th>
+                        <th scope="col">Ocupación</th>
+                    </tr>
+                </thead>
+                <tbody >
+                    <tr *ngFor="let beneficiario of beneficiariosEmpresa.Beneficiarios">
+                        <td>{{beneficiario.Nombres}}</td>
+                        <td>{{beneficiario.ApellidoPaterno}}</td>
+                        <td>{{beneficiario.ApellidoMaterno}}</td>
+                        <td>{{beneficiario.FechaNacimiento}}</td>
+                        <td>{{beneficiario.Ocupacion}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <hr>
+        </div>
+    </div>
+</div>
+
+<hr>
+<form>
+    <div class="form-group">
+        <label for="exampleFormControlInput1">Email address</label>
+        <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+    </div>
+    <div class="form-group">
+        <label for="exampleFormControlSelect2">Example multiple select</label>
+        <select multiple class="form-control" id="exampleFormControlSelect2">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="exampleFormControlTextarea1">Example textarea</label>
+        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+    </div>
+</form>
