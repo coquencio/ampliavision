@@ -31,4 +31,9 @@ export class IsoService {
     let url = 'iso/active/' + beneficiarioId + '?token=' + this.token;
     return this.client.get<IIsosBeneficiario>(AppSettings.BASE_ADDRESS + url);
   }
+
+  DeleteIsosRelation(relationId: number): Observable<any>{
+  let url = 'iso/delete/' + relationId + '?token=' + this.token;
+    return this.client.delete(AppSettings.BASE_ADDRESS + url);
+  }
 }
