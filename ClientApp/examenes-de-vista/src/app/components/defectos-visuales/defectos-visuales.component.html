@@ -1,1 +1,32 @@
-<p>defectos-visuales works!</p>
+
+<div *ngIf="resumen" class="container">
+<table *ngIf="resumen.Examenes.length!=0; else elseBlock" class="table table-hover table-sm">
+        <thead>
+        <tr>
+            <th scope="col">Folio examen</th>
+            <th scope="col">Nombre(s)</th>
+            <th scope="col">Apellido paterno</th>
+            <th scope="col">Ocupación</th>
+            <th scope="col">Enfermedad</th>
+            <th scope="col">Edad</th>
+            <th scope="col">Requiere Lentes</th>
+            <th scope="col">Iso 9000</th>
+        </tr>
+        </thead>
+        <tbody *ngFor="let item of resumen.Examenes">
+        <tr>
+            <th scope="row">{{item.folio}}</th>
+            <td>{{item.Nombres}}</td>
+            <td>{{item.ApellidoPaterno}}</td>
+            <td>{{item.ocupacion}}</td>
+            <td>{{item.enfermedad}}</td>
+            <td>{{item.edad}}</td>
+            <td>{{item.requiereLentes}}</td>
+            <td><button class="btn btn-primary">Materiales para iso 9000</button></td>
+        </tr>
+        </tbody>
+</table>
+</div>
+  <ng-template #elseBlock>
+    <p>Aún no hay registros</p>
+  </ng-template>
