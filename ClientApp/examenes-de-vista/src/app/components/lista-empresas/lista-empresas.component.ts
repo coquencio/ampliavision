@@ -15,7 +15,6 @@ export class ListaEmpresasComponent implements OnInit {
   constructor(
     private empresaService: EmpresasService,
     private store: Store<any>,
-    private router: Router
     ) { }
   
   ngOnInit(): void {

@@ -11,13 +11,17 @@ import { reducer } from './core/state/login.reducer';
 import { ListaEmpresasComponent } from './components/lista-empresas/lista-empresas.component';
 import { reducerEmpresa } from './core/state/empresa.reducer';
 import { FormsModule } from '@angular/forms';
+import { EstatusGeneralComponent } from './components/estatus-general/estatus-general.component';
+import { DefectosVisualesComponent } from './components/defectos-visuales/defectos-visuales.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
     LoginFormComponent,
-    ListaEmpresasComponent
+    ListaEmpresasComponent,
+    EstatusGeneralComponent,
+    DefectosVisualesComponent
   ],
   imports: [
     BrowserModule,
@@ -30,6 +34,8 @@ import { FormsModule } from '@angular/forms';
     RouterModule.forRoot([
       {path: 'Login', component: LoginFormComponent},
       {path: 'Empresas', component: ListaEmpresasComponent},
+      {path: 'Defectos', component: DefectosVisualesComponent},
+      {path: 'General', component: EstatusGeneralComponent},
       {path: '', redirectTo:'Empresas', pathMatch:'full'},
       {path: '**', redirectTo:'Empresas', pathMatch:'full'}
     ])
