@@ -46,12 +46,15 @@ export class DefectosVisualesComponent implements OnInit {
   }
   private populateIsosPorBeneficiario(): void{
     this.isoService.GetIsosByEmployee(this.beneficiarioId).subscribe(
-      r=>this.isosPorBeneficiario = r,
-      ()=>{window.alert('Aún no hay casos registrados')},
-      ()=>{this.isosPorBeneficiario.Casos.forEach(element => {
-        element.Descripcion = this.casosIsos[element.CasoID]
-      });}
-      );
+      r => this.isosPorBeneficiario = r,
+      () => {
+        this.isosPorBeneficiario = undefined;
+      },
+      () => {
+        this.isosPorBeneficiario.Casos.forEach(element => {
+          element.Descripcion = this.casosIsos[element.CasoID]});
+      }
+    );
   }
 
   setName(beneficiarioId: number, nombre: string): void{
@@ -66,11 +69,12 @@ export class DefectosVisualesComponent implements OnInit {
       return;
     }
     this.isoService.AddNewRelation(this.beneficiarioId, this.casoId).subscribe(
-      r=>{this.populateIsosPorBeneficiario()},
+      () => {this.populateIsosPorBeneficiario()},
     );
   }
   deleteRelation(id: number){
-    console.log(id);
+    this.isoService.DeleteIsosRelation(id).subscribe(
+      () => this.populateIsosPorBeneficiario()
+      );
   }
-
 }

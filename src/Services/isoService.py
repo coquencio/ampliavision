@@ -30,3 +30,10 @@ class IsoService:
         args = (str(beneficiario_id), str(caso_id))
         self.__sql_helper.sp_set(SpCasosIso.Create_relation, args)
         return True
+
+    def delete_relation(self, relation_id):
+        if not isinstance(relation_id, int):
+            raise valueError("Invalid arguments")
+        args = (str(relation_id),)
+        self.__sql_helper.sp_set(SpCasosIso.Delete_relation, args)
+

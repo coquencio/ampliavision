@@ -236,3 +236,6 @@ class SpCasosIso:
     # Caso Id
     Create_relation = "RegistraCasosPorBeneficiario"
 
+    # Relation Id
+    Delete_relation = "DeleteIsoRelation"
+

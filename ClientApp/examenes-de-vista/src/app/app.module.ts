@@ -13,6 +13,7 @@ import { reducerEmpresa } from './core/state/empresa.reducer';
 import { FormsModule } from '@angular/forms';
 import { EstatusGeneralComponent } from './components/estatus-general/estatus-general.component';
 import { DefectosVisualesComponent } from './components/defectos-visuales/defectos-visuales.component';
+import { ExamenesComponent } from './components/examenes/examenes.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { DefectosVisualesComponent } from './components/defectos-visuales/defect
     LoginFormComponent,
     ListaEmpresasComponent,
     EstatusGeneralComponent,
-    DefectosVisualesComponent
+    DefectosVisualesComponent,
+    ExamenesComponent
   ],
   imports: [
     BrowserModule,
@@ -36,8 +38,7 @@ import { DefectosVisualesComponent } from './components/defectos-visuales/defect
       {path: 'Empresas', component: ListaEmpresasComponent},
       {path: 'Defectos', component: DefectosVisualesComponent},
       {path: 'General', component: EstatusGeneralComponent},
-      {path: '', redirectTo:'Empresas', pathMatch:'full'},
-      {path: '**', redirectTo:'Empresas', pathMatch:'full'}
+      {path: 'Examenes', component: ExamenesComponent},
     ])
   ],
   providers: [],

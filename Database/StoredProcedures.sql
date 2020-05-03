@@ -389,3 +389,30 @@ BEGIN
 	select totalVenta as total from ventas where ventaId = _ventaId;
 END //
 delimiter ;
+
+
+
+drop PROCEDURE GetResumenExamenesPorEmpresa;
+delimiter //
+create PROCEDURE GetResumenExamenesPorEmpresa(in _EmpresaId int)
+BEGIN
+
+select e.folio, b.beneficiarioId as BeneficiarioId, b.Nombres, b.Apellidopaterno, b.ocupacion, ev.descripcion as enfermedad,  YEAR(CURDATE()) - YEAR(fechanacimiento) -
+IF(STR_TO_DATE(CONCAT(YEAR(CURDATE()), '-', MONTH(fechanacimiento), '-', DAY(fechanacimiento)) ,'%Y-%c-%e') > CURDATE(), 1, 0)
+AS edad, e.requiereLentes from examenes e 
+    inner join enfermedadesvisuales ev 
+    on e.enfermedadId = ev.enfermedadId 
+    inner join beneficiarios b 
+    on e.beneficiarioId = b.beneficiarioId
+    where b.empresaId = _empresaId;
+	
+END //
+delimiter ;
+
+
+delimiter //
+create PROCEDURE DeleteIsoRelation(in _relationId int)
+BEGIN
+	delete from casosPorBeneficiario where casoPorBeneficiarioID = _relationId ;
+END //
+delimiter ;
