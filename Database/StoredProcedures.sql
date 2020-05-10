@@ -447,3 +447,10 @@ BEGIN
 	insert into Examenes (Folio, beneficiarioID, anterior, total, adaptacion, fechaExamen, requiereLentes, comproLentes, enfermedadID, observacion) values(folio, beneficiarioID, anterior, total, adaptacion, fechaExamen, requiereLentes, comproLentes, enfermedadID, obervacion);
 END //
 delimiter ;
+
+delimiter //
+create PROCEDURE ActualizaBeneficiario(in _beneficiarioId int, in _nombres varchar(25),in _apepat varchar(25), in _apemat varchar(35),in _fechanac date, _ocupacion varchar(40))
+BEGIN
+	update beneficiarios set nombres = _nombres, apellidoPaterno=_apepat, apellidoMaterno=_apemat, FechaNacimiento=_fechanac, ocupacion=_ocupacion where BeneficiarioID = _beneficiarioId;
+END //
+delimiter ;
