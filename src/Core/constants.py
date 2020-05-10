@@ -89,6 +89,9 @@ class SpExamen:
     # Empresa Id
     Get_summary_by_empresa = "GetResumenExamenesPorEmpresa"
 
+    # Folio
+    Update_by_folio = "ActualizaExamen"
+
 
 class SpMarcas:
     # Descripcion
