@@ -1,0 +1,8 @@
+<p>Introduce el número de Folio que deseas buscar</p>
+<div class="form-group">
+    <label>Folio</label>
+    <input  [(ngModel)]="folio" name="folio" type="text"
+        class="form-control" placeholder="Folio de examen">
+</div>
+<button (click)="GetExamen()" class="btn btn-primary">Buscar examen</button>
+<p style="color: red;">{{errorMessage}}</p>
