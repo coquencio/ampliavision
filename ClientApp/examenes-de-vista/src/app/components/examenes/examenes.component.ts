@@ -172,13 +172,12 @@ export class ExamenesComponent implements OnInit {
       AdaptacionId: adaptacionId,
       FechaExamen:  new Date().toISOString().substring(0,10),
       RequiereLentes: this.requiereLentes? 1 : 0,
-      ComproLentes: this.requiereLentes? 1 : 0,
+      ComproLentes: this.comproLentes? 1 : 0,
       EnfermedadId: parseInt(this.enfermedadId.toString()),
       Observaciones: this.observaciones
     }
     this.examenService.PostExam(examen).subscribe(
       r => {
-        console.log('a huevo prro');
         window.alert('Examen registrado satisfactoriamente');
         this.LimpiaCamposExamen();
     }

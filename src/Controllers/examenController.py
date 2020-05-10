@@ -94,12 +94,11 @@ def update_examen():
         anterior_id = data['AnteriorId']
         total_id = data['TotalId']
         adaptacion_id = data['AdaptacionId']
-        fecha_examen = data['FechaExamen']
         requiere_lentes = data['RequiereLentes']
         compro_lentes = data['ComproLentes']
         enfermedad_id = data['EnfermedadId']
         observaciones = data['Observaciones']
-        examen_service.update(folio, beneficiario_id, anterior_id, total_id, adaptacion_id, fecha_examen,
+        examen_service.update(folio, beneficiario_id, anterior_id, total_id, adaptacion_id,
                                 requiere_lentes,
                                 compro_lentes, enfermedad_id, observaciones)
         return Response(status=201)

@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ExamenesService, IExamenResponse } from 'src/app/services/examenes/examenes.service';
 import { OjosService } from 'src/app/services/ojos/ojos.service';
+import { IBeneficiarios } from 'src/app/Interfaces/beneficiariosInterface';
+import { BeneficiarioService } from 'src/app/services/beneficiarios/beneficiario.service';
+import { Store } from '@ngrx/store';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-examen-update',
@@ -67,16 +71,30 @@ export class ExamenUpdateComponent implements OnInit {
     requiereLentes: boolean;
     comproLentes: boolean;
     observaciones: string;
+    beneficiariosEmpresa: IBeneficiarios;
 
     incluyeAdaptacion: boolean;
     incluyeTotal: boolean;
     incluyeAnterior: boolean;
-  constructor(
+    currentEmpresaId: number;
+    constructor(
+    private router: Router,
     private examenService: ExamenesService,
-    private ojoService: OjosService
-    ) { }
+    private ojoService: OjosService,
+    private beneficiarioService: BeneficiarioService,
+    store: Store<any>
+    ) { 
+      store.select('empresa').subscribe(
+        e => {
+          this.currentEmpresaId = e.empresaId;
+        }
+      );
+    }
 
   ngOnInit(): void {
+    this.beneficiarioService.GetByEmpresa(this.currentEmpresaId).subscribe(
+      r => this.beneficiariosEmpresa = r
+      );
   }
 
   async GetExamen() {
@@ -87,14 +105,31 @@ export class ExamenUpdateComponent implements OnInit {
     }
     try{
       this.examResponse = await this.examenService.GetByFolio(this.folio);
-      this.ValidaConjuntos();
-      this.AssingData();
-      this.canDisplayDetails = true;
+      if (this.AssignBeneficiario()){
+        this.ValidaConjuntos();
+        this.AssingData();
+        this.canDisplayDetails = true;
+      }
+      else{
+        this.errorMessage = 'Este folio de examen no pertenece a esta compañía';
+      }
     }
     catch(Exception){
       this.errorMessage = 'Examen no encontrado';
       this.canDisplayDetails = false;
     }
+  }
+
+  private AssignBeneficiario(): boolean{
+    let isInThisCompany: boolean = false;
+    this.beneficiariosEmpresa.Beneficiarios.forEach(b=> {
+      if (this.examResponse.BeneficiarioID == b.BeneficiarioID){
+         isInThisCompany = true;
+      }
+    });
+    if (isInThisCompany)
+      this.beneficiarioId = this.examResponse.BeneficiarioID;
+    return isInThisCompany;  
   }
   private async AssingData(){
     if(this.incluyeAnterior){
@@ -133,5 +168,148 @@ export class ExamenUpdateComponent implements OnInit {
     this.incluyeAdaptacion = this.examResponse.Adaptacion === null? false : true;
     this.incluyeAnterior = this.examResponse.Anterior === null? false : true;
     this.incluyeTotal = this.examResponse.Total === null? false : true;
+  }
+
+  async UpdateExam(){
+    if (this.incluyeAnterior){
+      if (!this._ValidaCamposOjos('anterior')) {
+        window.alert('Es necesario completar los datos en la sección con el nombre "anterior"');
+        return;
+      }
+    }
+    if (this.incluyeTotal){
+      if (!this._ValidaCamposOjos('total')) {
+        window.alert('Es necesario completar los datos en la sección con el nombre "total"');
+        return;
+      }
+    }
+    if (this.incluyeAdaptacion){
+      if (!this._ValidaCamposOjos('adaptacion')) {
+        window.alert('Es necesario completar los datos en la sección con el nombre "adaptación"');
+        return;
+      }
+    }
+    const anteriorId = this.incluyeAnterior? await this._RegistraParAsync('anterior') : 'NULL';
+    const totalId = this.incluyeTotal? await this._RegistraParAsync('total') : 'NULL';
+    const adaptacionId = this.incluyeAdaptacion? await this._RegistraParAsync('adaptacion') : 'NULL';
+
+    const examen = {
+      Folio: this.folio, 
+      BeneficiarioId: parseInt(this.beneficiarioId.toString()),
+      AnteriorId: anteriorId,
+      TotalId: totalId,
+      AdaptacionId: adaptacionId,
+      RequiereLentes: this.requiereLentes? 1 : 0,
+      ComproLentes: this.comproLentes? 1 : 0,
+      EnfermedadId: parseInt(this.enfermedadId.toString()),
+      Observaciones: this.observaciones
+    }
+    this.examenService.UpdateExam(examen).subscribe(
+      r => {
+        window.alert('Examen actualizado satisfactoriamente');
+        this.folio = '';
+        this.canDisplayDetails = false;
+    }
+    );
+  }
+  private _ValidaCamposOjos(tipo: string): boolean{
+    let izquierdo = {
+      Esfera: undefined,
+      Cilindro: undefined,
+      Eje: undefined,
+      Adiccion: undefined  
+    };
+    let derecho = {
+      Esfera: undefined,
+      Cilindro: undefined,
+      Eje: undefined,
+      Adiccion: undefined  
+    };
+    let detalle = {
+      Lejos: undefined,
+      Obl: undefined
+    };;
+    switch (tipo){
+      case 'anterior':
+        derecho = this.dant;
+        izquierdo = this.iant;
+        detalle = this.detalleAnterior;
+      break;
+      case 'total':
+        derecho = this.dtot;
+        izquierdo = this.itot;
+        detalle = this.detalleTotal;
+      break;
+      case 'adaptacion':
+        derecho = this.dada;
+        izquierdo = this.iada;
+        detalle = this.detalleAdaptacion;
+      break;
+      default:
+        break;
+    }
+    
+    if(
+      izquierdo.Adiccion === undefined ||
+      izquierdo.Cilindro === undefined ||
+      izquierdo.Eje === undefined ||
+      izquierdo.Esfera === undefined ||
+      derecho.Adiccion === undefined ||
+      derecho.Cilindro === undefined ||
+      derecho.Eje === undefined ||
+      derecho.Esfera === undefined ||
+      detalle.Lejos === undefined ||
+      detalle.Obl === undefined ||
+      izquierdo.Adiccion === null ||
+      izquierdo.Cilindro === null ||
+      izquierdo.Eje === null ||
+      izquierdo.Esfera === null ||
+      derecho.Adiccion === null ||
+      derecho.Cilindro === null ||
+      derecho.Eje === null ||
+      derecho.Esfera === null ||
+      detalle.Lejos === null ||
+      detalle.Obl === null
+      
+      )
+    {
+      return false;
+    }
+    return true;
+  }
+  private async _RegistraParAsync(tipo: string){
+    let izquierdoId: Number;
+    let derechoId: Number;
+    let derechoConjunto: {};
+    let izquierdoConjunto: {};
+    let detalles: {
+      Lejos: undefined,
+      Obl: undefined
+      };
+    let conjuntoId;
+    switch (tipo){
+      case 'anterior':
+        derechoConjunto = this.dant;
+        izquierdoConjunto = this.iant;
+        detalles = this.detalleAnterior;
+        break;
+      case 'total':
+        derechoConjunto = this.dtot;
+        izquierdoConjunto = this.itot;
+        detalles = this.detalleTotal;
+        break;
+      case 'adaptacion':
+        derechoConjunto = this.dada;
+        izquierdoConjunto = this.iada;
+        detalles = this.detalleAdaptacion
+        break;
+      default:
+        break;
+    }
+    izquierdoId = (await this.ojoService.AddSingleEyeAsync(izquierdoConjunto, 'izquierdo')).OjoID;
+    derechoId = (await this.ojoService.AddSingleEyeAsync(derechoConjunto, 'derecho')).OjoID;
+    
+    conjuntoId = (await this.ojoService.AddPairAsync(izquierdoId, derechoId, detalles.Lejos, detalles.Obl, tipo)).ConjuntoID;
+    return conjuntoId; 
   }
 }
