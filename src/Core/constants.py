@@ -40,6 +40,9 @@ class SpBeneficiario:
     # Beneficiario Id
     Validate = "validaBeneficiario"
 
+    # Beneficiario Id
+    get_name_by_id = "GetBeneficiarioNombrePorId"
+
 
 class SpOjos:
     # Lado Id
@@ -85,6 +88,9 @@ class SpExamen:
 
     # Empresa Id
     Get_summary_by_empresa = "GetResumenExamenesPorEmpresa"
+
+    # Folio
+    Update_by_folio = "ActualizaExamen"
 
 
 class SpMarcas:

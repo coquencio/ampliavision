@@ -1,79 +1,13 @@
-<hr>
-<button (click)="RedirectToDetails()" class="btn btn-primary">Deseo consultar o actualizar un examen ya registrado</button>
-<br>
-<br>
-<div class="container">
-    <div class="row">
-        <div class="col">
-            <form>
-                <label>
-                    <h5>Registro de empleado para empresa: {{nombreEmpresa}}</h5>
-                </label>
-                <div class="form-group">
-                    <label>Nombre(s)</label>
-                    <input [(ngModel)]="beneficiarioRegistro.Nombres" name="Nombres" type="text" class="form-control"
-                        placeholder="Nombre(s)">
-                </div>
-                <div class="form-group">
-                    <label>Apellido paterno</label>
-                    <input [(ngModel)]="beneficiarioRegistro.ApellidoPaterno" name="ApellidoPaterno" type="text"
-                        class="form-control" placeholder="Apellido paterno">
-                </div>
-                <div class="form-group">
-                    <label>Apellido materno</label>
-                    <input [(ngModel)]="beneficiarioRegistro.ApellidoMaterno" name="ApellidoMaterno" type="text"
-                        class="form-control" placeholder="Apellido materno">
-                </div>
-                <div class="form-group">
-                    <label>Ocupación</label>
-                    <input [(ngModel)]="beneficiarioRegistro.Ocupacion" name="Ocupacion" type="text"
-                        class="form-control" placeholder="Ocupación">
-                </div>
-                <div class="form-group">
-                    <label>Fecha de nacimiento</label>
-                    <input [(ngModel)]="beneficiarioRegistro.FechaNacimiento" name="Nacimiento" type="date"
-                        class="form-control">
-                </div>
-                <button (click)="BeneficiarioRegistration()" class="btn btn-primary">Registra empleado</button>
-                <hr>
-            </form>
-        </div>
-        <div class="col">
-            <div class="table-responsive">
-                <h5>Empleados de {{nombreEmpresa}}</h5>
-                <table *ngIf="beneficiariosEmpresa" class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th scope="col">Nombre(s)</th>
-                            <th scope="col">Apellido paterno</th>
-                            <th scope="col">Apellido materno</th>
-                            <th scope="col">Fecha de nacimiento</th>
-                            <th scope="col">Ocupación</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let beneficiario of beneficiariosEmpresa.Beneficiarios">
-                            <td>{{beneficiario.Nombres}}</td>
-                            <td>{{beneficiario.ApellidoPaterno}}</td>
-                            <td>{{beneficiario.ApellidoMaterno}}</td>
-                            <td>{{beneficiario.FechaNacimiento}}</td>
-                            <td>{{beneficiario.Ocupacion}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <hr>
-            </div>
-        </div>
-    </div>
+<p>Introduce el número de Folio que deseas buscar</p>
+<div class="form-group">
+    <label>Folio</label>
+    <input  [(ngModel)]="folio" name="folio" type="text"
+        class="form-control" placeholder="Folio de examen">
 </div>
+<button (click)="GetExamen()" class="btn btn-primary">Buscar examen</button>
+<p style="color: red;">{{errorMessage}}</p>
 
-<hr>
-<h4>Registra nuevo examen en empresa {{nombreEmpresa}}</h4>
-<form>
-    <div class="form-group">
-        <label>Folio:</label>
-        <input type="text" [(ngModel)]="folio"class="form-control" name="folio" placeholder="Folio de examen">
-    </div>
+<form *ngIf="canDisplayDetails">
     <div *ngIf="beneficiariosEmpresa" name="selecionaEmpleados" class="form-group">
         <label>Empleado:</label>
         <select [(ngModel)]="beneficiarioId" class="form-control" name="beneficiarioId">
@@ -312,6 +246,6 @@
         <textarea name="observacion" [(ngModel)]="observaciones" class="form-control"rows="3"></textarea>
       </div>
       <hr>
-      <button (click)="RegistraExamenAsync()" class="btn btn-primary">Registra Examen</button>
+      <button (click)="UpdateExam()" class="btn btn-success">Actualiza datos</button>
       <hr>
 </form>

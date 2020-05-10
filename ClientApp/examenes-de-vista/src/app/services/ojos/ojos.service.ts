@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { TokenService } from '../token/token.service';
 import { AppSettings } from 'src/app/core/constants';
-import { Observable } from 'rxjs';
 
 interface singleEyeResponse{
   OjoID: Number;
@@ -10,7 +9,22 @@ interface singleEyeResponse{
 interface conjuntoResponse{
   ConjuntoID: Number;
 }
-
+interface IPairResponse{
+  ConjuntoID: number;
+  IzquierdoID: number;
+  DerechoID: number;
+  TipoConjuntoID: number;
+  DpLejos: number;
+  Obl: number;
+}
+interface ISingleResponse{
+  OjoID: number;
+  LadoID: number;
+  Esfera: number;
+  Cilindro: number;
+  Eje: number;
+  Adiccion: number;
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -31,5 +45,14 @@ export class OjosService {
     const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
     const url = AppSettings.BASE_ADDRESS + 'empresas/beneficiarios/ojos/conjunto/'+ tipo+'?token=' + this.tokenService.GetToken();
     return await this.httpclient.post<conjuntoResponse>(url, {IzquierdoId, DerechoId, DpLejos, Obl},  {headers, responseType: 'json'}).toPromise();
+  }
+
+  async GetPair(pairId: number): Promise<IPairResponse>{
+    const url = AppSettings.BASE_ADDRESS + 'ojos/conjuntos/'+ pairId +'?token=' + this.tokenService.GetToken();
+    return await this.httpclient.get<IPairResponse>(url).toPromise();
+  }
+  async GetSingle(singleId: number): Promise<ISingleResponse>{
+    const url = AppSettings.BASE_ADDRESS + 'ojos/'+ singleId +'?token=' + this.tokenService.GetToken();
+    return await this.httpclient.get<ISingleResponse>(url).toPromise();
   }
 }

@@ -4,6 +4,7 @@ import { BeneficiarioService } from 'src/app/services/beneficiarios/beneficiario
 import { Store } from '@ngrx/store';
 import { OjosService } from 'src/app/services/ojos/ojos.service';
 import { ExamenesService } from 'src/app/services/examenes/examenes.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-examenes',
@@ -17,6 +18,7 @@ export class ExamenesComponent implements OnInit {
     store: Store<any>,
     private ojosService: OjosService,
     private examenService: ExamenesService,
+    private router: Router,
     ) { 
       store.select('empresa').subscribe(
         e => {
@@ -170,13 +172,12 @@ export class ExamenesComponent implements OnInit {
       AdaptacionId: adaptacionId,
       FechaExamen:  new Date().toISOString().substring(0,10),
       RequiereLentes: this.requiereLentes? 1 : 0,
-      ComproLentes: this.requiereLentes? 1 : 0,
+      ComproLentes: this.comproLentes? 1 : 0,
       EnfermedadId: parseInt(this.enfermedadId.toString()),
       Observaciones: this.observaciones
     }
     this.examenService.PostExam(examen).subscribe(
       r => {
-        console.log('a huevo prro');
         window.alert('Examen registrado satisfactoriamente');
         this.LimpiaCamposExamen();
     }
@@ -362,4 +363,7 @@ export class ExamenesComponent implements OnInit {
     }
   }
 
+  RedirectToDetails(): void{
+    this.router.navigate(['Examenes/Actualiza']);
+  }
 }

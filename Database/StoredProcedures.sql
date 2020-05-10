@@ -416,3 +416,34 @@ BEGIN
 	delete from casosPorBeneficiario where casoPorBeneficiarioID = _relationId ;
 END //
 delimiter ;
+delimiter //
+create PROCEDURE GetBeneficiarioNombrePorId(in _beneficiario_id int)
+BEGIN
+	select nombres, apellidoPaterno, apellidoMaterno from beneficiarios where beneficiarioid = _beneficiario_id ;
+END //
+delimiter ;
+delimiter //
+create PROCEDURE ActualizaExamen(in _Folio varchar(10),in _BeneficiarioID INT,in _Anterior int,in _Total int,in _adaptacion int,in _requiereLentes bit,in _comproLentes bit,in _enfermedadID int,in _obervacion varchar(250))
+BEGIN
+	update Examenes set beneficiarioID = _BeneficiarioID , anterior=_Anterior, total=_Total, adaptacion=_adaptacion, requiereLentes=_requiereLentes , comproLentes=_comproLentes , enfermedadID = _enfermedadID , observacion = _obervacion  where Folio = _Folio;
+END //
+delimiter ;
+delimiter //
+drop procedure RegistraYSeleccionaOjo
+delimiter ;
+delimiter //
+CREATE PROCEDURE RegistraYSeleccionaOjo(in LadoId int,in Esfera int, in Cilindro int,in eje int, Addicion int)
+BEGIN
+	insert into Ojos (LadoID, esfera, cilindro, eje, adiccion) values (LadoId, Esfera, Cilindro, eje, Addicion);
+    select OjoID from ojos order by OjoID desc limit 1;
+END //
+delimiter ;
+delimiter //
+drop procedure RegistraExamen
+delimiter ;
+delimiter //
+create PROCEDURE RegistraExamen(in Folio varchar(10),in BeneficiarioID INT,in Anterior int,in Total int,in adaptacion int,in fechaExamen date,in requiereLentes bit,in comproLentes bit,in enfermedadID int,in obervacion varchar(250))
+BEGIN
+	insert into Examenes (Folio, beneficiarioID, anterior, total, adaptacion, fechaExamen, requiereLentes, comproLentes, enfermedadID, observacion) values(folio, beneficiarioID, anterior, total, adaptacion, fechaExamen, requiereLentes, comproLentes, enfermedadID, obervacion);
+END //
+delimiter ;
