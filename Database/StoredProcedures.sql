@@ -416,3 +416,15 @@ BEGIN
 	delete from casosPorBeneficiario where casoPorBeneficiarioID = _relationId ;
 END //
 delimiter ;
+delimiter //
+create PROCEDURE GetBeneficiarioNombrePorId(in _beneficiario_id int)
+BEGIN
+	select nombres, apellidoPaterno, apellidoMaterno from beneficiarios where beneficiarioid = _beneficiario_id ;
+END //
+delimiter ;
+delimiter //
+create PROCEDURE ActualizaExamen(in _Folio varchar(10),in _BeneficiarioID INT,in _Anterior int,in _Total int,in _adaptacion int,in _requiereLentes bit,in _comproLentes bit,in _enfermedadID int,in _obervacion varchar(250))
+BEGIN
+	update Examenes set beneficiarioID = _BeneficiarioID , anterior=_Anterior, total=_Total, adaptacion=_adaptacion, requiereLentes=_requiereLentes , comproLentes=_comproLentes , enfermedadID = _enfermedadID , observacion = _obervacion  where Folio = _Folio;
+END //
+delimiter ;
