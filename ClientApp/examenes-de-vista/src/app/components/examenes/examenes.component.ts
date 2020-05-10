@@ -4,6 +4,7 @@ import { BeneficiarioService } from 'src/app/services/beneficiarios/beneficiario
 import { Store } from '@ngrx/store';
 import { OjosService } from 'src/app/services/ojos/ojos.service';
 import { ExamenesService } from 'src/app/services/examenes/examenes.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-examenes',
@@ -17,6 +18,7 @@ export class ExamenesComponent implements OnInit {
     store: Store<any>,
     private ojosService: OjosService,
     private examenService: ExamenesService,
+    private router: Router,
     ) { 
       store.select('empresa').subscribe(
         e => {
@@ -362,4 +364,7 @@ export class ExamenesComponent implements OnInit {
     }
   }
 
+  RedirectToDetails(): void{
+    this.router.navigate(['Examenes/Actualiza']);
+  }
 }
