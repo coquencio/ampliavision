@@ -61,3 +61,26 @@ def get_names_by_id(beneficiario_id):
 
     except KeyError as err:
         return Response(status=400, response=err.args)
+
+@BeneficiarioController.route('/api/empresas/beneficiarios/<int:beneficiario_id>', methods=['PUT'])
+def update_beneficiario(beneficiario_id):
+    try:
+        token = request.args.get('token')
+        if not token:
+            return Response(status=401)
+        if not user_service.token_validation(token):
+            return Response(status=401)
+
+        data = request.get_json()
+        nombre = data['Nombres']
+        apepat = data['ApellidoPaterno']
+        apemat = data['ApellidoMaterno']
+        fechanac = data['FechaNacimiento']
+        ocupacion = data['Ocupacion']
+        beneficiario_service.update_beneficiario(beneficiario_id, nombre, apepat, apemat, fechanac, ocupacion)
+        return Response(status=201, response="Beneficiario registrado satisfactoriamente")
+    except ValueError as err:
+        return Response(status=400, response=err.args)
+    except KeyError as err:
+        return Response(status=400, response=err.args)
+

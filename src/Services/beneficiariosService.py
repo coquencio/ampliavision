@@ -53,3 +53,15 @@ class BeneficiariosService:
         data = self.__sql_helper.sp_get(SpBeneficiario.get_name_by_id, args, True)
         return serialize_data_set(data, "Nombres")
 
+    def update_beneficiario(self, beneficiario_id, nombres, ape_pat, ape_mat, fecha_nac, ocupacion):
+        if not nombres or not ape_mat or not ape_pat or not fecha_nac or not ocupacion:
+            raise ValueError("Datos faltantes")
+
+        nombres = self.__string_helper.build_string(nombres)
+        ape_pat = self.__string_helper.build_string(ape_pat)
+        ape_mat = self.__string_helper.build_string(ape_mat)
+        fecha_nac = self.__string_helper.build_string(fecha_nac)
+        ocupacion = self.__string_helper.build_string(ocupacion)
+        beneficiario_id = str(beneficiario_id)
+        args = (beneficiario_id, nombres, ape_pat, ape_mat, fecha_nac, ocupacion)
+        self.__sql_helper.sp_set(SpBeneficiario.Update, args)
