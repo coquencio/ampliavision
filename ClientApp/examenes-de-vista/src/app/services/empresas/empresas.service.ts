@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AppSettings } from '../../core/constants';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
@@ -18,4 +18,9 @@ export class EmpresasService {
   GetEmpresas(): Observable<IEmpresas>{
     return this.httpClient.get<IEmpresas>(AppSettings.BASE_ADDRESS + 'empresas' + '?token=' + this.tokenService.GetToken());
   }
+  Create(empresa: {}): Observable<any>{
+    const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
+    return this.httpClient.post(AppSettings.BASE_ADDRESS + 'empresas/create' + '?token=' + this.tokenService.GetToken(),empresa,{headers, responseType:'text'});
+  }
+  
 }
