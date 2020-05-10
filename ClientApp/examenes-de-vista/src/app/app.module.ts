@@ -14,6 +14,7 @@ import { FormsModule } from '@angular/forms';
 import { EstatusGeneralComponent } from './components/estatus-general/estatus-general.component';
 import { DefectosVisualesComponent } from './components/defectos-visuales/defectos-visuales.component';
 import { ExamenesComponent } from './components/examenes/examenes.component';
+import { ExamenUpdateComponent } from './components/examen-update/examen-update.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { ExamenesComponent } from './components/examenes/examenes.component';
     ListaEmpresasComponent,
     EstatusGeneralComponent,
     DefectosVisualesComponent,
-    ExamenesComponent
+    ExamenesComponent,
+    ExamenUpdateComponent
   ],
   imports: [
     BrowserModule,
@@ -39,6 +41,7 @@ import { ExamenesComponent } from './components/examenes/examenes.component';
       {path: 'Defectos', component: DefectosVisualesComponent},
       {path: 'General', component: EstatusGeneralComponent},
       {path: 'Examenes', component: ExamenesComponent},
+      {path: 'Examenes/Actualiza', component: ExamenUpdateComponent},
     ])
   ],
   providers: [],
