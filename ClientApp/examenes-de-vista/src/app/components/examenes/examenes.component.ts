@@ -1,16 +1,18 @@
-import { Component, OnInit, ModuleWithComponentFactories } from '@angular/core';
-import { IBeneficiarios } from 'src/app/Interfaces/beneficiariosInterface';
+import { Component, OnInit, ModuleWithComponentFactories, ViewChild, ElementRef } from '@angular/core';
+import { IBeneficiarios, IBeneficiario } from 'src/app/Interfaces/beneficiariosInterface';
 import { BeneficiarioService } from 'src/app/services/beneficiarios/beneficiario.service';
-import { Store } from '@ngrx/store';
+import { Store, UPDATE } from '@ngrx/store';
 import { OjosService } from 'src/app/services/ojos/ojos.service';
 import { ExamenesService } from 'src/app/services/examenes/examenes.service';
 import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-examenes',
   templateUrl: './examenes.component.html',
   styleUrls: ['./examenes.component.css']
 })
+
 export class ExamenesComponent implements OnInit {
 
   constructor(
@@ -95,7 +97,8 @@ export class ExamenesComponent implements OnInit {
     Ocupacion: '',
     FechaNacimiento: ''
   };
-
+  selectedBeneficiario: IBeneficiario;
+  @ViewChild('closebutton') private closeModal: ElementRef;
   ngOnInit(): void {
     this.beneficiariosService.GetByEmpresa(this.currentEmpresaId).subscribe(
       r => this.beneficiariosEmpresa = r
@@ -362,7 +365,41 @@ export class ExamenesComponent implements OnInit {
       );
     }
   }
+  SeleccionaBeneficiario(beneficiarioId: number): void{
+    this.beneficiariosEmpresa.Beneficiarios.forEach(
+      b => {
+        if(b.BeneficiarioID === beneficiarioId){
+          this.selectedBeneficiario = b;
+        }
+      }
+    );
+  }
+  ActualizaBeneficiatio(){
+    if (this.selectedBeneficiario.Nombres === undefined || this.selectedBeneficiario.Nombres === ''){
+      window.alert('Introduce un nombre válido');
+      return;
+    }
+    if (this.selectedBeneficiario.ApellidoPaterno === undefined || this.selectedBeneficiario.ApellidoPaterno === ''){
+      window.alert('Introduce un apellido paterno válido');
+      return;
+    }
+    if (this.selectedBeneficiario.FechaNacimiento === undefined || this.selectedBeneficiario.FechaNacimiento === ''){
+      window.alert('Introduce una fecha de nacimiento válida');
+      return;
+    }
+    if (this.selectedBeneficiario.Ocupacion === undefined || this.selectedBeneficiario.Ocupacion === ''){
+      window.alert('Introduce una ocupación válida');
+      return;
+    }
+    this.beneficiariosService.Update(this.selectedBeneficiario).subscribe(
+      ()=>{
+        window.alert('Beneficiario actualizado satisfactoriamente');
+        this.closeModal.nativeElement.click();
+        this.ngOnInit();
+      }
+    );
 
+  }
   RedirectToDetails(): void{
     this.router.navigate(['Examenes/Actualiza']);
   }

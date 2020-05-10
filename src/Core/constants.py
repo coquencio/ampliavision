@@ -34,6 +34,14 @@ class SpBeneficiario:
     # Empresa Id
     Register = "RegistraBeneficiario"
 
+    # Beneficiario Id
+    # Nombres
+    # Apellido paterno
+    # Apellido materno
+    # Fecha de nacimiento
+    # Ocupacion
+    Update = "ActualizaBeneficiario"
+
     # Empresa Id
     get_by_empresa = "seleccionaBeneficiariosPorEmpresa"
 

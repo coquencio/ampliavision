@@ -49,6 +49,7 @@
                             <th scope="col">Apellido materno</th>
                             <th scope="col">Fecha de nacimiento</th>
                             <th scope="col">Ocupación</th>
+                            <th scope="col">Detalles</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -58,6 +59,9 @@
                             <td>{{beneficiario.ApellidoMaterno}}</td>
                             <td>{{beneficiario.FechaNacimiento}}</td>
                             <td>{{beneficiario.Ocupacion}}</td>
+                            <td><button (click)="SeleccionaBeneficiario(beneficiario.BeneficiarioID)" type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">
+                                Consulta/Actualiza
+                              </button></td>
                         </tr>
                     </tbody>
                 </table>
@@ -315,3 +319,52 @@
       <button (click)="RegistraExamenAsync()" class="btn btn-primary">Registra Examen</button>
       <hr>
 </form>
+
+  
+  <!-- Modal -->
+  <div class="modal fade in" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Actualiza empleado</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div *ngIf="selectedBeneficiario" class="modal-body">
+            <form>
+                <div class="form-group">
+                    <label>Nombre(s)</label>
+                    <input [(ngModel)]="selectedBeneficiario.Nombres" name="Nombres" type="text" class="form-control"
+                        placeholder="Nombre(s)">
+                </div>
+                <div class="form-group">
+                    <label>Apellido paterno</label>
+                    <input [(ngModel)]="selectedBeneficiario.ApellidoPaterno" name="ApellidoPaterno" type="text"
+                        class="form-control" placeholder="Apellido paterno">
+                </div>
+                <div class="form-group">
+                    <label>Apellido materno</label>
+                    <input [(ngModel)]="selectedBeneficiario.ApellidoMaterno" name="ApellidoMaterno" type="text"
+                        class="form-control" placeholder="Apellido materno">
+                </div>
+                <div class="form-group">
+                    <label>Ocupación</label>
+                    <input [(ngModel)]="selectedBeneficiario.Ocupacion" name="Ocupacion" type="text"
+                        class="form-control" placeholder="Ocupación">
+                </div>
+                <div class="form-group">
+                    <label>Fecha de nacimiento</label>
+                    <input [(ngModel)]="selectedBeneficiario.FechaNacimiento" name="Nacimiento" type="date"
+                        class="form-control">
+                </div>
+                <button (click)="ActualizaBeneficiatio()" class="btn btn-primary">Actualiza datos de empleado</button>
+                <hr>
+            </form>
+        </div>
+        <div class="modal-footer">
+          <button id="closedbutton" type="button" #closebutton class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>

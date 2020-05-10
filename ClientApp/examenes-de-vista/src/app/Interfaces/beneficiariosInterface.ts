@@ -2,7 +2,7 @@ export interface IBeneficiarios{
     Beneficiarios: IBeneficiario[];
 }
 
-interface IBeneficiario{
+export interface IBeneficiario{
     BeneficiarioID: number;
     Nombres: string;
     ApellidoPaterno: string;

@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { TokenService } from '../token/token.service';
 import { AppSettings } from 'src/app/core/constants';
 import { Observable } from 'rxjs';
-import { IBeneficiarios } from 'src/app/Interfaces/beneficiariosInterface';
+import { IBeneficiarios, IBeneficiario } from 'src/app/Interfaces/beneficiariosInterface';
 
 @Injectable({
   providedIn: 'root'
@@ -24,5 +24,11 @@ export class BeneficiarioService {
     const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
     const url = 'empresas/'+ empresaId +'/beneficiarios/create?token=' + this.tokenService.GetToken();
     return this.httpClient.post(AppSettings.BASE_ADDRESS + url, Beneficiario, {headers, responseType: 'text'});
+  }
+
+  Update(Beneficiario: IBeneficiario): Observable<any>{
+    const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
+    const url = 'empresas/beneficiarios/'+ Beneficiario.BeneficiarioID+'?token=' + this.tokenService.GetToken();
+    return this.httpClient.put(AppSettings.BASE_ADDRESS + url, Beneficiario, {headers, responseType: 'text'});
   }
 }
