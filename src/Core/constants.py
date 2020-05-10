@@ -40,6 +40,9 @@ class SpBeneficiario:
     # Beneficiario Id
     Validate = "validaBeneficiario"
 
+    # Beneficiario Id
+    get_name_by_id = "GetBeneficiarioNombrePorId"
+
 
 class SpOjos:
     # Lado Id

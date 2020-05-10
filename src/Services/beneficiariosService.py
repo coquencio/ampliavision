@@ -46,3 +46,10 @@ class BeneficiariosService:
             return False
         return True
 
+    def get_names_by_id(self, beneficiario_id):
+        if not isinstance(beneficiario_id, int):
+            raise ValueError("Id inválido")
+        args = (str(beneficiario_id), )
+        data = self.__sql_helper.sp_get(SpBeneficiario.get_name_by_id, args, True)
+        return serialize_data_set(data, "Nombres")
+
