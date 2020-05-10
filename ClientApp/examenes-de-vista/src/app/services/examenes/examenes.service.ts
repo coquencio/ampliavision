@@ -5,7 +5,7 @@ import { IResumenExamenes } from 'src/app/Interfaces/examenInterface';
 import { AppSettings } from 'src/app/core/constants';
 import { TokenService } from '../token/token.service';
 
-interface IExamenResponse{
+export interface IExamenResponse{
   ExamenID: number;
   Folio: string;
   BeneficiarioID: number;
