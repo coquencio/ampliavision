@@ -15,6 +15,7 @@ import { EstatusGeneralComponent } from './components/estatus-general/estatus-ge
 import { DefectosVisualesComponent } from './components/defectos-visuales/defectos-visuales.component';
 import { ExamenesComponent } from './components/examenes/examenes.component';
 import { ExamenUpdateComponent } from './components/examen-update/examen-update.component';
+import { ProductsComponent } from './components/products/products.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { ExamenUpdateComponent } from './components/examen-update/examen-update.
     EstatusGeneralComponent,
     DefectosVisualesComponent,
     ExamenesComponent,
-    ExamenUpdateComponent
+    ExamenUpdateComponent,
+    ProductsComponent
   ],
   imports: [
     BrowserModule,
@@ -42,6 +44,7 @@ import { ExamenUpdateComponent } from './components/examen-update/examen-update.
       {path: 'General', component: EstatusGeneralComponent},
       {path: 'Examenes', component: ExamenesComponent},
       {path: 'Examenes/Actualiza', component: ExamenUpdateComponent},
+      {path: 'Productos', component: ProductsComponent}
     ])
   ],
   providers: [],
