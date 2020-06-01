@@ -27,7 +27,7 @@
       <tr *ngFor="let objeto of inTable">
         <th scope="row">{{objeto.ID}}</th>
         <td>{{objeto.Descripcion}}</td>
-        <td><button type="button" class="btn btn-danger">Desactivar</button></td>
+        <td><button type="button" class="btn btn-danger" (click)="Deactivate(objeto.ID)">Desactivar</button></td>
       </tr>
     </tbody>
   </table>

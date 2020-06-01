@@ -79,7 +79,7 @@ export class ProductsComponent implements OnInit {
         } }
     );
   }
-  
+
   SetCurrentObject(name: string){
     this.currentName = name;
     this.inTable = this.getType(name);
@@ -117,6 +117,18 @@ export class ProductsComponent implements OnInit {
         this.closeModal.nativeElement.click();
       }
     );
+  }
+
+  Deactivate(id: number){
+    if(confirm('¿Deseas desactivar un registro perteneciente a ' + this.currentName + '?'))
+    {
+      this.generalService.Deactivate(this.currentName, id).subscribe(
+        r => {
+          this.getGeneralItems();
+          window.alert(r);
+        }
+      );
+    }
   }
   
 }

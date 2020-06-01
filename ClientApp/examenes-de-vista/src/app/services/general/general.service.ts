@@ -20,4 +20,8 @@ export class GeneralService {
     const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
     return this.httpclient.post(AppSettings.BASE_ADDRESS + entity + '/create/' + description + '?token=' + this.tokenService.GetToken(),{},{headers: headers, responseType:'text'});
   }
+  Deactivate(entity: string, id:number){
+    const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
+    return this.httpclient.put(AppSettings.BASE_ADDRESS + entity + '/'+ id +'/' + 'status/0?token=' + this.tokenService.GetToken(),{},{headers: headers, responseType:'text'});
+  }
 }
