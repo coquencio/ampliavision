@@ -1,1 +1,37 @@
-<p>products works!</p>
+
+<div class="container">
+    <div class="row">
+    <div class="sidenav col-sm-2">
+        <a (click) ="SetCurrentObject('marcas')">Marcas</a>
+        <a (click) ="SetCurrentObject('colores')">Colores</a>
+        <a (click) ="SetCurrentObject('tamanios')">Tamaños</a>
+        <a (click) ="SetCurrentObject('modelos')">Modelos</a>
+        <a (click) ="SetCurrentObject('materiales')">Materiales</a>
+        <a (click) ="SetCurrentObject('protecciones')">Protecciones</a>
+        <a (click) ="SetCurrentObject('lentes')">Lentes</a>
+        <a >Armazones</a>
+        <a>Casos ISO 9000</a>
+      </div>  
+      <div class="col-sm-10"> 
+        <h3>{{currentName}}</h3>
+        <button type="button" class="btn btn-primary">Registra nuevo</button>
+        
+<table class="table table-hover table-sm">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Descripción</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody *ngIf="inTable">
+      <tr *ngFor="let objeto of inTable">
+        <th scope="row">{{objeto.ID}}</th>
+        <td>{{objeto.Descripcion}}</td>
+        <td><button type="button" class="btn btn-danger">Desactivar</button></td>
+      </tr>
+    </tbody>
+  </table>
+      </div>
+    </div>
+</div>
