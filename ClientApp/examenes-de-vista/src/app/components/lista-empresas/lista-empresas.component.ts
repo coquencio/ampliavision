@@ -59,7 +59,7 @@ export class ListaEmpresasComponent implements OnInit {
     }
     this.empresaService.Create(this.empresaRegistration).subscribe(
       r => {
-        window.alert('Empresa creada satisfactoriamente'+r);
+        window.alert(r);
         this.closeModal.nativeElement.click();
         this.ngOnInit();
         this.empresaRegistration.Nombre='';

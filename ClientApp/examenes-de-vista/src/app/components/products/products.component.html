@@ -1,0 +1,60 @@
+
+<div class="container">
+    <div class="row">
+    <div class="sidenav col-sm-2">
+        <a (click) ="SetCurrentObject('marcas')">Marcas</a>
+        <a (click) ="SetCurrentObject('colores')">Colores</a>
+        <a (click) ="SetCurrentObject('tamanios')">Tamaños</a>
+        <a (click) ="SetCurrentObject('modelos')">Modelos</a>
+        <a (click) ="SetCurrentObject('materiales')">Materiales</a>
+        <a (click) ="SetCurrentObject('protecciones')">Protecciones</a>
+        <a (click) ="SetCurrentObject('lentes')">Lentes</a>
+        <a >Armazones</a>
+        <a>Casos ISO 9000</a>
+      </div>  
+      <div class="col-sm-10"> 
+        <h3>{{currentName}}</h3>
+        <button *ngIf="currentName" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" style="margin: 10px;">Registra nuevo</button>
+<table class="table table-hover table-sm">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Descripción</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody *ngIf="inTable">
+      <tr *ngFor="let objeto of inTable">
+        <th scope="row">{{objeto.ID}}</th>
+        <td>{{objeto.Descripcion}}</td>
+        <td><button type="button" class="btn btn-danger" (click)="Deactivate(objeto.ID)">Desactivar</button></td>
+      </tr>
+    </tbody>
+  </table>
+      </div>
+    </div>
+</div>
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Añade un nuevo registro para {{currentName}}</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label>Descripción: </label>
+              <input maxlength="60" name="descripcion" [(ngModel)]="descripcion" type="Text" class="form-control" name="Descripcion" placeholder="Descripcion">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" #closeModal class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="button" (click)="Create()" class="btn btn-primary">Registrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
