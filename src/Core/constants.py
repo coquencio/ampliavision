@@ -216,6 +216,7 @@ class SpVentas:
     # ProteccionID
     # LenteID
     # Beneficiario ID
+    # TipoVentaID
     Register_and_get = "RegistraYSeleccionaVenta"
 
     # Empresa Id

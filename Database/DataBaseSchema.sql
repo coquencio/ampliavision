@@ -227,3 +227,18 @@ FechaAbono date,
 FechaRegistro date not null,
 Foreign key(VentaID) references ventas(VentaID)
 );
+/////////////////////////////////////////////////////////////////////
+create Table TipoVenta(
+	TipoVentaID int primary key auto_increment,
+    Descripcion varchar (30)
+);
+
+
+ALTER TABLE ventas
+add COLUMN TipoVentaID INT;
+
+
+
+ALTER TABLE ventas
+add constraint TipoVenta
+Foreign key(TipoVentaID) references TipoVenta(TipoVentaID);

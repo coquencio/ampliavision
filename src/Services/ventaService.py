@@ -12,9 +12,10 @@ class VentaService:
         self.__empresa_service = EmpresaService()
 
     def register_and_get(self, folio_examen, total_venta, anticipo, periodicidad, abonos, fecha_venta, armazon_id,
-                         material_id, proteccion_id, lente_id, beneficiario_id):
+                         material_id, proteccion_id, lente_id, beneficiario_id, tipo_id):
         if not isinstance(armazon_id, int) or not isinstance(material_id, int) or not isinstance(proteccion_id, int) \
-                or not isinstance(lente_id, int) or not isinstance(beneficiario_id, int):
+                or not isinstance(lente_id, int) or not isinstance(beneficiario_id, int)\
+                or not isinstance(tipo_id, int):
             raise ValueError("Missing reference from product")
 
         folio_examen = self.__string_helper.build_string(folio_examen)
@@ -28,8 +29,9 @@ class VentaService:
         proteccion_id = str(proteccion_id)
         lente_id = str(lente_id)
         beneficiario_id = str(beneficiario_id)
+        tipo_id =  str(beneficiario_id)
         args = (folio_examen, total_venta, anticipo, periodicidad, abonos, fecha_venta, armazon_id, material_id,
-                proteccion_id, lente_id, beneficiario_id)
+                proteccion_id, lente_id, beneficiario_id, tipo_id)
         data = self.__sql_helper.sp_get(SpVentas.Register_and_get, args, True)
         return serialize_data_set(data)
 

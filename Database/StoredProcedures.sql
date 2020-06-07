@@ -454,3 +454,21 @@ BEGIN
 	update beneficiarios set nombres = _nombres, apellidoPaterno=_apepat, apellidoMaterno=_apemat, FechaNacimiento=_fechanac, ocupacion=_ocupacion where BeneficiarioID = _beneficiarioId;
 END //
 delimiter ;
+
+
+
+drop PROCEDURE RegistraYSeleccionaVenta
+
+delimiter //
+
+create PROCEDURE RegistraYSeleccionaVenta(in FolioExamen varchar(10),in totalVenta decimal(13, 2), in Anticipo decimal(13, 2),in Periodicidad int, in abonos decimal(13, 2), in fechaVenta date, in armazonID int, in materialID int, in proteccionID int, in lenteID int, in beneficiarioID int, in tipoVentaID int)
+BEGIN
+	
+	select @ExamenID := ExamenID from Examenes where folio = 'Qwerty1232';
+    insert into Ventas (folioExamen, totalVenta, anticipo, periodicidadDias, Abonos, fechaVenta, EstaLiquidada, armazonID, materialID, ProteccionID, LenteID, BeneficiarioID, ExamenID, TipoVentaID) values (folioExamen, totalVenta, anticipo, periodicidad, abonos, fechaventa, 0, armazonID, materialID, proteccionID, lenteID, beneficiarioID, @ExamenID, tipoVentaID);
+	select ventaID from ventas order by ventaID desc limit 1;
+END //
+delimiter ;
+
+
+

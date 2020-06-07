@@ -27,8 +27,9 @@ def create_and_get():
         proteccion_id = data['ProteccionId']
         lente_id = data['LenteId']
         beneficiario_id = data['BeneficiarioId']
+        tipo_venta_id = data['TipoVentaId']
         return venta_service.register_and_get(folio, total, anticipo, periodicidad, abonos, fecha_venta, armazon_id,
-                                              material_id, proteccion_id, lente_id, beneficiario_id)
+                                              material_id, proteccion_id, lente_id, beneficiario_id, tipo_venta_id)
     except ValueError as err:
         return Response(status=400, response=err.args)
     except KeyError as err:
