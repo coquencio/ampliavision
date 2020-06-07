@@ -4,30 +4,36 @@
     <div class="sidenav col-sm-2">
         <a (click) ="SetCurrentObject('marcas')">Marcas</a>
         <a (click) ="SetCurrentObject('colores')">Colores</a>
-        <a (click) ="SetCurrentObject('tamanios')">Tamaños</a>
+        <a (click) ="SetCurrentObject('tamaños')">Tamaños</a>
         <a (click) ="SetCurrentObject('modelos')">Modelos</a>
         <a (click) ="SetCurrentObject('materiales')">Materiales</a>
         <a (click) ="SetCurrentObject('protecciones')">Protecciones</a>
         <a (click) ="SetCurrentObject('lentes')">Lentes</a>
-        <a >Armazones</a>
-        <a>Casos ISO 9000</a>
+        <a (click) = "switchToIso()">Casos ISO 9000</a>
       </div>  
       <div class="col-sm-10"> 
         <h3>{{currentName}}</h3>
-        <button *ngIf="currentName" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" style="margin: 10px;">Registra nuevo</button>
+        <button *ngIf="currentName && isGeneral" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" style="margin: 10px;">Registra nuevo</button>
 <table class="table table-hover table-sm">
     <thead>
       <tr>
         <th scope="col">ID</th>
         <th scope="col">Descripción</th>
-        <th scope="col">Acciones</th>
+        <th *ngIf="isGeneral" scope="col">Acciones</th>
       </tr>
     </thead>
-    <tbody *ngIf="inTable">
+    <tbody *ngIf="inTable && isGeneral">
       <tr *ngFor="let objeto of inTable">
         <th scope="row">{{objeto.ID}}</th>
         <td>{{objeto.Descripcion}}</td>
         <td><button type="button" class="btn btn-danger" (click)="Deactivate(objeto.ID)">Desactivar</button></td>
+      </tr>
+    </tbody>
+    
+    <tbody *ngIf="!isGeneral && casos">
+      <tr *ngFor="let objeto of casos.Casos">
+        <th scope="row">{{objeto.CasoID}}</th>
+        <td>{{objeto.Descripcion}}</td>
       </tr>
     </tbody>
   </table>
