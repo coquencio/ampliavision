@@ -28,6 +28,10 @@ def create_and_get():
         lente_id = data['LenteId']
         beneficiario_id = data['BeneficiarioId']
         tipo_venta_id = data['TipoVentaId']
+
+        if venta_service.is_folio_repeated(folio):
+            return Response(status=400, response='Este Folio ya pertenece a una venta')
+
         return venta_service.register_and_get(folio, total, anticipo, periodicidad, abonos, fecha_venta, armazon_id,
                                               material_id, proteccion_id, lente_id, beneficiario_id, tipo_venta_id)
     except ValueError as err:

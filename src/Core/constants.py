@@ -100,6 +100,9 @@ class SpExamen:
     # Folio
     Update_by_folio = "ActualizaExamen"
 
+    # Empresa Id
+    Get_folios = "RegresaFolios"
+
 
 class SpMarcas:
     # Descripcion
@@ -238,6 +241,9 @@ class SpVentas:
 
     # Venta Id
     Get_total_of_sale = "SelectSaldoVenta"
+
+    # Folio
+    Validate_folio = "ValidaFolio"
 
 
 class SpCasosIso:

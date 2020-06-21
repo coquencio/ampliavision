@@ -24,6 +24,7 @@ class MySqlHelper:
         if not args:
             cursor.execute("call " + sp_name + "()")
         else:
+            print("call " + sp_name + self.__build_string_params(args))
             cursor.execute("call " + sp_name + self.__build_string_params(args))
             db.commit()
         if not is_getting_single_row:

@@ -464,11 +464,44 @@ delimiter //
 create PROCEDURE RegistraYSeleccionaVenta(in FolioExamen varchar(10),in totalVenta decimal(13, 2), in Anticipo decimal(13, 2),in Periodicidad int, in abonos decimal(13, 2), in fechaVenta date, in armazonID int, in materialID int, in proteccionID int, in lenteID int, in beneficiarioID int, in tipoVentaID int)
 BEGIN
 	
-	select @ExamenID := ExamenID from Examenes where folio = 'Qwerty1232';
+	select @ExamenID := ExamenID from Examenes where folio = FolioExamen;
+    insert into Ventas (folioExamen, totalVenta, anticipo, periodicidadDias, Abonos, fechaVenta, EstaLiquidada, armazonID, materialID, ProteccionID, LenteID, BeneficiarioID, ExamenID, TipoVentaID) values (folioExamen, totalVenta, anticipo, periodicidad, abonos, fechaventa, 0, armazonID, materialID, proteccionID, lenteID, beneficiarioID, @ExamenID, tipoVentaID);
+	select ventaID from ventas order by ventaID desc limit 1;
+END //
+delimiter ;
+
+delimiter //
+create PROCEDURE RegresaFolios(in empresa_Id int)
+BEGIN
+	select folio from examenes e inner join beneficiarios b on b.beneficiarioId = e.BeneficiarioId where b.empresaId = 1
+END //
+
+
+delimiter ;
+drop procedure RegistraYSeleccionaArmazon; 
+delimiter //
+CREATE PROCEDURE RegistraYSeleccionaArmazon(in MarcaID int, in ColorID int, in TamanioID int, in ModeloID int, in _DetalleEnArmazon varchar(35))
+BEGIN
+	insert into armazones (MarcaID, ColorID, TamanioID, ModeloID, DetalleEnArmazon ) values (marcaID, ColorID, TamanioID, ModeloID, _DetalleEnArmazon);
+    select ArmazonID from Armazones order by armazonID desc limit 1;
+END //
+delimiter ;
+
+drop PROCEDURE RegistraYSeleccionaVenta;
+delimiter //
+
+create PROCEDURE RegistraYSeleccionaVenta(in FolioExamen varchar(10),in totalVenta decimal(13, 2), in Anticipo decimal(13, 2),in Periodicidad int, in abonos decimal(13, 2), in fechaVenta date, in armazonID int, in materialID int, in proteccionID int, in lenteID int, in beneficiarioID int, in tipoVentaID int)
+BEGIN
+	select ExamenID into @ExamenID  from Examenes where folio = FolioExamen;
     insert into Ventas (folioExamen, totalVenta, anticipo, periodicidadDias, Abonos, fechaVenta, EstaLiquidada, armazonID, materialID, ProteccionID, LenteID, BeneficiarioID, ExamenID, TipoVentaID) values (folioExamen, totalVenta, anticipo, periodicidad, abonos, fechaventa, 0, armazonID, materialID, proteccionID, lenteID, beneficiarioID, @ExamenID, tipoVentaID);
 	select ventaID from ventas order by ventaID desc limit 1;
 END //
 delimiter ;
 
 
-
+delimiter //
+create PROCEDURE ValidaFolio(in _FolioExamen varchar(10))
+BEGIN
+	select count(*) from ventas where FolioExamen = _FolioExamen;
+END //
+delimiter ;

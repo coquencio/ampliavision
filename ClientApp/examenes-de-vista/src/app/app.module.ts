@@ -16,6 +16,7 @@ import { DefectosVisualesComponent } from './components/defectos-visuales/defect
 import { ExamenesComponent } from './components/examenes/examenes.component';
 import { ExamenUpdateComponent } from './components/examen-update/examen-update.component';
 import { ProductsComponent } from './components/products/products.component';
+import { SalesComponent } from './components/sales/sales.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { ProductsComponent } from './components/products/products.component';
     DefectosVisualesComponent,
     ExamenesComponent,
     ExamenUpdateComponent,
-    ProductsComponent
+    ProductsComponent,
+    SalesComponent
   ],
   imports: [
     BrowserModule,
@@ -44,7 +46,8 @@ import { ProductsComponent } from './components/products/products.component';
       {path: 'General', component: EstatusGeneralComponent},
       {path: 'Examenes', component: ExamenesComponent},
       {path: 'Examenes/Actualiza', component: ExamenUpdateComponent},
-      {path: 'Productos', component: ProductsComponent}
+      {path: 'Productos', component: ProductsComponent},
+      {path: 'Ventas', component: SalesComponent}
     ])
   ],
   providers: [],

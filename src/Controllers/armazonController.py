@@ -20,7 +20,7 @@ def register_and_get():
         color_id = data['ColorId']
         tamanio_id = data['TamanioId']
         modelo_id = data['ModeloId']
-        detalle_armazon = data['DetalleEnArmazon ']
+        detalle_armazon = data['DetalleEnArmazon']
 
         args = (marca_id, color_id, tamanio_id, modelo_id)
         return armazon_service.register_and_get(args, detalle_armazon)

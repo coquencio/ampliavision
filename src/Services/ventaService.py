@@ -84,3 +84,12 @@ class VentaService:
         if total_venta < total_abonos:
             return False
         return True
+
+
+    def is_folio_repeated(self, folio):
+        folio = self.__string_helper.build_string(folio);
+        args = (folio, )
+        data = self.__sql_helper.sp_get(SpVentas.Validate_folio, args, True);
+        if data['count(*)'] == 0:
+            return False
+        return True;
