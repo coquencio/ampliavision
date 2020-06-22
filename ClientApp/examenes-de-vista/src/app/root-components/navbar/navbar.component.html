@@ -1,0 +1,36 @@
+<nav *ngIf="islogged" class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#"><h4>Almpliavisión bajío</h4></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul *ngIf="nombreEmpresa; else elseBlock" class="navbar-nav mr-auto">
+        <li class="nav-item">
+            <a class="nav-link" routerLinkActive='active' [routerLink]="['/Empresas']"><h5>{{nombreEmpresa}}</h5></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLinkActive='active' [routerLink]="['/Examenes']">Examenes</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" routerLinkActive='active' [routerLink]="['/Defectos']">Estatus defefectos visuales</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLinkActive='active' [routerLink]="['/General']">Estatus general</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLinkActive='active' [routerLink]="['/Productos']">Manejo de Productos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLinkActive='active' [routerLink]="['/Ventas']">Ventas</a>
+          </li>
+      </ul>
+      <ng-template #elseBlock>
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link">Selecciona empresa</a>
+            </li>
+        </ul>
+        </ng-template>
+    </div>
+</nav>

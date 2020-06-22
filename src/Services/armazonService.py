@@ -11,14 +11,13 @@ class ArmazonService:
 
     def register_and_get(self, args, detalle):
         for arg in args:
-            if not isinstance(detalle, str):
-                raise ValueError("Invalid argument for detalle")
-            detalle = self.__string_helper.build_string(detalle)
             if not isinstance(arg, int):
                 raise ValueError("Invalid argument for ")
-            arg = str(arg)
             # TODO Validate if all IDs exists
 
+        if not isinstance(detalle, str):
+            raise ValueError("Invalid argument for detalle")
+        detalle = self.__string_helper.build_string(detalle)
         arguments = list(args)
         arguments.append(detalle)
         args = tuple(arguments)

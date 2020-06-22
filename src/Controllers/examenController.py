@@ -79,3 +79,44 @@ def get_summary(empresa_id):
         return data
     except ValueError as err:
         return Response(status=400, response=err.args)
+
+@ExamenController.route('/api/examenes', methods=['PUT'])
+def update_examen():
+    try:
+        token = request.args.get('token')
+        if not token:
+            return Response(status=401)
+        if not user_service.token_validation(token):
+            return Response(status=401)
+        data = request.get_json()
+        folio = data['Folio']
+        beneficiario_id = data['BeneficiarioId']
+        anterior_id = data['AnteriorId']
+        total_id = data['TotalId']
+        adaptacion_id = data['AdaptacionId']
+        requiere_lentes = data['RequiereLentes']
+        compro_lentes = data['ComproLentes']
+        enfermedad_id = data['EnfermedadId']
+        observaciones = data['Observaciones']
+        examen_service.update(folio, beneficiario_id, anterior_id, total_id, adaptacion_id,
+                                requiere_lentes,
+                                compro_lentes, enfermedad_id, observaciones)
+        return Response(status=201)
+    except ValueError as err:
+        return Response(status=400, response=err.args)
+@ExamenController.route('/api/empresas/<int:empresa_id>/examenes/folios', methods=['GET'])
+def get_folios(empresa_id):
+    try:
+        token = request.args.get('token')
+        if not token:
+            return Response(status=401)
+        if not user_service.token_validation(token):
+            return Response(status=401)
+        if empresa_id == 0:
+            return Response(status=404, response="Id de empresa no válido")
+        data = examen_service.get_folios(empresa_id)
+        if not data:
+            return Response(status=404, response="Folios not found")
+        return data
+    except ValueError as err:
+        return Response(status=400, response=err.args)

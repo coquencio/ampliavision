@@ -50,3 +50,16 @@ def create_relation(beneficiario_id, caso_id):
         return Response(status=201, response="Relationship created")
     except ValueError as err:
         return Response(status=400, response=err.args)
+
+@IsoController.route('/api/iso/delete/<int:relation_id>', methods=['DELETE'])
+def delete_relation(relation_id):
+    try:
+        token = request.args.get('token')
+        if not token:
+            return Response(status=401)
+        if not user_service.token_validation(token):
+            return Response(status=401)
+        iso_service.delete_relation(relation_id);
+        return Response(status=200)
+    except ValueError as err:
+        return Response(status=400, response=err.args)

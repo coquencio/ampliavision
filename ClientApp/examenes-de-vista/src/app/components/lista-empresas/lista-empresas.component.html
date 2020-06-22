@@ -1,0 +1,59 @@
+<h6>Selecciona una empresa con la cual trabajar</h6>
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+  Deseo registrar una empresa nueva
+</button>
+<br>
+<br>
+<table class="table table-hover table-sm">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Empresa</th>
+        <th scope="col">Domicilio</th>
+        <th scope="col">Telefono</th>
+      </tr>
+    </thead>
+    <tbody *ngIf="empresas">
+      <tr *ngFor="let empresa of empresas.Empresas" (click)="setEmpresa(empresa.EmpresaID, empresa.NombreEmpresa)">
+        <th scope="row">{{empresa.EmpresaID}}</th>
+        <td>{{empresa.NombreEmpresa}}</td>
+        <td>{{empresa.Domicilio}}</td>
+        <td>{{empresa.Telefono}}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Registra una nueva empresa</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label>Nombre empresa: </label>
+              <input maxlength="60" name="nombre" [(ngModel)]="empresaRegistration.Nombre" type="Text" class="form-control" name="nombre" placeholder="Nombre de empresa">
+            </div>
+            <div class="form-group">
+              <label>Domicilio: </label>
+              <input name="domicilio" [(ngModel)]="empresaRegistration.Domicilio" type="Text" class="form-control"  placeholder="Domicilio">
+            </div>
+            <div class="form-group">
+              <label>Teléfono: </label>
+              <input maxlength="20" name="telefono" [(ngModel)]="empresaRegistration.Telefono" type="tel" class="form-control"  placeholder="Teléfono">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" #closeModal class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="button" (click)="RegistraEmpresa()" class="btn btn-primary">Registrar empresa</button>
+        </div>
+      </div>
+    </div>
+  </div>

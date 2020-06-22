@@ -47,6 +47,20 @@ class UsersService:
 
         return False
 
+    def get_name(self, token):
+        token = self.__string_helper.build_string(token)
+        args = (token, )
+        data = self.__sql_helper.sp_get(SpUsers.Get_name, args, True)
+        return data["userName"]
+
+    def is_admin(self, token):
+        token = self.__string_helper.build_string(token)
+        args = (token, )
+        data = self.__sql_helper.sp_get(SpUsers.Is_Admin, args, True)
+        if data["Admin"] == 1:
+            return True
+        return False
+
     @staticmethod
     def __encrypt(string):
         string = hashlib.sha1(string.encode('utf-8')).hexdigest()

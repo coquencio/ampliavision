@@ -1,0 +1,370 @@
+<hr>
+<button (click)="RedirectToDetails()" class="btn btn-primary">Deseo consultar o actualizar un examen ya registrado</button>
+<br>
+<br>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <form>
+                <label>
+                    <h5>Registro de empleado para empresa: {{nombreEmpresa}}</h5>
+                </label>
+                <div class="form-group">
+                    <label>Nombre(s)</label>
+                    <input [(ngModel)]="beneficiarioRegistro.Nombres" name="Nombres" type="text" class="form-control"
+                        placeholder="Nombre(s)">
+                </div>
+                <div class="form-group">
+                    <label>Apellido paterno</label>
+                    <input [(ngModel)]="beneficiarioRegistro.ApellidoPaterno" name="ApellidoPaterno" type="text"
+                        class="form-control" placeholder="Apellido paterno">
+                </div>
+                <div class="form-group">
+                    <label>Apellido materno</label>
+                    <input [(ngModel)]="beneficiarioRegistro.ApellidoMaterno" name="ApellidoMaterno" type="text"
+                        class="form-control" placeholder="Apellido materno">
+                </div>
+                <div class="form-group">
+                    <label>Ocupación</label>
+                    <input [(ngModel)]="beneficiarioRegistro.Ocupacion" name="Ocupacion" type="text"
+                        class="form-control" placeholder="Ocupación">
+                </div>
+                <div class="form-group">
+                    <label>Fecha de nacimiento</label>
+                    <input [(ngModel)]="beneficiarioRegistro.FechaNacimiento" name="Nacimiento" type="date"
+                        class="form-control">
+                </div>
+                <button (click)="BeneficiarioRegistration()" class="btn btn-primary">Registra empleado</button>
+                <hr>
+            </form>
+        </div>
+        <div class="col">
+            <div class="table-responsive">
+                <h5>Empleados de {{nombreEmpresa}}</h5>
+                <table *ngIf="beneficiariosEmpresa" class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">Nombre(s)</th>
+                            <th scope="col">Apellido paterno</th>
+                            <th scope="col">Apellido materno</th>
+                            <th scope="col">Fecha de nacimiento</th>
+                            <th scope="col">Ocupación</th>
+                            <th scope="col">Detalles</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let beneficiario of beneficiariosEmpresa.Beneficiarios">
+                            <td>{{beneficiario.Nombres}}</td>
+                            <td>{{beneficiario.ApellidoPaterno}}</td>
+                            <td>{{beneficiario.ApellidoMaterno}}</td>
+                            <td>{{beneficiario.FechaNacimiento}}</td>
+                            <td>{{beneficiario.Ocupacion}}</td>
+                            <td><button (click)="SeleccionaBeneficiario(beneficiario.BeneficiarioID)" type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">
+                                Consulta/Actualiza
+                              </button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <hr>
+            </div>
+        </div>
+    </div>
+</div>
+
+<hr>
+<h4>Registra nuevo examen en empresa {{nombreEmpresa}}</h4>
+<form>
+    <div class="form-group">
+        <label>Folio:</label>
+        <input type="text" [(ngModel)]="folio"class="form-control" name="folio" placeholder="Folio de examen">
+    </div>
+    <div *ngIf="beneficiariosEmpresa" name="selecionaEmpleados" class="form-group">
+        <label>Empleado:</label>
+        <select [(ngModel)]="beneficiarioId" class="form-control" name="beneficiarioId">
+            <option *ngFor="let empleado of beneficiariosEmpresa.Beneficiarios" [value]="empleado.BeneficiarioID">
+                {{empleado.Nombres}} {{empleado.ApellidoPaterno}} {{empleado.ApellidoMaterno}}</option>
+        </select>
+    </div>
+    <ul class="nav nav-tabs nav-justified">
+        <li class="nav-item"><a data-toggle="tab" href="#home">
+                <h6> Anterior</h6>
+            </a></li>
+        <li class="nav-item"><a data-toggle="tab" href="#menu1">
+                <h6>Total</h6>
+            </a></li>
+        <li class="nav-item"><a data-toggle="tab" href="#menu2">
+                <h6>Adaptación</h6>
+            </a></li>
+    </ul>
+
+    <div class="tab-content">
+        <div id="home" class="tab-pane fade in active">
+            <h4>Anterior</h4>
+            <div class="form-check">
+                <input class="form-check-input"[checked]="!incluyeAnterior"
+                (change)="incluyeAnterior = !incluyeAnterior" type="checkbox">
+                <label class="form-check-label" >
+                  Este examen no incluirá anterior
+                </label>
+             </div>
+              <div class="row" *ngIf="incluyeAnterior">
+                <div class="col-md">
+                    <h5>Izquierdo</h5>
+                    <div class="form-group">
+                        <label>Esfera:</label>
+                        <input type="number" [(ngModel)]="iant.Esfera"class="form-control" name="EsferaIzAnt" placeholder="Esfera">
+                    </div>
+                    <div class="form-group">
+                        <label>Cilindro:</label>
+                        <input type="number" [(ngModel)]="iant.Cilindro" class="form-control" name="CilindroIzAnt" placeholder="Cilindro">
+                    </div>
+                    <div class="form-group">
+                        <label>Eje:</label>
+                        <input type="number" [(ngModel)]="iant.Eje" class="form-control" name="EjeIzAnt" placeholder="Eje">
+                    </div>
+                    <div class="form-group">
+                        <label>Adicción:</label>
+                        <input type="number" [(ngModel)]="iant.Adiccion" class="form-control" name="AdicionIzAnt" placeholder="Adicción">
+                    </div>
+                </div>
+                <div class="col-md">
+                    <h5>Derecho</h5>
+                    <div class="form-group">
+                        <label>Esfera:</label>
+                        <input type="number" [(ngModel)]="dant.Esfera"class="form-control" name="EsferaDerAnt" placeholder="Esfera">
+                    </div>
+                    <div class="form-group">
+                        <label>Cilindro:</label>
+                        <input type="number" [(ngModel)]="dant.Cilindro" class="form-control" name="CilindroDerAnt" placeholder="Cilindro">
+                    </div>
+                    <div class="form-group">
+                        <label>Eje:</label>
+                        <input type="number" [(ngModel)]="dant.Eje" class="form-control" name="EjeDerAnt" placeholder="Eje">
+                    </div>
+                    <div class="form-group">
+                        <label>Adicción:</label>
+                        <input type="number" [(ngModel)]="dant.Adiccion" class="form-control" name="AdicionDerAnt" placeholder="Adicción">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group"*ngIf="incluyeAnterior">
+                <label>D.P. Lejos:</label>
+                <input [(ngModel)]="detalleAnterior.Lejos" type="number" class="form-control" name="DpLejosAnt" placeholder="D.P. lejos">
+            </div>
+            <div class="form-group"*ngIf="incluyeAnterior">
+                <label>Obl.:</label>
+                <input [(ngModel)]="detalleAnterior.Obl" type="number" class="form-control" name="OblAnt" placeholder="Obl.">
+            </div>
+
+        </div>
+
+        <div id="menu1" class="tab-pane fade">
+            <h4>Total</h4>
+            <div class="form-check">
+                <input class="form-check-input"[checked]="!incluyeTotal"
+                (change)="incluyeTotal = !incluyeTotal" type="checkbox" >
+                <label class="form-check-label">
+                  Este examen no incluirá total
+                </label>
+              </div>
+              <div class="row" *ngIf="incluyeTotal">
+                <div class="col-md">
+                    <h5>Izquierdo</h5>
+                    <div class="form-group">
+                        <label>Esfera:</label>
+                        <input [(ngModel)]="itot.Esfera" type="number" class="form-control" name="EsferaIzT" placeholder="Esfera">
+                    </div>
+                    <div class="form-group">
+                        <label>Cilindro:</label>
+                        <input [(ngModel)]="itot.Cilindro" type="number" class="form-control" name="CilindroIzT" placeholder="Cilindro">
+                    </div>
+                    <div class="form-group">
+                        <label>Eje:</label>
+                        <input [(ngModel)]="itot.Eje" type="number" class="form-control" name="EjeIzT" placeholder="Eje">
+                    </div>
+                    <div class="form-group">
+                        <label>Adicción:</label>
+                        <input [(ngModel)]="itot.Adiccion" type="number" class="form-control" name="AdicionIzT" placeholder="Adicción">
+                    </div>
+                </div>
+                <div class="col-md">
+                    <h5>Derecho</h5>
+                    <div class="form-group">
+                        <label>Esfera:</label>
+                        <input [(ngModel)]="dtot.Esfera" type="number" class="form-control" name="EsferaDerT" placeholder="Esfera">
+                    </div>
+                    <div class="form-group">
+                        <label>Cilindro:</label>
+                        <input [(ngModel)]="dtot.Cilindro" type="number" class="form-control" name="CilindroDerT" placeholder="Cilindro">
+                    </div>
+                    <div class="form-group">
+                        <label>Eje:</label>
+                        <input [(ngModel)]="dtot.Eje" type="number" class="form-control" name="EjeDerT" placeholder="Eje">
+                    </div>
+                    <div class="form-group">
+                        <label>Adicción:</label>
+                        <input [(ngModel)]="dtot.Adiccion" type="number" class="form-control" name="AdicionDerT" placeholder="Adicción">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group"*ngIf="incluyeTotal">
+                <label>D.P. Lejos:</label>
+                <input [(ngModel)]="detalleTotal.Lejos" type="number" class="form-control" name="DpLejosT" placeholder="D.P. lejos">
+            </div>
+            <div class="form-group"*ngIf="incluyeTotal">
+                <label>Obl.:</label>
+                <input [(ngModel)]="detalleTotal.Obl" type="number" class="form-control" name="OblT" placeholder="Obl.">
+            </div>
+
+        </div>
+        <div id="menu2" class="tab-pane fade">
+            <h4>Adaptación</h4>
+            <div class="form-check">
+                <input class="form-check-input" [checked]="!incluyeAdaptacion"
+                (change)="incluyeAdaptacion = !incluyeAdaptacion" type="checkbox">
+                <label class="form-check-label" >
+                  Este examen no requerirá adaptación
+                </label>
+              </div>
+              <div class="row" *ngIf="incluyeAdaptacion">
+                <div class="col-md">
+                    <h5>Izquierdo</h5>
+                    <div class="form-group">
+                        <label>Esfera:</label>
+                        <input [(ngModel)]="iada.Esfera" type="number" class="form-control" name="EsferaIzA" placeholder="Esfera">
+                    </div>
+                    <div class="form-group">
+                        <label>Cilindro:</label>
+                        <input [(ngModel)]="iada.Cilindro" type="number" class="form-control" name="CilindroIzA" placeholder="Cilindro">
+                    </div>
+                    <div class="form-group">
+                        <label>Eje:</label>
+                        <input [(ngModel)]="iada.Eje" type="number" class="form-control" name="EjeIzA" placeholder="Eje">
+                    </div>
+                    <div class="form-group">
+                        <label>Adicción:</label>
+                        <input [(ngModel)]="iada.Adiccion" type="number" class="form-control" name="AdicionIzA" placeholder="Adicción">
+                    </div>
+                </div>
+                <div class="col-md">
+                    <h5>Derecho</h5>
+                    <div class="form-group">
+                        <label>Esfera:</label>
+                        <input [(ngModel)]="dada.Esfera" type="number" class="form-control" name="EsferaDerA" placeholder="Esfera">
+                    </div>
+                    <div class="form-group">
+                        <label>Cilindro:</label>
+                        <input [(ngModel)]="dada.Cilindro" type="number" class="form-control" name="CilindroDerA" placeholder="Cilindro">
+                    </div>
+                    <div class="form-group">
+                        <label>Eje:</label>
+                        <input [(ngModel)]="dada.Eje" type="number" class="form-control" name="EjeDerA" placeholder="Eje">
+                    </div>
+                    <div class="form-group">
+                        <label>Adicción:</label>
+                        <input [(ngModel)]="dada.Adiccion" type="number" class="form-control" name="AdicionDerA" placeholder="Adicción">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group"*ngIf="incluyeAdaptacion">
+                <label>D.P. Lejos:</label>
+                <input [(ngModel)]="detalleAdaptacion.Lejos" type="number" class="form-control" name="DpLejosA" placeholder="D.P. lejos">
+            </div>
+            <div class="form-group"*ngIf="incluyeAdaptacion">
+                <label>Obl.:</label>
+                <input [(ngModel)]="detalleAdaptacion.Obl" type="number" class="form-control" name="OblA" placeholder="Obl.">
+            </div>
+
+        </div>
+    </div>
+    <hr>
+    <div class="form-group">
+        <label>Enfermedad visual:</label>
+        <select [(ngModel)]="enfermedadId" class="form-control" name="enfermedad">
+            <option value="1">Miopía</option>
+            <option value="2">Astigmatismo</option>
+            <option value="3">Hipermetropía</option>
+            <option value="4">Presbicia</option>
+            <option value="5">Miopía con Astigmatismo</option>
+            <option value="6">Hipermetroía con Astigmatismo</option>
+            <option value="7">Miopía y Presbicia</option>
+            <option value="8">Hipermetropía y Presbicia</option>
+            <option value="9">Astigmatismo y Presbicia</option>
+            <option value="10">Miopía, Astigmatismo y Presbicia</option>
+            <option value="11">Hipermetropía, Astigmatismo y Presbicia</option>
+            <option value="12">Neutro</option>
+        </select>
+    </div>
+    <div class="form-check">
+        <input  [checked]="requiereLentes"
+        (change)="requiereLentes= !requiereLentes" name="requiere" class="form-check-input" type="checkbox" >
+        <label class="form-check-label">
+          Requiere lentes
+        </label>
+      </div>
+      <br>
+      <div class="form-check">
+        <input [checked]="comproLentes"
+        (change)="comproLentes = !comproLentes" name="compro" class="form-check-input" type="checkbox" >
+        <label class="form-check-label">
+          Compró lentes
+        </label>
+      </div>
+      <br>
+      <div class="form-group">
+        <label>Observaciones</label>
+        <textarea name="observacion" [(ngModel)]="observaciones" class="form-control"rows="3"></textarea>
+      </div>
+      <hr>
+      <button (click)="RegistraExamenAsync()" class="btn btn-primary">Registra Examen</button>
+      <hr>
+</form>
+
+  
+  <!-- Modal -->
+  <div class="modal fade in" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Actualiza empleado</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div *ngIf="selectedBeneficiario" class="modal-body">
+            <form>
+                <div class="form-group">
+                    <label>Nombre(s)</label>
+                    <input [(ngModel)]="selectedBeneficiario.Nombres" name="Nombres" type="text" class="form-control"
+                        placeholder="Nombre(s)">
+                </div>
+                <div class="form-group">
+                    <label>Apellido paterno</label>
+                    <input [(ngModel)]="selectedBeneficiario.ApellidoPaterno" name="ApellidoPaterno" type="text"
+                        class="form-control" placeholder="Apellido paterno">
+                </div>
+                <div class="form-group">
+                    <label>Apellido materno</label>
+                    <input [(ngModel)]="selectedBeneficiario.ApellidoMaterno" name="ApellidoMaterno" type="text"
+                        class="form-control" placeholder="Apellido materno">
+                </div>
+                <div class="form-group">
+                    <label>Ocupación</label>
+                    <input [(ngModel)]="selectedBeneficiario.Ocupacion" name="Ocupacion" type="text"
+                        class="form-control" placeholder="Ocupación">
+                </div>
+                <div class="form-group">
+                    <label>Fecha de nacimiento</label>
+                    <input [(ngModel)]="selectedBeneficiario.FechaNacimiento" name="Nacimiento" type="date"
+                        class="form-control">
+                </div>
+                <button (click)="ActualizaBeneficiatio()" class="btn btn-primary">Actualiza datos de empleado</button>
+                <hr>
+            </form>
+        </div>
+        <div class="modal-footer">
+          <button id="closedbutton" type="button" #closebutton class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
