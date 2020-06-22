@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { IMarca, IColor, ITamanio, IModelo, IMaterial, IProteccion, ILente, IGeneral } from 'src/app/Interfaces/generalInterface';
 import { GeneralService } from 'src/app/services/general/general.service';
+import { IsoService } from 'src/app/services/isos/iso.service';
+import { IIsos } from 'src/app/Interfaces/isoInterface';
 
 @Component({
   selector: 'app-products',
@@ -10,7 +12,8 @@ import { GeneralService } from 'src/app/services/general/general.service';
 export class ProductsComponent implements OnInit {
 
   constructor(
-    private generalService: GeneralService
+    private generalService: GeneralService,
+    private isoService: IsoService,
     ) { }
   @ViewChild('closeModal') private closeModal: ElementRef;
   marcas: IMarca[];
@@ -23,8 +26,11 @@ export class ProductsComponent implements OnInit {
   currentName: string;
   inTable: IGeneral[]; 
   descripcion: string;
+  casos: IIsos;
+  isGeneral: boolean;
 
   ngOnInit(): void {
+    this.isGeneral = true;
     this.getGeneralItems();
   }
 
@@ -46,8 +52,8 @@ export class ProductsComponent implements OnInit {
     );
     this.generalService.Get('tamanios').subscribe(
       r => {this.tamanios = r.tamanios;
-        if(this.currentName === 'tamanios'){
-          this.SetCurrentObject('tamanios')
+        if(this.currentName === 'tamaños'){
+          this.SetCurrentObject('tamaños')
         }
       }
     );
@@ -78,9 +84,13 @@ export class ProductsComponent implements OnInit {
           this.SetCurrentObject('lentes')
         } }
     );
+    this.isoService.GetIsos().subscribe(
+      r=> this.casos = r
+    );
   }
 
   SetCurrentObject(name: string){
+    this.isGeneral = true;
     this.currentName = name;
     this.inTable = this.getType(name);
   }
@@ -93,7 +103,7 @@ export class ProductsComponent implements OnInit {
        return this.materiales.map(m=> {return <IGeneral>{ID : m.MaterialID, Descripcion: m.Descripcion }});
       case ('colores'):
         return this.colores.map(m=> {return <IGeneral>{ID : m.ColorID, Descripcion: m.Descripcion }});
-      case ('tamanios'):
+      case ('tamaños'):
         return this.tamanios.map(m=> {return <IGeneral>{ID : m.TamanioID, Descripcion: m.Descripcion }});
       case ('modelos'):
           return this.modelos.map(m=> {return <IGeneral>{ID : m.ModeloID, Descripcion: m.Descripcion }});
@@ -109,7 +119,8 @@ export class ProductsComponent implements OnInit {
       window.alert('Por favor introduce una descripción');
       return;
     }
-    this.generalService.Create(this.currentName, this.descripcion).subscribe(
+    const name = this.currentName === 'tamaños'? 'tamanios' : this.currentName;
+    this.generalService.Create(name, this.descripcion).subscribe(
       ()=> {
         this.getGeneralItems();
         this.descripcion = '';
@@ -122,7 +133,8 @@ export class ProductsComponent implements OnInit {
   Deactivate(id: number){
     if(confirm('¿Deseas desactivar un registro perteneciente a ' + this.currentName + '?'))
     {
-      this.generalService.Deactivate(this.currentName, id).subscribe(
+      const name = this.currentName === 'tamaños'? 'tamanios' : this.currentName;
+      this.generalService.Deactivate(name, id).subscribe(
         r => {
           this.getGeneralItems();
           window.alert(r);
@@ -130,5 +142,12 @@ export class ProductsComponent implements OnInit {
       );
     }
   }
+
+  switchToIso(){
+    this.isGeneral = false;
+    this.currentName = 'Casos Iso 9000';
+  }
+
+  
   
 }

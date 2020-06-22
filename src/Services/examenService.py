@@ -65,3 +65,10 @@ class ExamenService:
                 compro_lentes, enfermedad_id, observaciones)
         self.__sql_helper.sp_set(SpExamen.Update_by_folio, args)
 
+    def get_folios (self, empresa_id):
+        if not isinstance(empresa_id, int):
+            raise ValueError("Invalid Id")
+        args = (empresa_id, )
+        data = self.__sql_helper.sp_get(SpExamen.Get_folios, args)
+        return serialize_data_set(data, "Folios")
+

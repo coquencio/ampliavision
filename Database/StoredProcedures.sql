@@ -359,9 +359,9 @@ END //
 delimiter ;
 
 delimiter //
-create PROCEDURE registraAbono(in _ventaId int, in _monto decimal(13,2), in _fechaAbono date)
+create PROCEDURE registraAbono(in _ventaId int, in _monto decimal(13,2), in _fechaAbono date, in _nombre varchar(50))
 BEGIN
-	insert into abonos (ventaId, monto, fechaAbono, fechaRegistro) values (_ventaId, _monto, _fechaAbono, curdate());
+	insert into abonos (ventaId, monto, fechaAbono, fechaRegistro, RegistradoPor) values (_ventaId, _monto, _fechaAbono, curdate(), _nombre);
 END //
 delimiter ;
 delimiter //
@@ -454,3 +454,115 @@ BEGIN
 	update beneficiarios set nombres = _nombres, apellidoPaterno=_apepat, apellidoMaterno=_apemat, FechaNacimiento=_fechanac, ocupacion=_ocupacion where BeneficiarioID = _beneficiarioId;
 END //
 delimiter ;
+
+
+
+drop PROCEDURE RegistraYSeleccionaVenta
+
+delimiter //
+
+create PROCEDURE RegistraYSeleccionaVenta(in FolioExamen varchar(10),in totalVenta decimal(13, 2), in Anticipo decimal(13, 2),in Periodicidad int, in abonos decimal(13, 2), in fechaVenta date, in armazonID int, in materialID int, in proteccionID int, in lenteID int, in beneficiarioID int, in tipoVentaID int)
+BEGIN
+	
+	select @ExamenID := ExamenID from Examenes where folio = FolioExamen;
+    insert into Ventas (folioExamen, totalVenta, anticipo, periodicidadDias, Abonos, fechaVenta, EstaLiquidada, armazonID, materialID, ProteccionID, LenteID, BeneficiarioID, ExamenID, TipoVentaID) values (folioExamen, totalVenta, anticipo, periodicidad, abonos, fechaventa, 0, armazonID, materialID, proteccionID, lenteID, beneficiarioID, @ExamenID, tipoVentaID);
+	select ventaID from ventas order by ventaID desc limit 1;
+END //
+delimiter ;
+
+delimiter //
+create PROCEDURE RegresaFolios(in empresa_Id int)
+BEGIN
+	select folio from examenes e inner join beneficiarios b on b.beneficiarioId = e.BeneficiarioId where b.empresaId = 1
+END //
+
+
+delimiter ;
+drop procedure RegistraYSeleccionaArmazon; 
+delimiter //
+CREATE PROCEDURE RegistraYSeleccionaArmazon(in MarcaID int, in ColorID int, in TamanioID int, in ModeloID int, in _DetalleEnArmazon varchar(35))
+BEGIN
+	insert into armazones (MarcaID, ColorID, TamanioID, ModeloID, DetalleEnArmazon ) values (marcaID, ColorID, TamanioID, ModeloID, _DetalleEnArmazon);
+    select ArmazonID from Armazones order by armazonID desc limit 1;
+END //
+delimiter ;
+
+drop PROCEDURE RegistraYSeleccionaVenta;
+delimiter //
+
+create PROCEDURE RegistraYSeleccionaVenta(in FolioExamen varchar(10),in totalVenta decimal(13, 2), in Anticipo decimal(13, 2),in Periodicidad int, in abonos decimal(13, 2), in fechaVenta date, in armazonID int, in materialID int, in proteccionID int, in lenteID int, in beneficiarioID int, in tipoVentaID int)
+BEGIN
+	select ExamenID into @ExamenID  from Examenes where folio = FolioExamen;
+    insert into Ventas (folioExamen, totalVenta, anticipo, periodicidadDias, Abonos, fechaVenta, EstaLiquidada, armazonID, materialID, ProteccionID, LenteID, BeneficiarioID, ExamenID, TipoVentaID) values (folioExamen, totalVenta, anticipo, periodicidad, abonos, fechaventa, 0, armazonID, materialID, proteccionID, lenteID, beneficiarioID, @ExamenID, tipoVentaID);
+	select ventaID from ventas order by ventaID desc limit 1;
+END //
+delimiter ;
+
+
+delimiter //
+create PROCEDURE ValidaFolio(in _FolioExamen varchar(10))
+BEGIN
+	select count(*) from ventas where FolioExamen = _FolioExamen;
+END //
+delimiter ;
+
+
+delimiter //
+create PROCEDURE desLiquidaVenta(in _ventaId int)
+BEGIN
+	update ventas set EstaLiquidada =  0 where VentaID = _ventaId;
+END //
+delimiter ;
+
+drop PROCEDURE seleccionaResumenVentasPorEmpresa;
+delimiter //
+create PROCEDURE seleccionaResumenVentasPorEmpresa(in _empresaId int)
+BEGIN
+		select v.ventaId as VentaId, v.TipoVentaID as Tipo, v.FolioExamen, b.nombres as Nombres, v.EstaLiquidada as EstaLiquidada, v.fechaVenta as Fecha ,b.apellidoPaterno as Apellido, b.Ocupacion as Puesto, ex.RequiereLentes, ex.comprolentes,  m.descripcion as Material, p.descripcion as Proteccion, t.descripcion as Lente, v.totalventa as Total, v.anticipo as Aticipo, v.abonos as Abonos from ventas v inner join beneficiarios b on v.beneficiarioId = b.beneficiarioId inner join materiales m on v.materialId = m.materialId inner join protecciones p on v.proteccionId = p.proteccionId inner join tipolente t on v.lenteId = t.lenteId left join examenes ex on v.examenId= ex.ExamenId where b.empresaId = _empresaId;
+END //
+delimiter ;
+
+drop PROCEDURE registraAbono;
+delimiter //
+create PROCEDURE registraAbono(in _ventaId int, in _monto decimal(13,2), in _fechaAbono date, in _nombre varchar(50))
+BEGIN
+	insert into abonos (ventaId, monto, fechaAbono, fechaRegistro, RegistradoPor) values (_ventaId, _monto, _fechaAbono, curdate(), _nombre);
+END //
+delimiter ;
+
+delimiter //
+create PROCEDURE SeleccionaNombreConToken(in _token varchar(50))
+BEGIN
+	select userName from users where token = _token;
+END //
+delimiter ;
+delimiter //
+create PROCEDURE Admin(in _token varchar(50))
+BEGIN
+	select Admin from users where token = _token;
+END //
+delimiter ;
+
+drop procedure SeleccionaMarcas;
+
+delimiter //
+CREATE PROCEDURE SeleccionaMarcas()
+BEGIN
+	select * from marcasarmazones where EstaActivo = 1;
+END //
+
+delimiter //
+CREATE PROCEDURE PuedeBorrar(in _ventaId int)
+BEGIN
+	select count(*) as total from abonos where ventaID= _ventaId;
+END //
+delimiter ;
+
+
+delimiter //
+CREATE PROCEDURE BorraVenta(in _ventaId int)
+BEGIN
+	delete from ventas where ventaID= _ventaId;
+END //
+delimiter ;
+

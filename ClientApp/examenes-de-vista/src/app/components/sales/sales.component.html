@@ -1,0 +1,300 @@
+<div class="row align-items-center">
+  <div class="col-sm-6">
+    <h3>Registra una venta</h3>
+
+    <div class="form-group">
+      <label for="">Beneficiario</label>
+      <select required [(ngModel)]="beneficiarioId" name="beneficiario" class="form-control" *ngIf="folios">Folio
+        <option *ngFor="let beneficiario of beneficiarios" [value]="beneficiario.BeneficiarioID">
+          {{beneficiario.Nombres}} {{beneficiario.ApellidoPaterno}} {{beneficiario.ApellidoMaterno}}</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="">Folio</label>
+      <select required [(ngModel)]="folio" name="folio" class="form-control" *ngIf="folios">Folio
+        <option *ngFor="let folio of folios.Folios" [value]="folio.folio">{{folio.folio}}</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="">Tipo de venta</label>
+      <select required [(ngModel)]="tipoVenta" name="tipo" class="form-control" *ngIf="folios">Folio
+        <option *ngFor="let tipo of tiposVenta" [value]="tipo.value">{{tipo.label}}</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="">Monto total</label>
+      <input [(ngModel)]="montoTotal" name="total" required class="form-control" type="number" min="1">
+    </div>
+    <div class="form-group">
+      <label for="">Anticipo</label>
+      <input required [(ngModel)]="anticipo" class="form-control" type="number" name="anticipo" min="0">
+    </div>
+    <div class="form-group">
+      <label for="">Periodicidad de pagos (Días)</label>
+      <input required [(ngModel)]="periodicidad" name="periodicidad" class="form-control" type="number" min="1">
+    </div>
+    <div class="form-group">
+      <label for="">Monto de Abonos</label>
+      <input required [(ngModel)]="montoAbonos" name="montoAbonos" class="form-control" type="number" min="0">
+    </div>
+    <div class="form-group">
+      <label for="">Fecha de venta</label>
+      <input required class="form-control" [(ngModel)]="fechaExamen" name="fecha" type="date" min="0">
+    </div>
+    <div class="form-group">
+      <label for="">Material</label>
+      <select required [(ngModel)]="materialId" name="lenteId" class="form-control" *ngIf="materiales">Folio
+        <option *ngFor="let item of materiales" [value]="item.MaterialID">{{item.Descripcion}}</option>
+      </select>
+    </div>
+  </div>
+  <div class="col-sm-6">
+    <div class="form-group">
+      <label for="">Protección</label>
+      <select required [(ngModel)]="proteccionId" name="proteccionId" class="form-control" *ngIf="protecciones">Folio
+        <option *ngFor="let item of protecciones" [value]="item.ProteccionID">{{item.Descripcion}}</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="">Lente</label>
+      <select required [(ngModel)]="lenteId" name="lenteId" class="form-control" *ngIf="lentes">Folio
+        <option *ngFor="let item of lentes" [value]="item.LenteID">{{item.Descripcion}}</option>
+      </select>
+    </div>
+
+    <h5>Detalles de armazón para venta</h5>
+
+    <div class="form-group">
+      <label for="">Descripción (Nombre, Detalles, Observaciones)</label>
+      <input [(ngModel)]="descArmazon" name="descripcion" type="text" maxlength="35" class="form-control">
+    </div>
+    <div class="form-group">
+      <label for="">Marca</label>
+      <select [(ngModel)]="marcaId" class="form-control" name="marcaId" *ngIf="marcas">
+        <option *ngFor="let item of marcas" [value]="item.MarcaID">{{item.Descripcion}}</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="">Color</label>
+      <select [(ngModel)]="colorId" class="form-control" name="colorId" *ngIf="colores">Folio
+        <option *ngFor="let item of colores" [value]="item.ColorID">{{item.Descripcion}}</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="">Tamaño</label>
+      <select [(ngModel)]="tamanioId" class="form-control" name="tamanio" *ngIf="tamanios">Folio
+        <option *ngFor="let item of tamanios" [value]="item.TamanioID">{{item.Descripcion}}</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="">Modelo</label>
+      <select [(ngModel)]="modeloId" class="form-control" name="modelo" *ngIf="modelos">Folio
+        <option *ngFor="let item of modelos" [value]="item.ModeloID">{{item.Descripcion}}</option>
+      </select>
+    </div>
+
+    <br>
+    <button (click)="RegisterSale()" class="btn btn-primary">Registra venta</button>
+  </div>
+</div>
+<hr>
+<h3>Ventas</h3>
+<div class="row">
+  <div class="col-md-5">
+    <div class="form-group">
+      <label for="">Folio a buscar</label>
+      <input [(ngModel)]="folioSearch" (ngModelChange)="searchFolio()" name="folio-search" type="text"
+        class="form-control">
+    </div>
+  </div>
+  <div class="col-md-5">
+    <div class="form-group">
+      <label for="">Busca por ID</label>
+      <input [(ngModel)]="idSearch" (ngModelChange)="searchId()" name="id-search" type="number" class="form-control">
+    </div>
+  </div>
+  <div class="col-md-2">
+    <br>
+      <input class="form-check-input" [(ngModel)]="liquidadas" (ngModelChange)="paidSalesSwitch()" name="liquidada" type="checkbox">
+      <label for="">Ventas liquidadas</label>
+  </div>
+  <div class="col-md-12">
+    <div class="table-responsive">
+      <table *ngIf="resumenVentasMirror" class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Venta Id</th>
+            <th scope="col">Folio Examen</th>
+            <th scope="col">Nombres</th>
+            <th scope="col">Apellido</th>
+            <th scope="col">Puesto</th>
+            <th scope="col">Requiere lentes</th>
+            <th scope="col">Compró lentes</th>
+            <th scope="col">Material</th>
+            <th scope="col">Protección</th>
+            <th scope="col">Lente</th>
+            <th scope="col">Total</th>
+            <th scope="col">Método de pago</th>
+            <th scope="col">Anticipo</th>
+            <th scope="col">Abonos de</th>
+            <th scope="col">Está liquidada</th>
+            <th scope="col">Fecha</th>
+            <th scope="col">Historial de Abonos</th>
+            <th scope="col">Detalles de armazón de la venta</th>
+            <th scope="col">Borrar Venta</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let venta of resumenVentasMirror.Ventas">
+            <td>{{venta.VentaId}}</td>
+            <td>{{venta.FolioExamen}}</td>
+            <td>{{venta.Nombres}}</td>
+            <td>{{venta.Apellido}}</td>
+            <td>{{venta.Puesto}}</td>
+            <td>{{venta.RequiereLentes===1?'Sí': 'No'}}</td>
+            <td>{{venta.comprolentes===1?'Sí': 'No'}}</td>
+            <td>{{venta.Material}}</td>
+            <td>{{venta.Proteccion}}</td>
+            <td>{{venta.Lente}}</td>
+            <td>{{venta.Total | currency}}</td>
+            <td>{{venta.Tipo ===1? 'Efectivo' : 'Tarjeta'}}</td>
+            <td>{{venta.Aticipo | currency}}</td>
+            <td>{{venta.Abonos | currency}}</td>
+            <td>{{venta.EstaLiquidada === 1?'Sí':'No'}}</td>
+            <td>{{venta.Fecha | date:'dd/MM/yyyy'}}</td>
+            <td><button type="button" (click)="setCurrentVentaId(venta.VentaId)" class="btn btn-success"
+                data-toggle="modal" data-target="#exampleModal">Abonos</button>
+            </td>
+            <td><button (click)="GetArmazonDetails(venta.VentaId)" class="btn btn-info" data-toggle="modal" data-target="#modalArmazon">Armazón</button></td>
+            <td><button (click)="DeleteSale(venta.VentaId)" class="btn btn-danger">Borrar</button></td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="text-center" *ngIf="resumenVentasMirror.Ventas.length === 0">No se han encontrado ventas</p>
+    </div>
+  </div>
+</div>
+<hr>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Abonos</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-sm-6">
+            <h4>Total abonado: {{totalAbonado | currency}}</h4>
+          </div>
+          <div class="col-sm-6">
+            <h4>Saldo pendiente: {{saldoPendiente | currency}}</h4>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label for="">Monto a registrar</label>
+              <input min="1" [(ngModel)]="montoARegistrar" name="monto-registro" class="form-control" type="number">
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label for="">Fecha de abono</label>
+              <input class="form-control" [(ngModel)]="fechaAbono" type="date" name="fecha-registrar" id="">
+            </div>
+          </div>
+          <div class="col-sm-12">
+            <button class="btn btn-success" (click)="paymentRegistration()">Registra Abono</button>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-sm-12">
+            <h4>Historial</h4>
+          </div>
+          <div *ngIf="abonosList" class="table-responsive">
+            <h5 style="margin-left: 20px;" *ngIf="abonosList.length === 0">Aún no hay abonos registrados</h5>
+            <table *ngIf="abonosList.length > 0" class="table table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">Monto</th>
+                  <th scope="col">Fecha de abono</th>
+                  <th scope="col">Fecha de registro</th>
+                  <th scope="col">Registrado por</th>
+                  <th scope="col">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let abono of abonosList">
+                  <td>{{abono.Monto | currency}}</td>
+                  <td>{{abono.FechaAbono | date:'dd/MM/yyyy'}}</td>
+                  <td>{{abono.FechaRegistro | date:'dd/MM/yyyy'}}</td>
+                  <td>{{abono.RegistradoPor}}</td>
+                  <td><button (click)="DeletePayment(abono.AbonoID)" class="btn btn-danger">Borrar</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" #closeModal class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <button *ngIf="currentVenta" type="button" (click)="MarkAsPaid((currentVenta.EstaLiquidada === 0))"
+          class="btn btn-primary">Marcar como {{currentVenta.EstaLiquidada === 1? 'no liquidada':'liquidada'}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalArmazon" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Armazón</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-sm-12">
+            <div *ngIf="armazonDetails" class="table-responsive">
+              <h5 style="margin-left: 20px;" *ngIf="abonosList.length === 0">Aún no hay abonos registrados</h5>
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th scope="col">Marca</th>
+                    <th scope="col">Color</th>
+                    <th scope="col">Tamaño</th>
+                    <th scope="col">Modelo</th>
+                    <th scope="col">Detalle</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>{{armazonDetails.Marca}}</td>
+                    <td>{{armazonDetails.Color}}</td>
+                    <td>{{armazonDetails.Tamanio}}</td>
+                    <td>{{armazonDetails.Modelo}}</td>
+                    <td>{{armazonDetails.Detalle}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" #closeModal class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>

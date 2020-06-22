@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { IResumenExamenes } from 'src/app/Interfaces/examenInterface';
 import { AppSettings } from 'src/app/core/constants';
 import { TokenService } from '../token/token.service';
+import { IFolios } from 'src/app/Interfaces/foliosInterface';
 
 export interface IExamenResponse{
   ExamenID: number;
@@ -46,5 +47,10 @@ export class ExamenesService {
   async GetByFolio(folio: string): Promise<IExamenResponse>{
     const url = AppSettings.BASE_ADDRESS + 'examenes/folio/'+ folio +'?token=' + this.tokenService.GetToken();
     return await this.httpClient.get<IExamenResponse>(url).toPromise();  
+  }
+
+  GetFolioByEmpresa(EmpresaId: number): Observable<IFolios>{
+    const url = AppSettings.BASE_ADDRESS +'empresas/' + EmpresaId+'/examenes/folios?token=' + this.tokenService.GetToken();
+    return this.httpClient.get<IFolios>(url);
   }
 }
