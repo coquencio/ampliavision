@@ -359,9 +359,9 @@ END //
 delimiter ;
 
 delimiter //
-create PROCEDURE registraAbono(in _ventaId int, in _monto decimal(13,2), in _fechaAbono date)
+create PROCEDURE registraAbono(in _ventaId int, in _monto decimal(13,2), in _fechaAbono date, in _nombre varchar(50))
 BEGIN
-	insert into abonos (ventaId, monto, fechaAbono, fechaRegistro) values (_ventaId, _monto, _fechaAbono, curdate());
+	insert into abonos (ventaId, monto, fechaAbono, fechaRegistro, RegistradoPor) values (_ventaId, _monto, _fechaAbono, curdate(), _nombre);
 END //
 delimiter ;
 delimiter //
@@ -505,3 +505,64 @@ BEGIN
 	select count(*) from ventas where FolioExamen = _FolioExamen;
 END //
 delimiter ;
+
+
+delimiter //
+create PROCEDURE desLiquidaVenta(in _ventaId int)
+BEGIN
+	update ventas set EstaLiquidada =  0 where VentaID = _ventaId;
+END //
+delimiter ;
+
+drop PROCEDURE seleccionaResumenVentasPorEmpresa;
+delimiter //
+create PROCEDURE seleccionaResumenVentasPorEmpresa(in _empresaId int)
+BEGIN
+		select v.ventaId as VentaId, v.TipoVentaID as Tipo, v.FolioExamen, b.nombres as Nombres, v.EstaLiquidada as EstaLiquidada, v.fechaVenta as Fecha ,b.apellidoPaterno as Apellido, b.Ocupacion as Puesto, ex.RequiereLentes, ex.comprolentes,  m.descripcion as Material, p.descripcion as Proteccion, t.descripcion as Lente, v.totalventa as Total, v.anticipo as Aticipo, v.abonos as Abonos from ventas v inner join beneficiarios b on v.beneficiarioId = b.beneficiarioId inner join materiales m on v.materialId = m.materialId inner join protecciones p on v.proteccionId = p.proteccionId inner join tipolente t on v.lenteId = t.lenteId left join examenes ex on v.examenId= ex.ExamenId where b.empresaId = _empresaId;
+END //
+delimiter ;
+
+drop PROCEDURE registraAbono;
+delimiter //
+create PROCEDURE registraAbono(in _ventaId int, in _monto decimal(13,2), in _fechaAbono date, in _nombre varchar(50))
+BEGIN
+	insert into abonos (ventaId, monto, fechaAbono, fechaRegistro, RegistradoPor) values (_ventaId, _monto, _fechaAbono, curdate(), _nombre);
+END //
+delimiter ;
+
+delimiter //
+create PROCEDURE SeleccionaNombreConToken(in _token varchar(50))
+BEGIN
+	select userName from users where token = _token;
+END //
+delimiter ;
+delimiter //
+create PROCEDURE Admin(in _token varchar(50))
+BEGIN
+	select Admin from users where token = _token;
+END //
+delimiter ;
+
+drop procedure SeleccionaMarcas;
+
+delimiter //
+CREATE PROCEDURE SeleccionaMarcas()
+BEGIN
+	select * from marcasarmazones where EstaActivo = 1;
+END //
+
+delimiter //
+CREATE PROCEDURE PuedeBorrar(in _ventaId int)
+BEGIN
+	select count(*) as total from abonos where ventaID= _ventaId;
+END //
+delimiter ;
+
+
+delimiter //
+CREATE PROCEDURE BorraVenta(in _ventaId int)
+BEGIN
+	delete from ventas where ventaID= _ventaId;
+END //
+delimiter ;
+

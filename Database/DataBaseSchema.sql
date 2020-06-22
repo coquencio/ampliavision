@@ -246,3 +246,11 @@ add COLUMN TipoVentaID INT;
 ALTER TABLE ventas
 add constraint TipoVenta
 Foreign key(TipoVentaID) references TipoVenta(TipoVentaID);
+
+
+ALTER TABLE abonos
+add COLUMN RegistradoPor Varchar(50);
+
+
+ALTER TABLE users
+add COLUMN Admin INT;

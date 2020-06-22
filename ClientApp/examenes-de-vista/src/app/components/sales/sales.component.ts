@@ -9,6 +9,10 @@ import { GeneralService } from 'src/app/services/general/general.service';
 import { ArmazonesService } from 'src/app/services/armazones/armazones.service';
 import { IBeneficiario } from 'src/app/Interfaces/beneficiariosInterface';
 import { BeneficiarioService } from 'src/app/services/beneficiarios/beneficiario.service';
+import { IResumenVentas, IVenta } from 'src/app/Interfaces/resumenVentasInterface';
+import { IAbono } from 'src/app/Interfaces/abonosInterface';
+import { IVentaResponse } from 'src/app/Interfaces/ventaResponseInterface';
+import { IArmazonResponse } from 'src/app/Interfaces/armazonResponseInterface';
 
 @Component({
   selector: 'app-sales',
@@ -51,6 +55,27 @@ export class SalesComponent implements OnInit {
   tipoVenta: number;
   beneficiarioId: number;
 
+  //Ventas Resumen
+  resumenVentas: IResumenVentas;
+  resumenVentasMirror: IResumenVentas;
+  folioSearch: string;
+  idSearch: number;
+
+  fechaAbono:string;
+  montoARegistrar: number;
+
+  currentVentaId: number;
+
+  //
+  abonosList: IAbono[];
+  totalAbonado: number;
+  saldoPendiente: number;
+
+  currentVenta: IVenta;
+
+  liquidadas:boolean = false;
+  armazonDetails: IArmazonResponse;
+
   constructor(
     private readonly ExamenesService: ExamenesService,
     store: Store<any>,
@@ -81,6 +106,7 @@ export class SalesComponent implements OnInit {
     this.generalService.Get('tamanios').subscribe(r => this.tamanios = r.tamanios);    
     this.generalService.Get('modelos').subscribe(r => this.modelos = r.modelos);    
     this.beneficiarioService.GetByEmpresa(this.currentEmpresaId).subscribe(r=> this.beneficiarios= r.Beneficiarios);
+    this.populateVentas();
   }
 
   async RegisterSale(){
@@ -154,9 +180,147 @@ export class SalesComponent implements OnInit {
         this.modeloId = undefined;
         this.descArmazon = undefined;
         this.beneficiarioId = undefined;
+        this.populateVentas();
+
       },
       err => window.alert(err.error)
       );
   }
 
+  searchFolio(): void{
+    this.resumenVentasMirror.Ventas = [];
+    const criteria = this.liquidadas? 1:0;
+    if (this.folioSearch !== undefined && this.folioSearch !== ''){
+      this.resumenVentas.Ventas.forEach(v => {
+        if (v.FolioExamen.includes(this.folioSearch) && v.EstaLiquidada === criteria ) this.resumenVentasMirror.Ventas.push(v);
+      });
+    }
+    else{
+      this.resumenVentas.Ventas.forEach(v => {if(v.EstaLiquidada === criteria ) this.resumenVentasMirror.Ventas.push(v);});
+    } 
+  }
+  searchId(): void{
+    this.resumenVentasMirror.Ventas = [];
+    const criteria = this.liquidadas? 1:0;
+    if (this.idSearch !== undefined && this.idSearch !== 0 && this.idSearch !== null){
+      this.resumenVentas.Ventas.forEach(v => {
+        if (v.VentaId.toString().includes(this.idSearch.toString()) && v.EstaLiquidada === criteria ) this.resumenVentasMirror.Ventas.push(v);
+      });  
+    }
+    else{
+      this.resumenVentas.Ventas.forEach(v => {if (v.EstaLiquidada === criteria) this.resumenVentasMirror.Ventas.push(v);});
+    } 
+  }
+  setCurrentVentaId(id: number){
+    this.currentVentaId = id;
+    this.currentVenta = this.resumenVentas.Ventas.find(v=>v.VentaId === id);
+    this.getAbonosList(this.currentVentaId);
+  }
+  paymentRegistration(){
+    if (!this.montoARegistrar || this.montoARegistrar === 0){
+      window.alert('Introduce un valor válido en el monto');
+      return;
+    }
+    if (!this.fechaAbono){
+      window.alert('Introduce una fecha');
+      return;
+    }
+
+    this.SalesService.PaymentRegistration(this.currentVentaId, this.montoARegistrar, this.fechaAbono).subscribe(
+      () => {
+        this.getAbonosList(this.currentVentaId);
+        this.montoARegistrar = undefined;
+        this.fechaAbono = undefined;
+        window.alert('Abono registrado satisfactoriamente');
+      },
+      err => window.alert(err.error)
+    );
+  }
+  private getAbonosList(ventaId: number){
+    this.SalesService.GetPaymentsBySale(ventaId).subscribe(
+      r=> {
+        this.abonosList = r;
+        this.totalAbonado = 0;
+        this.abonosList.forEach(a=> this.totalAbonado = this.totalAbonado + a.Monto);
+        this.pendingBalance();
+      },
+      ()=>{
+        this.abonosList = [];
+        this.totalAbonado = 0;
+        this.pendingBalance();
+      }
+    );
+  }
+
+  private pendingBalance(){
+    const currentSale = this.resumenVentasMirror.Ventas.find(v=> v.VentaId === this.currentVentaId);
+    this.saldoPendiente = (currentSale.Total - this.totalAbonado - currentSale.Aticipo ); 
+  }
+
+  DeletePayment(abonoId: number){
+    if (window.confirm('¿Estás seguro que deseas eliminar este abono?')){
+      this.SalesService.DeletePament(abonoId).subscribe(
+        r => {
+          this.getAbonosList(this.currentVentaId);
+          window.alert(r);
+        },
+        err => window.alert(err.error)
+        );
+    }
+  }
+
+  MarkAsPaid(isPaying: boolean = true){
+    this.SalesService.MarkAsPaid(this.currentVentaId, isPaying).subscribe(
+      r=> {
+        window.alert(r);
+        this.currentVenta.EstaLiquidada = isPaying? 1:0;
+        this.populateVentas();
+      },
+      err => window.alert(err.error)
+    );
+  }
+  paidSalesSwitch(){
+    const criteria = this.liquidadas?1:0;
+    this.resumenVentasMirror.Ventas = [];
+    this.resumenVentas.Ventas.forEach(
+      v=> {
+        if(v.EstaLiquidada === criteria){
+        this.resumenVentasMirror.Ventas.push(v);  
+      }
+    }
+    );
+  }
+
+  DeleteSale(ventaId: number){
+  if(window.confirm('¿Estás seguro que deseas borrar esta venta?, esta acción sólo debe de realizarse cuando se capturaron mal datos de la venta y que dicha aún no tenga abonos registrados')){
+    this.SalesService.DeleteSale(ventaId).subscribe(
+      r=>{
+        window.alert(r);
+        this.populateVentas();
+      },
+      err=>window.alert(err.error)
+    );
+  }
+  }
+  GetArmazonDetails(ventaId: number){
+    this.armazonDetails = null;
+    this.SalesService.ArmazonDetails(ventaId).subscribe(r=>{
+      this.armazonDetails = r;
+    });
+  }
+
+  private populateVentas(){
+    this.SalesService.GetSalesByEmpresa(this.currentEmpresaId).subscribe( r => {
+      this.resumenVentas = r; 
+      this.resumenVentasMirror = {Ventas: []};
+      this.resumenVentas.Ventas.forEach(v => {
+      const criteria = this.liquidadas?1:0;
+        if(v.EstaLiquidada === criteria){
+          this.resumenVentasMirror.Ventas.push(v);
+        }
+      });
+    });
+    this.folioSearch = '';
+    this.idSearch = null;
+  }
 }

@@ -12,6 +12,11 @@ class SpUsers:
     # Token
     Authorize = 'validaToken'
 
+    # Token
+    Get_name = "SeleccionaNombreConToken"
+
+    # Token
+    Is_Admin = "Admin"
 
 class SpEmpresas:
     # Nombre
@@ -228,6 +233,7 @@ class SpVentas:
     # Venta Id
     # Monto
     # Fecha abono
+    # Registrado por
     Bill_registration = "registraAbono"
 
     # Venta Id
@@ -244,6 +250,18 @@ class SpVentas:
 
     # Folio
     Validate_folio = "ValidaFolio"
+
+    # Venta Id
+    Mark_as_unpaid = "desLiquidaVenta"
+
+    # Venta Id
+    Mark_as_paid = "liquidaVenta"
+
+    # Venta Id
+    Can_delete = "PuedeBorrar"
+
+    # Venta Id
+    Delete = "BorraVenta"
 
 
 class SpCasosIso:

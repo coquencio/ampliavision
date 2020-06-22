@@ -67,7 +67,8 @@ def register_payment(venta_id):
         data = request.get_json()
         monto = data['Monto']
         fecha = data['FechaAbono']
-        venta_service.payment_register(venta_id, monto, fecha)
+        name = user_service.get_name(token)
+        venta_service.payment_register(venta_id, monto, fecha, name)
         return Response(status=201, response="Abono creado")
     except ValueError as err:
         return Response(status=400, response=err.args)
@@ -86,4 +87,50 @@ def get_abonos(venta_id):
             return Response(status=404, response="No hay abonos aún")
         return data
     except ValueError as err:
+        return Response(status=400, response=err.args)
+
+@VentaController.route('/api/ventas/<int:venta_id>/paid/<int:paying>', methods=['POST'])
+def mark_as_paid(venta_id, paying):
+    try:
+        token = request.args.get('token')
+        if not token:
+            return Response(status=401)
+        if not user_service.token_validation(token):
+            return Response(status=401)
+        if paying == 1:
+            venta_service.paid_switch(venta_id)
+        else:
+            venta_service.paid_switch(venta_id, False)
+        return Response(status=201, response="Venta actualizada")
+    except ValueError as err:
+        return Response(status=400, response=err.args)
+
+@VentaController.route('/api/abono/<int:abono_id>', methods=['DELETE'])
+def delete_payment (abono_id):
+    try:
+        token = request.args.get('token')
+        if not token:
+            return Response(status=401)
+        if not user_service.token_validation(token):
+            return Response(status=401)
+
+        venta_service.delete_payment(abono_id, token)
+        return Response(status=201, response="Pago eliminado")
+    except ValueError as err:
+        return Response(status=400, response=err.args)
+
+@VentaController.route('/api/ventas/<int:venta_id>', methods=['DELETE'])
+def delete_sale(venta_id):
+    try:
+        token = request.args.get('token')
+        if not token:
+            return Response(status=401)
+        if not user_service.token_validation(token):
+            return Response(status=401)
+
+        venta_service.delete_sale(venta_id)
+        return Response(status=201, response="Venta eliminada")
+    except ValueError as err:
+        return Response(status=400, response=err.args)
+    except AttributeError as err:
         return Response(status=400, response=err.args)
