@@ -569,7 +569,7 @@ delimiter ;
 delimiter //
 CREATE PROCEDURE SeleccionaResumentVentas (in _empresaid int)
 BEGIN
-	select sum(v.TotalVenta) as Total, sum(v.Anticipo) as Anticipos from ventas v inner join beneficiarios b on v.BeneficiarioID = b.BeneficiarioID where b.empresaID = _empresaid;
+	select sum(v.TotalVenta) as Total, sum(v.Anticipo) as Anticipos from ventas v inner join beneficiarios b on v.BeneficiarioID = b.BeneficiarioID where b.empresaID = _empresaid and v.EstaLiquidada = 0;
 END //
 delimiter ;
 
@@ -579,4 +579,17 @@ BEGIN
 	select sum(monto) as Montos from abonos a inner join ventas v on a.VentaID = v.VentaID inner join beneficiarios b on b.BeneficiarioID = v.BeneficiarioID where b.EmpresaID = _empresaid;
 END //
 delimiter ;
+drop PROCEDURE SelectSaldoVenta
+delimiter //
+create PROCEDURE SelectSaldoVenta(in _ventaId int)
+BEGIN
+	select (totalVenta - anticipo) as total from ventas where ventaId = _ventaId;
+END //
+delimiter ;
 
+delimiter //
+create PROCEDURE SeleccionaBeneficiaroPorFolio(in _folio varchar(50))
+BEGIN
+select BeneficiarioID from examenes where Folio = _folio;
+END //
+delimiter ;

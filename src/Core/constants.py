@@ -108,6 +108,9 @@ class SpExamen:
     # Empresa Id
     Get_folios = "RegresaFolios"
 
+    # Folio
+    Get_beneficiario_by_folio = "SeleccionaBeneficiaroPorFolio"
+
 
 class SpMarcas:
     # Descripcion

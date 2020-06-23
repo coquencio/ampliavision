@@ -72,3 +72,9 @@ class ExamenService:
         data = self.__sql_helper.sp_get(SpExamen.Get_folios, args)
         return serialize_data_set(data, "Folios")
 
+    def get_beneficiario_by_folio(self, folio):
+        folio = self.__string_helper.build_string(folio)
+        args = (folio, )
+        data = self.__sql_helper.sp_get(SpExamen.Get_beneficiario_by_folio, args, True)
+        return serialize_data_set(data)
+

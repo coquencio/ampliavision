@@ -16,7 +16,7 @@ import { ExamenesComponent } from './components/examenes/examenes.component';
 import { ExamenUpdateComponent } from './components/examen-update/examen-update.component';
 import { ProductsComponent } from './components/products/products.component';
 import { SalesComponent } from './components/sales/sales.component';
-import { ChartsComponent } from './charts/charts.component';
+import { ChartsComponent } from './components/charts/charts.component';
 
 @NgModule({
   declarations: [

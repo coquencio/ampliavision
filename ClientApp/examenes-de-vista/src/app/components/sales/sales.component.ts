@@ -13,6 +13,7 @@ import { IResumenVentas, IVenta } from 'src/app/Interfaces/resumenVentasInterfac
 import { IAbono } from 'src/app/Interfaces/abonosInterface';
 import { IVentaResponse } from 'src/app/Interfaces/ventaResponseInterface';
 import { IArmazonResponse } from 'src/app/Interfaces/armazonResponseInterface';
+import { IVentasResumen } from 'src/app/Interfaces/salesSummaryInterface';
 
 @Component({
   selector: 'app-sales',
@@ -37,6 +38,7 @@ export class SalesComponent implements OnInit {
   beneficiarios: IBeneficiario[];
 
   //For sale
+  isSelectorDisabled: boolean = false;
   marcaId: number;
   colorId: number;
   tamanioId: number;
@@ -76,13 +78,16 @@ export class SalesComponent implements OnInit {
   liquidadas:boolean = false;
   armazonDetails: IArmazonResponse;
 
+  summary: IVentasResumen;
+
   constructor(
     private readonly ExamenesService: ExamenesService,
     store: Store<any>,
     private readonly SalesService: SalesService,
     private readonly generalService: GeneralService,
     private readonly armazonService: ArmazonesService,
-    private readonly beneficiarioService: BeneficiarioService
+    private readonly beneficiarioService: BeneficiarioService,
+    private readonly examenService: ExamenesService
     
     ) { 
       store.select('empresa').subscribe(
@@ -128,7 +133,6 @@ export class SalesComponent implements OnInit {
       !this.anticipo ||
       !this.periodicidad ||
       !this.montoAbonos ||
-      !this.folio||
       !this.tipoVenta ||
       !this.beneficiarioId
     ){
@@ -148,7 +152,7 @@ export class SalesComponent implements OnInit {
     };
     const armazonResponse = await this.armazonService.registerAndGetAsync(armazon);
     const sale = {
-      Folio: this.folio,
+      Folio: !this.folio? null: this.folio,
       TotalVenta: this.montoTotal,
       Anticipo: this.anticipo,
       Periodicidad: this.periodicidad,
@@ -228,7 +232,9 @@ export class SalesComponent implements OnInit {
 
     this.SalesService.PaymentRegistration(this.currentVentaId, this.montoARegistrar, this.fechaAbono).subscribe(
       () => {
-        this.getAbonosList(this.currentVentaId);
+        if (this.saldoPendiente - this.montoARegistrar === 0)
+          this.currentVenta.EstaLiquidada = 1;
+        this.getAbonosList(this.currentVentaId); 
         this.montoARegistrar = undefined;
         this.fechaAbono = undefined;
         window.alert('Abono registrado satisfactoriamente');
@@ -322,5 +328,21 @@ export class SalesComponent implements OnInit {
     });
     this.folioSearch = '';
     this.idSearch = null;
+    this.getSummary();
+  }
+  OnFolioChange(){
+    this.isSelectorDisabled = (this.folio !== undefined && this.folio !== null && this.folio !== '')
+    if (this.isSelectorDisabled){
+      this.examenService.GetBeneficiarioIdByFolio(this.folio).subscribe(
+        r=> {
+          this.beneficiarioId = r.BeneficiarioID;
+        }
+      );
+    }
+  }
+  private getSummary(){
+    this.SalesService.GetBalanceSummary(this.currentEmpresaId).subscribe(
+      r=> this.summary = r
+    );
   }
 }

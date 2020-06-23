@@ -20,7 +20,11 @@ class VentaService:
                 or not isinstance(tipo_id, int):
             raise ValueError("Missing reference from product")
 
-        folio_examen = self.__string_helper.build_string(folio_examen)
+        if not folio_examen:
+            folio_examen = "null"
+        else:
+            folio_examen = self.__string_helper.build_string(folio_examen)
+
         fecha_venta = self.__string_helper.build_string(fecha_venta)
         total_venta = str(total_venta)
         anticipo = str(anticipo)
@@ -31,7 +35,7 @@ class VentaService:
         proteccion_id = str(proteccion_id)
         lente_id = str(lente_id)
         beneficiario_id = str(beneficiario_id)
-        tipo_id =  str(beneficiario_id)
+        tipo_id =  str(tipo_id)
         args = (folio_examen, total_venta, anticipo, periodicidad, abonos, fecha_venta, armazon_id, material_id,
                 proteccion_id, lente_id, beneficiario_id, tipo_id)
         data = self.__sql_helper.sp_get(SpVentas.Register_and_get, args, True)
@@ -83,10 +87,12 @@ class VentaService:
         total_venta = data['total']
         data = self.__sql_helper.sp_get(SpVentas.Get_abono_sum_by_venta, args, True)
         if not data['sum(Monto)']:
-            return True
+            data['sum(Monto)'] = 0
 
         total_abonos = float(data['sum(Monto)'])
         total_abonos = total_abonos + monto
+        if total_venta == total_abonos:
+            self.paid_switch(venta_id)
         if total_venta < total_abonos:
             return False
         return True
@@ -101,7 +107,7 @@ class VentaService:
         self.__sql_helper.sp_set(SpVentas.Delete_abono, args)
 
     def is_folio_repeated(self, folio):
-        folio = self.__string_helper.build_string(folio);
+        folio = self.__string_helper.build_string(folio)
         args = (folio, )
         data = self.__sql_helper.sp_get(SpVentas.Validate_folio, args, True);
         if data['count(*)'] == 0:

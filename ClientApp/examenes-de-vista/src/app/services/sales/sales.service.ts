@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 import { IResumenVentas } from 'src/app/Interfaces/resumenVentasInterface';
 import { IAbono } from 'src/app/Interfaces/abonosInterface';
 import { IArmazonResponse } from 'src/app/Interfaces/armazonResponseInterface';
+import { IVentasResumen } from 'src/app/Interfaces/salesSummaryInterface';
 
 @Injectable({
   providedIn: 'root'
@@ -81,5 +82,10 @@ export class SalesService {
   ArmazonDetails(ventaId: number): Observable<IArmazonResponse>{
     const url = AppSettings.BASE_ADDRESS + 'ventas/'+ventaId+'/armazon?token=' + this.tokenService.GetToken();
     return this.httpClient.get<IArmazonResponse>(url);
+  }
+
+  GetBalanceSummary(empresaId): Observable<IVentasResumen>{
+    const url = AppSettings.BASE_ADDRESS + 'empresas/'+empresaId+'/ventas/resumen?token=' + this.tokenService.GetToken();
+    return this.httpClient.get<IVentasResumen>(url);
   }
 }
