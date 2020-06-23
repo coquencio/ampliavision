@@ -593,3 +593,31 @@ BEGIN
 select BeneficiarioID from examenes where Folio = _folio;
 END //
 delimiter ;
+
+delimiter //
+create PROCEDURE Chart1(in _empresaId int)
+BEGIN
+
+select count(*) as DataSet, requiereLentes, comproLentes from examenes e inner join beneficiarios b on e.BeneficiarioID = b.BeneficiarioID where b.EmpresaID = _empresaId  group by RequiereLentes , comproLentes ;
+
+END //
+delimiter ;
+
+
+delimiter //
+create PROCEDURE Chart2(in _empresaId int)
+BEGIN
+
+select count(*) as Total, s.Descripcion from examenes e inner join beneficiarios b on e.BeneficiarioID = b.BeneficiarioID inner join enfermedadesVisuales s on e.EnfermedadID = s.EnfermedadID where b.EmpresaID = _empresaId group by e.EnfermedadID;
+
+END //
+delimiter ;
+
+delimiter //
+create PROCEDURE Chart3(in _empresaId int)
+BEGIN
+
+
+	select count(*) as Total, i.Descripcion from casosPorBeneficiario c inner join casosmaterialesiso i on c.casoID=i.CasoId inner join Beneficiarios b on c.BeneficiarioID = b.BeneficiarioID where i.EstaActivo = 1 and b.EmpresaID = _empresaId  group by c.CasoID;
+END //
+delimiter ;
