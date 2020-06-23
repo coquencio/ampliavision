@@ -131,3 +131,9 @@ class VentaService:
 
         venta_id = str(venta_id)
         self.__sql_helper.sp_set(SpVentas.Delete, (venta_id,))
+
+    def get_balance_summary(self, empresa_id):
+        args = (str(empresa_id), )
+        data = self.__sql_helper.sp_get(SpVentas.Get_sales_summary, args, True)
+        data["Abonos"] = self.__sql_helper.sp_get(SpVentas.Get_payments_summary, args, True)["Montos"]
+        return serialize_data_set(data)

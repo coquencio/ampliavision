@@ -134,3 +134,16 @@ def delete_sale(venta_id):
         return Response(status=400, response=err.args)
     except AttributeError as err:
         return Response(status=400, response=err.args)
+
+@VentaController.route('/api/empresas/<int:empresa_id>/ventas/resumen', methods=['GET'])
+def get_balance_summary(empresa_id):
+    try:
+        token = request.args.get('token')
+        if not token:
+            return Response(status=401)
+        if not user_service.token_validation(token):
+            return Response(status=401)
+        return venta_service.get_balance_summary(empresa_id)
+
+    except ValueError as err:
+        return Response(status=400, response=err.args)

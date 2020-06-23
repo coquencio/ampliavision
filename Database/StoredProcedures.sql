@@ -566,3 +566,17 @@ BEGIN
 END //
 delimiter ;
 
+delimiter //
+CREATE PROCEDURE SeleccionaResumentVentas (in _empresaid int)
+BEGIN
+	select sum(v.TotalVenta) as Total, sum(v.Anticipo) as Anticipos from ventas v inner join beneficiarios b on v.BeneficiarioID = b.BeneficiarioID where b.empresaID = _empresaid;
+END //
+delimiter ;
+
+delimiter //
+CREATE PROCEDURE SeleccionaTotalAbonos(in _empresaid int)
+BEGIN
+	select sum(monto) as Montos from abonos a inner join ventas v on a.VentaID = v.VentaID inner join beneficiarios b on b.BeneficiarioID = v.BeneficiarioID where b.EmpresaID = _empresaid;
+END //
+delimiter ;
+

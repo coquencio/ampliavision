@@ -263,6 +263,12 @@ class SpVentas:
     # Venta Id
     Delete = "BorraVenta"
 
+    # Venta Id
+    Get_sales_summary = "SeleccionaResumentVentas"
+
+    # Venta Id
+    Get_payments_summary = "SeleccionaTotalAbonos"
+
 
 class SpCasosIso:
 
