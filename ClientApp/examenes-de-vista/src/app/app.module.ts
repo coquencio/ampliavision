@@ -11,12 +11,12 @@ import { reducer } from './core/state/login.reducer';
 import { ListaEmpresasComponent } from './components/lista-empresas/lista-empresas.component';
 import { reducerEmpresa } from './core/state/empresa.reducer';
 import { FormsModule } from '@angular/forms';
-import { EstatusGeneralComponent } from './components/estatus-general/estatus-general.component';
 import { DefectosVisualesComponent } from './components/defectos-visuales/defectos-visuales.component';
 import { ExamenesComponent } from './components/examenes/examenes.component';
 import { ExamenUpdateComponent } from './components/examen-update/examen-update.component';
 import { ProductsComponent } from './components/products/products.component';
 import { SalesComponent } from './components/sales/sales.component';
+import { ChartsComponent } from './charts/charts.component';
 
 @NgModule({
   declarations: [
@@ -24,12 +24,12 @@ import { SalesComponent } from './components/sales/sales.component';
     NavbarComponent,
     LoginFormComponent,
     ListaEmpresasComponent,
-    EstatusGeneralComponent,
     DefectosVisualesComponent,
     ExamenesComponent,
     ExamenUpdateComponent,
     ProductsComponent,
-    SalesComponent
+    SalesComponent,
+    ChartsComponent
   ],
   imports: [
     BrowserModule,
@@ -43,7 +43,6 @@ import { SalesComponent } from './components/sales/sales.component';
       {path: 'Login', component: LoginFormComponent},
       {path: 'Empresas', component: ListaEmpresasComponent},
       {path: 'Defectos', component: DefectosVisualesComponent},
-      {path: 'General', component: EstatusGeneralComponent},
       {path: 'Examenes', component: ExamenesComponent},
       {path: 'Examenes/Actualiza', component: ExamenUpdateComponent},
       {path: 'Productos', component: ProductsComponent},

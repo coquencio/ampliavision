@@ -292,7 +292,7 @@ export class SalesComponent implements OnInit {
   }
 
   DeleteSale(ventaId: number){
-  if(window.confirm('¿Estás seguro que deseas borrar esta venta?, esta acción sólo debe de realizarse cuando se capturaron mal datos de la venta y que dicha aún no tenga abonos registrados')){
+  if(window.confirm('¿Estás seguro que deseas borrar esta venta?, esta acción sólo debe de realizarse cuando se capturaron mal datos de la venta y que dicha venta aún no tenga abonos registrados')){
     this.SalesService.DeleteSale(ventaId).subscribe(
       r=>{
         window.alert(r);
