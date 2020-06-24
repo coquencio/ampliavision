@@ -3,6 +3,8 @@ import { IVentasChart, IGeneralChart } from 'src/app/Interfaces/chartsInterface'
 import { ChartsService } from 'src/app/services/charts/charts.service';
 import { Store } from '@ngrx/store';
 import { chartType } from 'src/app/core/enums/chartType';
+import * as jspdf from 'jspdf';    
+import html2canvas from 'html2canvas';  
 
 @Component({
   selector: 'app-charts',
@@ -19,7 +21,6 @@ export class ChartsComponent implements OnInit {
   enfermedadesData = [];
   fastSummaryData = [];
   isosData = [];
-
 
   constructor(
     private readonly chartService: ChartsService,
@@ -86,5 +87,16 @@ export class ChartsComponent implements OnInit {
       array.push({name:i.Descripcion, value:i.Total});
     });
     return array;
+  }
+  downloadAsPdf(){
+    var data = document.body;
+    html2canvas(data).then(canvas => {  
+      var imgWidth = 320;   
+      var imgHeight = canvas.height * imgWidth / canvas.width;
+      const contentDataURL = canvas.toDataURL('image/png');
+      let pdf = new jspdf('p', 'mm', 'a3');  
+      pdf.addImage(contentDataURL, -20, -22, imgWidth, imgHeight);
+      pdf.save(this.nombreEmpresa + ' Reporte de '+new Date().toISOString().slice(0,10));
+    });
   }
 }
