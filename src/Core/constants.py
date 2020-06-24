@@ -108,6 +108,9 @@ class SpExamen:
     # Empresa Id
     Get_folios = "RegresaFolios"
 
+    # Folio
+    Get_beneficiario_by_folio = "SeleccionaBeneficiaroPorFolio"
+
 
 class SpMarcas:
     # Descripcion
@@ -263,6 +266,12 @@ class SpVentas:
     # Venta Id
     Delete = "BorraVenta"
 
+    # Venta Id
+    Get_sales_summary = "SeleccionaResumentVentas"
+
+    # Venta Id
+    Get_payments_summary = "SeleccionaTotalAbonos"
+
 
 class SpCasosIso:
 
@@ -277,4 +286,15 @@ class SpCasosIso:
 
     # Relation Id
     Delete_relation = "DeleteIsoRelation"
+
+class SpCharts:
+
+    # Empresa Id
+    chart1 = "Chart1"
+
+    # Empresa Id
+    chart2 = "Chart2"
+
+    # Empresa Id
+    chart3 = "Chart3"
 

@@ -566,3 +566,58 @@ BEGIN
 END //
 delimiter ;
 
+delimiter //
+CREATE PROCEDURE SeleccionaResumentVentas (in _empresaid int)
+BEGIN
+	select sum(v.TotalVenta) as Total, sum(v.Anticipo) as Anticipos from ventas v inner join beneficiarios b on v.BeneficiarioID = b.BeneficiarioID where b.empresaID = _empresaid and v.EstaLiquidada = 0;
+END //
+delimiter ;
+
+delimiter //
+CREATE PROCEDURE SeleccionaTotalAbonos(in _empresaid int)
+BEGIN
+	select sum(monto) as Montos from abonos a inner join ventas v on a.VentaID = v.VentaID inner join beneficiarios b on b.BeneficiarioID = v.BeneficiarioID where b.EmpresaID = _empresaid;
+END //
+delimiter ;
+drop PROCEDURE SelectSaldoVenta
+delimiter //
+create PROCEDURE SelectSaldoVenta(in _ventaId int)
+BEGIN
+	select (totalVenta - anticipo) as total from ventas where ventaId = _ventaId;
+END //
+delimiter ;
+
+delimiter //
+create PROCEDURE SeleccionaBeneficiaroPorFolio(in _folio varchar(50))
+BEGIN
+select BeneficiarioID from examenes where Folio = _folio;
+END //
+delimiter ;
+
+delimiter //
+create PROCEDURE Chart1(in _empresaId int)
+BEGIN
+
+select count(*) as DataSet, requiereLentes, comproLentes from examenes e inner join beneficiarios b on e.BeneficiarioID = b.BeneficiarioID where b.EmpresaID = _empresaId  group by RequiereLentes , comproLentes ;
+
+END //
+delimiter ;
+
+
+delimiter //
+create PROCEDURE Chart2(in _empresaId int)
+BEGIN
+
+select count(*) as Total, s.Descripcion from examenes e inner join beneficiarios b on e.BeneficiarioID = b.BeneficiarioID inner join enfermedadesVisuales s on e.EnfermedadID = s.EnfermedadID where b.EmpresaID = _empresaId group by e.EnfermedadID;
+
+END //
+delimiter ;
+
+delimiter //
+create PROCEDURE Chart3(in _empresaId int)
+BEGIN
+
+
+	select count(*) as Total, i.Descripcion from casosPorBeneficiario c inner join casosmaterialesiso i on c.casoID=i.CasoId inner join Beneficiarios b on c.BeneficiarioID = b.BeneficiarioID where i.EstaActivo = 1 and b.EmpresaID = _empresaId  group by c.CasoID;
+END //
+delimiter ;
