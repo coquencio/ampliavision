@@ -17,6 +17,8 @@ import { ExamenUpdateComponent } from './components/examen-update/examen-update.
 import { ProductsComponent } from './components/products/products.component';
 import { SalesComponent } from './components/sales/sales.component';
 import { ChartsComponent } from './components/charts/charts.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 @NgModule({
   declarations: [
@@ -46,8 +48,11 @@ import { ChartsComponent } from './components/charts/charts.component';
       {path: 'Examenes', component: ExamenesComponent},
       {path: 'Examenes/Actualiza', component: ExamenUpdateComponent},
       {path: 'Productos', component: ProductsComponent},
-      {path: 'Ventas', component: SalesComponent}
-    ])
+      {path: 'Ventas', component: SalesComponent},
+      {path: 'Resumen', component: ChartsComponent},
+    ]),
+    BrowserAnimationsModule,
+    NgxChartsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
