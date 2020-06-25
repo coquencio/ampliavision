@@ -51,7 +51,7 @@
                         <th>
                             Total
                         </th>
-                        <td>{{fastSummaryData[0].value}}</td>
+                        <td>{{fastSummaryData[0] ? fastSummaryData[0].value:''}}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -81,8 +81,8 @@
     </div>
 </div>
 <hr>
-<div class="row">
+<div *ngIf="!pdfGenerating" class="row">
     <div class="col-md-12" style="text-align:center; margin-bottom: 30px">
-        <button class="btn btn-lg btn-success" (click)="downloadAsPdf()">Generar Reporte</button>
+        <button (click)="downloadAsPdfasync()" *ngIf="!pdfGenerating" class="btn btn-lg btn-success" >Generar Reporte</button>
     </div>
 </div>
