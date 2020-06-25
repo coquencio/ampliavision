@@ -1,5 +1,13 @@
-<div *ngIf="resumen" class="table-responsive">
-    <table *ngIf="resumen.Examenes.length!=0; else elseBlock" class="table table-hover table-sm">
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+            <label for="">Buscar por folio</label>
+            <input type="text" name="folio" [(ngModel)]="folio" (ngModelChange)="SearchFolio()" class="form-control">
+        </div>
+    </div>
+</div>
+<div *ngIf="resumenMirror" class="table-responsive">
+    <table *ngIf="resumenMirror.Examenes.length!=0; else elseBlock" class="table table-hover table-sm">
         <thead>
             <tr>
                 <th scope="col">Folio examen</th>
@@ -13,7 +21,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let item of resumen.Examenes">
+            <tr *ngFor="let item of resumenMirror.Examenes">
                 <th scope="row">{{item.folio}}</th>
                 <td>{{item.Nombres}}</td>
                 <td>{{item.Apellidopaterno}}</td>
@@ -28,7 +36,7 @@
     </table>
 </div>
 <ng-template #elseBlock>
-    <p>Aún no hay registros</p>
+    <p>Aún no has registrado ningún examen para esta empresa</p>
 </ng-template>
 <!-- Modal -->
 <div class="modal fade" id="isoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"

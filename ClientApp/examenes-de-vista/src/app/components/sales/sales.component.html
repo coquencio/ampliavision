@@ -100,7 +100,8 @@
 </div>
 <hr>
 <h3>Ventas</h3>
-<div class="row">
+<h5 *ngIf="!resumenVentas || resumenVentas.Ventas.length === 0">Aún no hay ventas registradas</h5>
+<div *ngIf="resumenVentas && resumenVentas.Ventas.length>0" class="row">
   <div class="col-sm-12"><h5>Resumen de ventas (Sólo se calculan las ventas por liquidarse)</h5>
   </div>
   <div *ngIf="summary" class="col-md-6">
@@ -109,7 +110,7 @@
   </div>
   <div class="col-md-6">
     <p><span style="font-weight: bold;">Total Abonos:</span> {{summary.Abonos | currency}}</p>
-    <p><span style="font-weight: bold;">Total Pendiente de cobro:</span> {{(summary.Total - summary.Anticipos - summary.Abonos) | currency}}</p> 
+    <p><span style="font-weight: bold;">Total Pendiente de cobro:</span> {{(summary.TotalFake - summary.AnticiposFake - summary.Abonos) | currency}}</p> 
   </div>
   <div class="col-md-5">
     <div class="form-group">
@@ -231,7 +232,7 @@
           </div>
           <div *ngIf="abonosList" class="table-responsive">
             <h5 style="margin-left: 20px;" *ngIf="abonosList.length === 0">Aún no hay abonos registrados</h5>
-            <table *ngIf="abonosList.length > 0" class="table table-hover">
+            <table *ngIf="abonosList.length > 0" class="table table-hover table-striped">
               <thead>
                 <tr>
                   <th scope="col">Monto</th>

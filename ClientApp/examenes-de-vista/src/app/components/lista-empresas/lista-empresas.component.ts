@@ -11,11 +11,15 @@ import { Store } from '@ngrx/store';
 export class ListaEmpresasComponent implements OnInit {
 
   empresas: IEmpresas;
+  empresasMirror: IEmpresas;
   empresaRegistration = {
     Nombre: '',
     Domicilio: '',
     Telefono: ''
   };
+  criteria : string;
+  folio: string;
+  id: number;
   @ViewChild('closeModal') private closeModal: ElementRef;
  
   constructor(
@@ -26,7 +30,13 @@ export class ListaEmpresasComponent implements OnInit {
   
   ngOnInit(): void {
     this.empresaService.GetEmpresas().subscribe(
-      r => {this.empresas = r;}
+      r => {
+        this.empresas = r;
+        this.empresasMirror = {Empresas:[]};
+        this.empresas.Empresas.forEach(
+          e=> this.empresasMirror.Empresas.push(e)
+        );
+      }
     );
   }
 
@@ -78,5 +88,61 @@ export class ListaEmpresasComponent implements OnInit {
       }
     }
     return true;
+  }
+  searchByRelation(isByFolio: boolean = true){
+    this.criteria = null;
+    if (isByFolio){
+      this.id = null;
+      if (!this.folio || this.folio === ''){
+        window.alert('Introduce un folio válido');
+        return;
+      }
+      this.empresaService.GetIdByFolio(this.folio).subscribe(
+        r=> {
+          if (r.EmpresaID){
+            this.empresasMirror.Empresas=this.empresas.Empresas.filter(e=>e.EmpresaID === r.EmpresaID);
+          }
+        },
+        ()=> window.alert('No se ha encontrado una empresa con ese folio')
+      );
+    }
+    else{
+      this.folio = null;
+      
+      if (!this.id){
+        window.alert('Introduce un id de venta válido');
+        return;
+      }
+      this.empresaService.GetIdBySale(this.id).subscribe(
+        r=> {
+            this.empresasMirror.Empresas=this.empresas.Empresas.filter(e=>e.EmpresaID === r.EmpresaID);
+        },
+        ()=> window.alert('No se ha encontrado una empresa con ese id de venta')
+      );
+    }
+  }
+  changeFolio(){
+      this.criteria = '';
+      this.searchByName();
+  }
+  
+  changeId(){
+      this.criteria = '';
+      this.searchByName();
+  }
+  searchByName(){
+    this.empresasMirror = {Empresas:[]};
+    if (!this.criteria){
+      this.empresas.Empresas.forEach(e=> this.empresasMirror.Empresas.push(e));
+    }
+    else{
+      this.empresas.Empresas.forEach(e=>
+         {
+           if (e.NombreEmpresa.toLowerCase().includes(this.criteria.toLowerCase())){
+            this.empresasMirror.Empresas.push(e);
+           }
+         }
+         );
+    }
   }
 }

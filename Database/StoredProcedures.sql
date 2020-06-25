@@ -569,7 +569,7 @@ delimiter ;
 delimiter //
 CREATE PROCEDURE SeleccionaResumentVentas (in _empresaid int)
 BEGIN
-	select sum(v.TotalVenta) as Total, sum(v.Anticipo) as Anticipos from ventas v inner join beneficiarios b on v.BeneficiarioID = b.BeneficiarioID where b.empresaID = _empresaid and v.EstaLiquidada = 0;
+	select sum(v.TotalVenta) as Total, sum(v.Anticipo) as Anticipos from ventas v inner join beneficiarios b on v.BeneficiarioID = b.BeneficiarioID where b.empresaID = _empresaid;
 END //
 delimiter ;
 
@@ -619,5 +619,25 @@ BEGIN
 
 
 	select count(*) as Total, i.Descripcion from casosPorBeneficiario c inner join casosmaterialesiso i on c.casoID=i.CasoId inner join Beneficiarios b on c.BeneficiarioID = b.BeneficiarioID where i.EstaActivo = 1 and b.EmpresaID = _empresaId  group by c.CasoID;
+END //
+delimiter ;
+delimiter //
+create PROCEDURE SeleccionaEmpresaIDPorFolio(in _folio varchar(25))
+BEGIN
+	
+select e.empresaID as EmpresaID from empresas e inner join beneficiarios b on e.EmpresaID=b.EmpresaID right join examenes x on b.BeneficiarioID = x.BeneficiarioID where x.folio = _folio;
+END //
+delimiter ;
+delimiter //
+create PROCEDURE SeleccionaEmpresaIDPorVentaID(in _ventaID int)
+BEGIN
+	
+select e.empresaID as EmpresaID from empresas e inner join beneficiarios b on e.EmpresaID=b.EmpresaID right join ventas v on b.BeneficiarioID = v.BeneficiarioID where v.ventaId = _ventaID;
+END //
+delimiter ;
+delimiter //
+CREATE PROCEDURE BalanceSinLiquidar(in _empresaid int)
+BEGIN
+	select sum(v.TotalVenta) as TotalFake, sum(v.Anticipo) as AnticiposFake from ventas v inner join beneficiarios b on v.BeneficiarioID = b.BeneficiarioID where b.empresaID = _empresaid and v.EstaLiquidada=0;
 END //
 delimiter ;
