@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-md-12"><h2>Resumen ejecutivo</h2></div>
+    <div class="col-md-12"><h2>Resumen ejecutivo para Empresa: {{nombreEmpresa}}</h2></div>
     <div *ngIf="fastSummaryData.length > 0" class="col-md-12">
         <ngx-charts-bar-horizontal [results]="fastSummaryData"
         [xAxisLabel]="'Número de beneficiarios'" 
@@ -51,7 +51,7 @@
                         <th>
                             Total
                         </th>
-                        <td>{{fastSummaryData[0].value}}</td>
+                        <td>{{fastSummaryData[0] ? fastSummaryData[0].value:''}}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -78,5 +78,11 @@
                 [gradient]="true" >
             </ngx-charts-advanced-pie-chart>
         </div>
+    </div>
+</div>
+<hr>
+<div *ngIf="!pdfGenerating" class="row">
+    <div class="col-md-12" style="text-align:center; margin-bottom: 30px">
+        <button (click)="downloadAsPdfasync()" *ngIf="!pdfGenerating" class="btn btn-lg btn-success" >Generar Reporte</button>
     </div>
 </div>

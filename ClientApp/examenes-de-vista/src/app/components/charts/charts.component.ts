@@ -3,6 +3,8 @@ import { IVentasChart, IGeneralChart } from 'src/app/Interfaces/chartsInterface'
 import { ChartsService } from 'src/app/services/charts/charts.service';
 import { Store } from '@ngrx/store';
 import { chartType } from 'src/app/core/enums/chartType';
+import * as jspdf from 'jspdf';    
+import html2canvas from 'html2canvas';  
 
 @Component({
   selector: 'app-charts',
@@ -19,7 +21,7 @@ export class ChartsComponent implements OnInit {
   enfermedadesData = [];
   fastSummaryData = [];
   isosData = [];
-
+  pdfGenerating: boolean = false;
 
   constructor(
     private readonly chartService: ChartsService,
@@ -86,5 +88,26 @@ export class ChartsComponent implements OnInit {
       array.push({name:i.Descripcion, value:i.Total});
     });
     return array;
+  }
+  async downloadAsPdfasync(){
+    this.pdfGenerating = true;
+    await this.delay(10);  //await 10 ms in order to take snapshot from screen without button
+    var navbar = document.getElementById('navbar');
+    navbar.hidden = true; // hides navbar for snapshot
+    const canvas = document.body;
+    html2canvas(canvas).then(canvas => {  
+      var imgWidth = 312 + ((canvas.width - 1349) * .225);   //was 320 -20, -22  0.117
+      var imgHeight = canvas.height * imgWidth / canvas.width;
+      const contentDataURL = canvas.toDataURL('image/png');
+      let pdf = new jspdf('p', 'mm', 'a3');  
+      pdf.addImage(contentDataURL, -20 -((canvas.width - 1349) * .117) , 0, imgWidth, imgHeight);
+      pdf.save(this.nombreEmpresa + ' Reporte de '+new Date().toISOString().slice(0,10));
+    }).finally(()=> {
+      this.pdfGenerating = false;
+      navbar.hidden = false;
+    });
+  }
+  private delay(ms: number) {
+    return new Promise( resolve => setTimeout(resolve, ms) );
   }
 }
