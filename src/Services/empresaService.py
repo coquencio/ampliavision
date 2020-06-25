@@ -31,3 +31,17 @@ class EmpresaService:
         empresas = self.__sql_helper.sp_get(SpEmpresas.Get_all)
         return serialize_data_set(empresas, "Empresas")
 
+    def get_by_folio(self, folio):
+        folio = self.__string_helper.build_string(folio)
+        args = (folio, )
+        data = self.__sql_helper.sp_get(SpEmpresas.Get_by_folio, args, True)
+        if not data:
+            return "Empresa not found"
+        return serialize_data_set(data)
+
+    def get_by_venta(self, venta_id):
+        args = (str(venta_id), )
+        data = self.__sql_helper.sp_get(SpEmpresas.Get_by_sale, args, True)
+        if not data:
+            return "Empresa not found"
+        return serialize_data_set(data)

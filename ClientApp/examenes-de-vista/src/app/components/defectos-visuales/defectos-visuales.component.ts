@@ -24,6 +24,7 @@ export class DefectosVisualesComponent implements OnInit {
 
   empresaId: number;
   resumen: IResumenExamenes;
+  resumenMirror:IResumenExamenes;
   nombreBeneficiario: string;
   beneficiarioId: number;
   isoList: IIsos;
@@ -35,10 +36,15 @@ export class DefectosVisualesComponent implements OnInit {
   'Cambio de micas',
   'Lente de contacto',
   'Accesorios'];
+  folio: string;
 
   ngOnInit(): void {
     this.examenService.GetSummaryByCompany(this.empresaId).subscribe(
-      result => {this.resumen = result;}
+      result => {
+        this.resumen = result;
+        this.resumenMirror = {Examenes:[]};
+        this.resumen.Examenes.forEach(e=> this.resumenMirror.Examenes.push(e));
+      }
     );
     this.isoService.GetIsos().subscribe(
       r => {this.isoList = r;}
@@ -76,5 +82,15 @@ export class DefectosVisualesComponent implements OnInit {
     this.isoService.DeleteIsosRelation(id).subscribe(
       () => this.populateIsosPorBeneficiario()
       );
+  }
+
+  SearchFolio(){
+    if (this.folio){
+      this.resumenMirror.Examenes = [];
+      this.resumenMirror.Examenes = this.resumen.Examenes.filter(e=>e.folio.toLowerCase().includes(this.folio.toLowerCase()));
+    }
+    else{
+      this.resumen.Examenes.forEach(e=> this.resumenMirror.Examenes.push(e));
+    }
   }
 }

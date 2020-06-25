@@ -29,6 +29,11 @@ class SpEmpresas:
 
     Get_all = "seleccionaEmpresas"
 
+    # Folio
+    Get_by_folio ="SeleccionaEmpresaIDPorFolio"
+
+    # Folio
+    Get_by_sale ="SeleccionaEmpresaIDPorVentaID"
 
 class SpBeneficiario:
     # Nombres
@@ -271,6 +276,9 @@ class SpVentas:
 
     # Venta Id
     Get_payments_summary = "SeleccionaTotalAbonos"
+
+    # Venta Id
+    Get_real_balance="BalanceSinLiquidar"
 
 
 class SpCasosIso:

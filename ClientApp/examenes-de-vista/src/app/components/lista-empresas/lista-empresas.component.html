@@ -4,6 +4,35 @@
 </button>
 <br>
 <br>
+<h6 *ngIf="empresas && empresas.Empresas.length === 0">Parece ser que aún no has registrado empresas</h6>
+<div *ngIf="empresas && empresas.Empresas.length>0" class="row">
+<div class="col-md-12">
+  <div class="form-group">
+    <label for="">Buscar empresa por nombre</label>
+    <input placeholder="Nombre de la empresa" type="text" [(ngModel)]="criteria" (ngModelChange)="searchByName()" class="form-control">
+  </div>
+</div>
+<div class="col-md-6">
+  <div class="form-group">
+    <label for="">Busca empresa por un Folio perteneciente a esta</label>
+    <input placeholder="folio de examen" type="text" [(ngModel)]="folio" (ngModelChange)="changeFolio()" class="form-control">
+    <br>
+    <button class="btn btn-sm btn-success" (click)="searchByRelation()">Buscar</button>
+  </div>
+</div>
+<div class="col-md-6">
+  <div class="form-group">
+    <label for="">Busca empresa por un ID de venta perteneciente a esta</label>
+    <input placeholder="Id de venta" type="number" min="1" [(ngModel)]="id" (ngModelChange)="changeId()" class="form-control">
+    <br>
+    <button class="btn btn-sm btn-success" (click)="searchByRelation(false)">Buscar</button>
+  </div>
+</div>
+
+
+
+<div class="table-responsive">
+  <h6>Simplemente has click sobre la empresa con la que quieras empezar a trabajar y las opciones aparecerán en la barra de navegación</h6>
 <table class="table table-hover table-sm">
     <thead>
       <tr>
@@ -13,8 +42,8 @@
         <th scope="col">Telefono</th>
       </tr>
     </thead>
-    <tbody *ngIf="empresas">
-      <tr *ngFor="let empresa of empresas.Empresas" (click)="setEmpresa(empresa.EmpresaID, empresa.NombreEmpresa)">
+    <tbody *ngIf="empresasMirror">
+      <tr *ngFor="let empresa of empresasMirror.Empresas" (click)="setEmpresa(empresa.EmpresaID, empresa.NombreEmpresa)">
         <th scope="row">{{empresa.EmpresaID}}</th>
         <td>{{empresa.NombreEmpresa}}</td>
         <td>{{empresa.Domicilio}}</td>
@@ -22,7 +51,8 @@
       </tr>
     </tbody>
   </table>
-
+</div>
+</div>
   
   <!-- Modal -->
   <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

@@ -41,7 +41,12 @@
         <div class="col">
             <div class="table-responsive">
                 <h5>Empleados de {{nombreEmpresa}}</h5>
-                <table *ngIf="beneficiariosEmpresa" class="table table-hover">
+                <p *ngIf="beneficiariosEmpresa && beneficiariosEmpresa.Beneficiarios.length === 0">Aún no hay registros</p>
+                <div *ngIf="beneficiariosEmpresa  && beneficiariosEmpresa.Beneficiarios.length > 0" class="form-group">
+                    <label for="">Busca por nombres y apellidos</label>
+                    <input type="text" [(ngModel)]="criteria" (ngModelChange)="SearchByNames()" class="form-control">
+                </div>
+                <table *ngIf="beneficiariosEmpresa  && beneficiariosEmpresa.Beneficiarios.length > 0" class="table table-hover">
                     <thead>
                         <tr>
                             <th scope="col">Nombre(s)</th>
@@ -53,7 +58,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let beneficiario of beneficiariosEmpresa.Beneficiarios">
+                        <tr *ngFor="let beneficiario of beneficiariosMirror.Beneficiarios">
                             <td>{{beneficiario.Nombres}}</td>
                             <td>{{beneficiario.ApellidoPaterno}}</td>
                             <td>{{beneficiario.ApellidoMaterno}}</td>
