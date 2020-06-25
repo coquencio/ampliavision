@@ -96,7 +96,7 @@ export class ChartsComponent implements OnInit {
     navbar.hidden = true; // hides navbar for snapshot
     const canvas = document.body;
     html2canvas(canvas).then(canvas => {  
-      var imgWidth = 310 + ((canvas.width - 1349) * .225);   //was 320 -20, -22  0.117
+      var imgWidth = 312 + ((canvas.width - 1349) * .225);   //was 320 -20, -22  0.117
       var imgHeight = canvas.height * imgWidth / canvas.width;
       const contentDataURL = canvas.toDataURL('image/png');
       let pdf = new jspdf('p', 'mm', 'a3');  
