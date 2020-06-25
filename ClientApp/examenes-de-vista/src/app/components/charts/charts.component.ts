@@ -91,11 +91,12 @@ export class ChartsComponent implements OnInit {
   downloadAsPdf(){
     var data = document.body;
     html2canvas(data).then(canvas => {  
-      var imgWidth = 320;   
+      let widtha = (canvas.width - 1349)
+      var imgWidth = 320 + ((canvas.width - 1349) * .225);   //was 320 -20, -22  0.117
       var imgHeight = canvas.height * imgWidth / canvas.width;
       const contentDataURL = canvas.toDataURL('image/png');
       let pdf = new jspdf('p', 'mm', 'a3');  
-      pdf.addImage(contentDataURL, -20, -22, imgWidth, imgHeight);
+      pdf.addImage(contentDataURL, -20 - ((canvas.width - 1349) * .117), -22, imgWidth, imgHeight);
       pdf.save(this.nombreEmpresa + ' Reporte de '+new Date().toISOString().slice(0,10));
     });
   }
