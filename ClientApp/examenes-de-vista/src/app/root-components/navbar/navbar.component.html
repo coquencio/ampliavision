@@ -7,22 +7,22 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul *ngIf="nombreEmpresa; else elseBlock" class="navbar-nav mr-auto">
         <li class="nav-item">
-            <a class="nav-link" routerLinkActive='active' [routerLink]="['/Empresas']">Empresas</a>
+            <button class="btn btn-light nav-link button-nav" routerLinkActive='active' [routerLink]="['/Empresas']">Empresas</button>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLinkActive='active' [routerLink]="['/Examenes']">Examenes y Beneficiarios</a>
+          <button class="btn btn-light nav-link button-nav" routerLinkActive='active' [routerLink]="['/Examenes']">Examenes y Beneficiarios</button>
         </li>
         <li class="nav-item">
-            <a class="nav-link" routerLinkActive='active' [routerLink]="['/Defectos']">Estatus defefectos visuales</a>
+            <button class="btn btn-light nav-link button-nav" routerLinkActive='active' [routerLink]="['/Defectos']">Estatus defefectos visuales</button>
           </li>
           <li class="nav-item">
-            <a class="nav-link" routerLinkActive='active' [routerLink]="['/Productos']">Manejo de Productos</a>
+            <button class="btn btn-light nav-link button-nav" routerLinkActive='active' [routerLink]="['/Productos']">Manejo de Productos</button>
           </li>
           <li class="nav-item">
-            <a class="nav-link" routerLinkActive='active' [routerLink]="['/Ventas']">Ventas</a>
+            <button class="btn btn-light nav-link button-nav" routerLinkActive='active' [routerLink]="['/Ventas']">Ventas</button>
           </li>
           <li class="nav-item">
-            <a class="nav-link" routerLinkActive='active' [routerLink]="['/Resumen']">Resumen ejecutivo</a>
+            <button class="btn btn-light nav-link button-nav" routerLinkActive='active' [routerLink]="['/Resumen']">Resumen ejecutivo</button> 
           </li>
       </ul>
       <ul class="nav justify-content-end">
