@@ -4,6 +4,8 @@ import { ExamenesService } from 'src/app/services/examenes/examenes.service';
 import { Store } from '@ngrx/store';
 import { IsoService } from 'src/app/services/isos/iso.service';
 import { IIsos, IIsosBeneficiario } from 'src/app/Interfaces/isoInterface';
+import { Router } from '@angular/router';
+import * as XLSX from 'xlsx'; 
 
 @Component({
   selector: 'app-defectos-visuales',
@@ -15,13 +17,17 @@ export class DefectosVisualesComponent implements OnInit {
   constructor(
     private examenService: ExamenesService,
     store: Store<any>,
-    private isoService: IsoService
+    private isoService: IsoService,
+    private router: Router
     ) { 
       store.select('empresa').subscribe(
-        empresa => {this.empresaId = empresa.empresaId}
+        empresa => {
+          this.empresaId = empresa.empresaId;
+          this.nombreEmpresa = empresa.nombreEmpresa;
+        }
       );
     }
-
+  nombreEmpresa: string;
   empresaId: number;
   resumen: IResumenExamenes;
   resumenMirror:IResumenExamenes;
@@ -37,10 +43,13 @@ export class DefectosVisualesComponent implements OnInit {
   'Lente de contacto',
   'Accesorios'];
   folio: string;
+  loading: boolean = false;
 
   ngOnInit(): void {
+    this.loading = true;
     this.examenService.GetSummaryByCompany(this.empresaId).subscribe(
       result => {
+        this.loading = false;
         this.resumen = result;
         this.resumenMirror = {Examenes:[]};
         this.resumen.Examenes.forEach(e=> this.resumenMirror.Examenes.push(e));
@@ -62,7 +71,10 @@ export class DefectosVisualesComponent implements OnInit {
       }
     );
   }
-
+  RedirectToUpdate(folio:string ){
+    this.examenService.SetFolio(folio);
+    this.router.navigate(['Examenes/Actualiza']);
+  }
   setName(beneficiarioId: number, nombre: string): void{
     this.nombreBeneficiario = nombre;
     this.beneficiarioId = beneficiarioId;
@@ -92,5 +104,16 @@ export class DefectosVisualesComponent implements OnInit {
     else{
       this.resumen.Examenes.forEach(e=> this.resumenMirror.Examenes.push(e));
     }
+  }
+  ExportTable(){
+    const element = document.getElementById('reporteExamenes'); 
+    const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
+
+    /* generate workbook and add the worksheet */
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Hoja 1');
+
+    /* save to file */
+    XLSX.writeFile(wb, this.nombreEmpresa + new Date().toISOString().slice(0,10)+'.xlsx');
   }
 }

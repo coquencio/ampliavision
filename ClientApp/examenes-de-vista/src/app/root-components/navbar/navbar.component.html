@@ -25,6 +25,11 @@
             <a class="nav-link" routerLinkActive='active' [routerLink]="['/Resumen']">Resumen ejecutivo</a>
           </li>
       </ul>
+      <ul class="nav justify-content-end">
+        <li class="nav-item">
+         <button (click)="LogOut()" class="btn btn-light"><span class="strong">Cerrar sesión</span></button>
+        </li>
+      </ul>
       <ng-template #elseBlock>
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">

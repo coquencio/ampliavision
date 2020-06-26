@@ -79,7 +79,7 @@ class VentaService:
             return False
         return serialize_data_set(data)
 
-    def __can_make_payment(self, venta_id, monto):
+    def __can_make_payment(self, venta_id, monto, is_updating = False, abono_id = 0):
         args = (venta_id, )
         data = self.__sql_helper.sp_get(SpVentas.Get_total_of_sale, args, True)
         if not data:
@@ -88,7 +88,9 @@ class VentaService:
         data = self.__sql_helper.sp_get(SpVentas.Get_abono_sum_by_venta, args, True)
         if not data['sum(Monto)']:
             data['sum(Monto)'] = 0
-
+        if is_updating:
+            current_monto = self.__sql_helper.sp_get(SpVentas.Get_monto, (str(abono_id), ), True)
+            data['sum(Monto)'] = data['sum(Monto)'] - current_monto["Monto"]
         total_abonos = float(data['sum(Monto)'])
         total_abonos = total_abonos + monto
         if total_venta == total_abonos:
@@ -146,3 +148,21 @@ class VentaService:
         data["TotalFake"] = real_balance["TotalFake"]
         data["AnticiposFake"] = real_balance["AnticiposFake"]
         return serialize_data_set(data)
+
+    def payment_update(self, abono_id, monto, fecha, token):
+        if not self.__user_service.is_admin(token):
+            raise ValueError("No tienes los permisos para realizar esta acción")
+        if not isinstance(abono_id, int):
+            raise ValueError("Invalid abono id")
+        if not isinstance(monto, float) and not isinstance(monto, int):
+            raise ValueError("Invalid value for monto")
+        if not isinstance(fecha, str):
+            raise ValueError("Invalid value for fecha")
+        venta = self.__sql_helper.sp_get(SpVentas.Get_sale_by_abono, (str(abono_id), ), True)
+        venta_id = venta["Id"]
+        if not self.__can_make_payment(venta_id, monto,True, abono_id):
+            raise ValueError("No se pudo actualizar abono, saldo negativo")
+
+        fecha = self.__string_helper.build_string(fecha)
+        args = (abono_id, fecha, monto)
+        self.__sql_helper.sp_set(SpVentas.Update_payment, args)

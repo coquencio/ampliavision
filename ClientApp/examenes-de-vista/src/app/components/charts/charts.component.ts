@@ -22,6 +22,7 @@ export class ChartsComponent implements OnInit {
   fastSummaryData = [];
   isosData = [];
   pdfGenerating: boolean = false;
+  imagePath = 'assets/img/logo.JPG';
 
   constructor(
     private readonly chartService: ChartsService,
@@ -92,11 +93,13 @@ export class ChartsComponent implements OnInit {
   async downloadAsPdfasync(){
     this.pdfGenerating = true;
     await this.delay(10);  //await 10 ms in order to take snapshot from screen without button
-    var navbar = document.getElementById('navbar');
+    let navbar = document.getElementById('navbar');
+    let footer = document.getElementById('footer');
     navbar.hidden = true; // hides navbar for snapshot
+    footer.hidden = true; // hides footer
     const canvas = document.body;
     html2canvas(canvas).then(canvas => {  
-      var imgWidth = 312 + ((canvas.width - 1349) * .225);   //was 320 -20, -22  0.117
+      var imgWidth = 280 + ((canvas.width - 1349) * .225);   //was 320 -20, -22  0.117
       var imgHeight = canvas.height * imgWidth / canvas.width;
       const contentDataURL = canvas.toDataURL('image/png');
       let pdf = new jspdf('p', 'mm', 'a3');  
@@ -105,6 +108,7 @@ export class ChartsComponent implements OnInit {
     }).finally(()=> {
       this.pdfGenerating = false;
       navbar.hidden = false;
+      footer.hidden = false;
     });
   }
   private delay(ms: number) {

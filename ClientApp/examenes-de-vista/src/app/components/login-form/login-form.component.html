@@ -1,7 +1,9 @@
- 
+<div *ngIf="loading">
+    <app-loading></app-loading>
+</div> 
 
 
-         <div class="container col-sm-6">
+         <div *ngIf="!loading" class="container col-sm-6">
             <img src={{imagePath}} class="img-fluid mx-auto d-block" alt="Responsive image">
    
             <p style="color: red;">{{errorMessage}}</p>  
@@ -15,4 +17,6 @@
                 </div>
             <button (click)="login()" class="btn btn-primary">Enviar</button>
         </div>
+        <br>
+        <br>
 

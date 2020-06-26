@@ -1,4 +1,7 @@
-<div class="row">
+<div *ngIf="loading">
+    <app-loading></app-loading>
+</div> 
+<div *ngIf="!loading" class="row">
     <div class="col-md-12">
         <div class="form-group">
             <label for="">Buscar por folio</label>
@@ -17,7 +20,9 @@
                 <th scope="col">Enfermedad</th>
                 <th scope="col">Edad</th>
                 <th scope="col">Requiere Lentes</th>
+                <th scope="col">Compró lentes</th>
                 <th scope="col">Iso 9000</th>
+                <th scope="col">Detalles</th>
             </tr>
         </thead>
         <tbody>
@@ -28,12 +33,43 @@
                 <td>{{item.ocupacion}}</td>
                 <td>{{item.enfermedad}}</td>
                 <td>{{item.edad}}</td>
-                <td>{{item.requiereLentes}}</td>
+                <td>{{item.requiereLentes===1?'Sí':'No'}}</td>
+                <td>{{item.VentaID? 'Sí' : 'No'}}</td>
                 <td><button (click)="setName(item.BeneficiarioId, item.Nombres)" class="btn btn-primary"
                         data-toggle="modal" data-target="#isoModal">Materiales para iso 9000</button></td>
+                        <td><button (click)="RedirectToUpdate(item.folio)" class="btn btn-success">Modificar datos examen</button></td>
             </tr>
         </tbody>
     </table>
+    <table hidden *ngIf="resumenMirror.Examenes.length!=0;" id="reporteExamenes">
+        <thead>
+            <tr>
+                <th scope="col">Folio examen</th>
+                <th scope="col">Nombre(s)</th>
+                <th scope="col">Apellido paterno</th>
+                <th scope="col">Ocupación</th>
+                <th scope="col">Enfermedad</th>
+                <th scope="col">Edad</th>
+                <th scope="col">Requiere Lentes</th>
+                <th scope="col">Compró lentes</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of resumenMirror.Examenes">
+                <th scope="row">{{item.folio}}</th>
+                <td>{{item.Nombres}}</td>
+                <td>{{item.Apellidopaterno}}</td>
+                <td>{{item.ocupacion}}</td>
+                <td>{{item.enfermedad}}</td>
+                <td>{{item.edad}}</td>
+                <td>{{item.requiereLentes===1?'Sí':'No'}}</td>
+                <td>{{item.VentaID? 'Sí' : 'No'}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div *ngIf="resumenMirror.Examenes.length!=0" class="col-sm-12" style="text-align: center;">
+    <button class="btn btn-success" (click)="ExportTable()">Generar reporte Excel</button>
 </div>
 <ng-template #elseBlock>
     <p>Aún no has registrado ningún examen para esta empresa</p>

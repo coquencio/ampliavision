@@ -1,4 +1,4 @@
-<hr>
+
 <button (click)="RedirectToDetails()" class="btn btn-primary">Deseo consultar o actualizar un examen ya registrado</button>
 <br>
 <br>
@@ -41,6 +41,9 @@
         <div class="col">
             <div class="table-responsive">
                 <h5>Empleados de {{nombreEmpresa}}</h5>
+                <div *ngIf="loading">
+                    <app-loading></app-loading>
+                  </div>
                 <p *ngIf="beneficiariosEmpresa && beneficiariosEmpresa.Beneficiarios.length === 0">Aún no hay registros</p>
                 <div *ngIf="beneficiariosEmpresa  && beneficiariosEmpresa.Beneficiarios.length > 0" class="form-group">
                     <label for="">Busca por nombres y apellidos</label>
@@ -322,7 +325,6 @@
       </div>
       <hr>
       <button (click)="RegistraExamenAsync()" class="btn btn-primary">Registra Examen</button>
-      <hr>
 </form>
 
   

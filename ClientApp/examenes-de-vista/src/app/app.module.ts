@@ -19,6 +19,7 @@ import { SalesComponent } from './components/sales/sales.component';
 import { ChartsComponent } from './components/charts/charts.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { LoadingComponent } from './root-components/loading/loading.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
     ExamenUpdateComponent,
     ProductsComponent,
     SalesComponent,
-    ChartsComponent
+    ChartsComponent,
+    LoadingComponent
   ],
   imports: [
     BrowserModule,
