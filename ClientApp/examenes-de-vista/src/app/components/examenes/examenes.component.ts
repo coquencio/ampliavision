@@ -101,8 +101,10 @@ export class ExamenesComponent implements OnInit {
   beneficiariosMirror: IBeneficiarios;
 
   selectedBeneficiario: IBeneficiario;
+  loading: boolean = false;
   @ViewChild('closebutton') private closeModal: ElementRef;
   ngOnInit(): void {
+    this.loading = true;
     this.beneficiariosService.GetByEmpresa(this.currentEmpresaId).subscribe(
       r => {
         this.beneficiariosEmpresa = r;
@@ -110,6 +112,7 @@ export class ExamenesComponent implements OnInit {
         this.beneficiariosEmpresa.Beneficiarios.forEach(
           b=>this.beneficiariosMirror.Beneficiarios.push(b)
         );
+        this.loading = false;
       }
       );
   }
@@ -420,6 +423,7 @@ export class ExamenesComponent implements OnInit {
 
   }
   RedirectToDetails(): void{
+    this.examenService.CleanFolio();
     this.router.navigate(['Examenes/Actualiza']);
   }
 }

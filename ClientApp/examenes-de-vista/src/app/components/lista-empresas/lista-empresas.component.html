@@ -4,28 +4,30 @@
 </button>
 <br>
 <br>
-<h6 *ngIf="empresas && empresas.Empresas.length === 0">Parece ser que aún no has registrado empresas</h6>
-<div *ngIf="empresas && empresas.Empresas.length>0" class="row">
-<div class="col-md-12">
+<div *ngIf="loading">
+  <app-loading></app-loading>
+</div>
+
+<h6 *ngIf="empresas && empresas.Empresas.length === 0 && !loading">Parece ser que aún no has registrado empresas</h6>
+<div  *ngIf="empresas && empresas.Empresas.length>0 && !loading" class="row">
+<div class="col-md-6">
   <div class="form-group">
     <label for="">Buscar empresa por nombre</label>
     <input placeholder="Nombre de la empresa" type="text" [(ngModel)]="criteria" (ngModelChange)="searchByName()" class="form-control">
   </div>
 </div>
-<div class="col-md-6">
+<div class="col-md-3">
   <div class="form-group">
-    <label for="">Busca empresa por un Folio perteneciente a esta</label>
-    <input placeholder="folio de examen" type="text" [(ngModel)]="folio" (ngModelChange)="changeFolio()" class="form-control">
-    <br>
-    <button class="btn btn-sm btn-success" (click)="searchByRelation()">Buscar</button>
+    <label for="">Busca empresa por folio de examen</label>
+    <input placeholder="Folio de examen" type="text" [(ngModel)]="folio" (ngModelChange)="changeFolio()" class="form-control">
+    <button style="margin-top: 5px;" class="btn btn-sm btn-success" (click)="searchByRelation()">Buscar</button>
   </div>
 </div>
-<div class="col-md-6">
+<div class="col-md-3">
   <div class="form-group">
-    <label for="">Busca empresa por un ID de venta perteneciente a esta</label>
+    <label for="">Busca empresa por id de venta</label>
     <input placeholder="Id de venta" type="number" min="1" [(ngModel)]="id" (ngModelChange)="changeId()" class="form-control">
-    <br>
-    <button class="btn btn-sm btn-success" (click)="searchByRelation(false)">Buscar</button>
+    <button style="margin-top: 5px;" class="btn btn-sm btn-success" (click)="searchByRelation(false)">Buscar</button>
   </div>
 </div>
 
@@ -81,8 +83,12 @@
           </form>
         </div>
         <div class="modal-footer">
-          <button type="button" #closeModal class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-          <button type="button" (click)="RegistraEmpresa()" class="btn btn-primary">Registrar empresa</button>
+          <div *ngIf="loadingRegistration">
+            <app-loading></app-loading>
+          </div>
+          <button *ngIf="!loadingRegistration" type="button" #closeModal class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button *ngIf="!loadingRegistration" type="button" (click)="RegistraEmpresa()" class="btn btn-primary">Registrar empresa</button>
+        
         </div>
       </div>
     </div>

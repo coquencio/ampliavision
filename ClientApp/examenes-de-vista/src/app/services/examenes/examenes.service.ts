@@ -32,6 +32,8 @@ export class ExamenesService {
     private tokenService: TokenService
     ) { }
 
+  folio: string;
+
   GetSummaryByCompany(EmpresaId: number): Observable<IResumenExamenes>{
     return this.httpClient.get<IResumenExamenes>(AppSettings.BASE_ADDRESS + 'examenes/resumen/' + EmpresaId + '?token=' + this.tokenService.GetToken());
   }
@@ -58,5 +60,14 @@ export class ExamenesService {
   GetBeneficiarioIdByFolio(folio: string): Observable<IBeneficiarioId>{
     const url = AppSettings.BASE_ADDRESS + 'examenes/'+ folio +'/beneficiario?token=' + this.tokenService.GetToken();  
     return this.httpClient.get<IBeneficiarioId>(url);
+  }
+  SetFolio(folio:string){
+    this.folio = folio;
+  }
+  GetFolio(){
+    return this.folio;
+  }
+  CleanFolio(){
+    this.folio = null;
   }
 }

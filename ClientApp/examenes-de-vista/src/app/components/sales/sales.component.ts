@@ -80,6 +80,10 @@ export class SalesComponent implements OnInit {
 
   summary: IVentasResumen;
 
+  currentAbonoId: number;
+  currentFecha : string;
+  currentMonto: number;
+
   constructor(
     private readonly ExamenesService: ExamenesService,
     store: Store<any>,
@@ -113,7 +117,26 @@ export class SalesComponent implements OnInit {
     this.beneficiarioService.GetByEmpresa(this.currentEmpresaId).subscribe(r=> this.beneficiarios= r.Beneficiarios);
     this.populateVentas();
   }
-
+  cleanCriterial(){
+    this.currentAbonoId = undefined;
+    this.currentMonto = undefined;
+    this.currentFecha = undefined;
+  }
+  setUpdateCriteria(id: number, monto: number, fecha: string){
+    this.currentAbonoId = id;
+    this.currentMonto = monto;
+    this.currentFecha = fecha;
+  }
+  UpdateAbono(){
+    this.SalesService.UpdatePayment(this.currentAbonoId, this.currentMonto, this.currentFecha).subscribe(
+      r=> {
+        window.alert(r);
+        this.getAbonosList(this.currentVentaId);
+        this.cleanCriterial();
+      },
+      err => window.alert(err.error)
+    );
+  }
   async RegisterSale(){
     if (
       !this.marcas ||
@@ -219,6 +242,7 @@ export class SalesComponent implements OnInit {
     this.currentVentaId = id;
     this.currentVenta = this.resumenVentas.Ventas.find(v=>v.VentaId === id);
     this.getAbonosList(this.currentVentaId);
+    this.cleanCriterial();
   }
   paymentRegistration(){
     if (!this.montoARegistrar || this.montoARegistrar === 0){
@@ -265,7 +289,7 @@ export class SalesComponent implements OnInit {
 
   DeletePayment(abonoId: number){
     if (window.confirm('¿Estás seguro que deseas eliminar este abono?')){
-      this.SalesService.DeletePament(abonoId).subscribe(
+      this.SalesService.DeletePayment(abonoId).subscribe(
         r => {
           this.getAbonosList(this.currentVentaId);
           window.alert(r);

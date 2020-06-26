@@ -147,3 +147,20 @@ def get_balance_summary(empresa_id):
 
     except ValueError as err:
         return Response(status=400, response=err.args)
+
+@VentaController.route('/api/ventas/abonos/<int:abono_id>', methods=['PUT'])
+def update_payment(abono_id):
+    try:
+        token = request.args.get('token')
+        if not token:
+            return Response(status=401)
+        if not user_service.token_validation(token):
+            return Response(status=401)
+        data = request.get_json()
+        monto = data['Monto']
+        fecha = data['FechaAbono']
+        name = user_service.get_name(token)
+        venta_service.payment_update(abono_id, monto, fecha, token)
+        return Response(status=201, response="Abono actualizado")
+    except ValueError as err:
+        return Response(status=400, response=err.args)

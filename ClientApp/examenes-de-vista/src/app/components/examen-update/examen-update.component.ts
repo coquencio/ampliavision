@@ -93,8 +93,14 @@ export class ExamenUpdateComponent implements OnInit {
 
   ngOnInit(): void {
     this.beneficiarioService.GetByEmpresa(this.currentEmpresaId).subscribe(
-      r => this.beneficiariosEmpresa = r
-      );
+      r =>{
+      this.beneficiariosEmpresa = r;   
+      this.folio = this.examenService.GetFolio();
+      if (this.folio){
+        this.GetExamen();
+      }
+    }
+    );
   }
 
   async GetExamen() {

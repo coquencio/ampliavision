@@ -23,6 +23,7 @@ export class LoginFormComponent implements OnInit {
   userName: string ;
   password: string;
   token: string;
+  loading: boolean = false;
   
   ngOnInit(): void {
     if (this.authorizationService.IsLogged()){
@@ -58,11 +59,13 @@ export class LoginFormComponent implements OnInit {
       },
       err => {
         this.errorMessage = err.error;
-      }
-    );
+      },
+      ()=> this.loading = false
+      );
   }
 
   login(): void{
+    this.loading = true;
     if (this.validateFields()){
       this.getToken(this.userName, this.password);
     }

@@ -280,6 +280,18 @@ class SpVentas:
     # Venta Id
     Get_real_balance="BalanceSinLiquidar"
 
+    # Abono Id
+    # Fecha abono
+    # Monto
+
+    Update_payment = "ActualizaAbono"
+
+    # Abono Id
+    Get_monto = "SeleccionaMontoAbono"
+
+    # Abono Id
+    Get_sale_by_abono = "SeleccionaVentaPorAbono"
+
 
 class SpCasosIso:
 

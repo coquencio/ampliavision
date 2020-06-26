@@ -20,6 +20,8 @@ export class ListaEmpresasComponent implements OnInit {
   criteria : string;
   folio: string;
   id: number;
+  loading: boolean = false;
+  loadingRegistration: boolean = false;
   @ViewChild('closeModal') private closeModal: ElementRef;
  
   constructor(
@@ -29,6 +31,7 @@ export class ListaEmpresasComponent implements OnInit {
      }
   
   ngOnInit(): void {
+    this.loading = true;
     this.empresaService.GetEmpresas().subscribe(
       r => {
         this.empresas = r;
@@ -36,6 +39,7 @@ export class ListaEmpresasComponent implements OnInit {
         this.empresas.Empresas.forEach(
           e=> this.empresasMirror.Empresas.push(e)
         );
+        this.loading = false;
       }
     );
   }
@@ -67,8 +71,10 @@ export class ListaEmpresasComponent implements OnInit {
       window.alert('Introduce un número de teléfono válido');
       return;
     }
+    this.loadingRegistration = true;
     this.empresaService.Create(this.empresaRegistration).subscribe(
       r => {
+        this.loadingRegistration = false;
         window.alert(r);
         this.closeModal.nativeElement.click();
         this.ngOnInit();
@@ -97,10 +103,12 @@ export class ListaEmpresasComponent implements OnInit {
         window.alert('Introduce un folio válido');
         return;
       }
+      this.loading = true;
       this.empresaService.GetIdByFolio(this.folio).subscribe(
         r=> {
           if (r.EmpresaID){
             this.empresasMirror.Empresas=this.empresas.Empresas.filter(e=>e.EmpresaID === r.EmpresaID);
+            this.loading = false;
           }
         },
         ()=> window.alert('No se ha encontrado una empresa con ese folio')
@@ -108,7 +116,7 @@ export class ListaEmpresasComponent implements OnInit {
     }
     else{
       this.folio = null;
-      
+      this.loading = true;
       if (!this.id){
         window.alert('Introduce un id de venta válido');
         return;
@@ -116,6 +124,7 @@ export class ListaEmpresasComponent implements OnInit {
       this.empresaService.GetIdBySale(this.id).subscribe(
         r=> {
             this.empresasMirror.Empresas=this.empresas.Empresas.filter(e=>e.EmpresaID === r.EmpresaID);
+            this.loading = false;
         },
         ()=> window.alert('No se ha encontrado una empresa con ese id de venta')
       );
