@@ -661,3 +661,19 @@ BEGIN
 END //
 delimiter ;
 
+drop PROCEDURE GetResumenExamenesPorEmpresa;
+delimiter //
+create PROCEDURE GetResumenExamenesPorEmpresa(in _EmpresaId int)
+BEGIN
+
+select e.folio, b.beneficiarioId as BeneficiarioId, v.VentaID as VentaID, b.Nombres, b.Apellidopaterno, b.ocupacion, ev.descripcion as enfermedad,  YEAR(CURDATE()) - YEAR(fechanacimiento) -
+IF(STR_TO_DATE(CONCAT(YEAR(CURDATE()), '-', MONTH(fechanacimiento), '-', DAY(fechanacimiento)) ,'%Y-%c-%e') > CURDATE(), 1, 0)
+AS edad, e.requiereLentes from examenes e 
+    inner join enfermedadesvisuales ev 
+    on e.enfermedadId = ev.enfermedadId 
+    inner join beneficiarios b 
+    on e.beneficiarioId = b.beneficiarioId
+    right join ventas v on e.folio = v.folioExamen
+    where b.empresaId = _empresaId;
+END //
+delimiter ;
