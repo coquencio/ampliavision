@@ -5,6 +5,7 @@ import { Store } from '@ngrx/store';
 import { IsoService } from 'src/app/services/isos/iso.service';
 import { IIsos, IIsosBeneficiario } from 'src/app/Interfaces/isoInterface';
 import { Router } from '@angular/router';
+import * as XLSX from 'xlsx'; 
 
 @Component({
   selector: 'app-defectos-visuales',
@@ -20,10 +21,13 @@ export class DefectosVisualesComponent implements OnInit {
     private router: Router
     ) { 
       store.select('empresa').subscribe(
-        empresa => {this.empresaId = empresa.empresaId}
+        empresa => {
+          this.empresaId = empresa.empresaId;
+          this.nombreEmpresa = empresa.nombreEmpresa;
+        }
       );
     }
-
+  nombreEmpresa: string;
   empresaId: number;
   resumen: IResumenExamenes;
   resumenMirror:IResumenExamenes;
@@ -100,5 +104,16 @@ export class DefectosVisualesComponent implements OnInit {
     else{
       this.resumen.Examenes.forEach(e=> this.resumenMirror.Examenes.push(e));
     }
+  }
+  ExportTable(){
+    const element = document.getElementById('reporteExamenes'); 
+    const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
+
+    /* generate workbook and add the worksheet */
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Hoja 1');
+
+    /* save to file */
+    XLSX.writeFile(wb, this.nombreEmpresa + new Date().toISOString().slice(0,10)+'.xlsx');
   }
 }

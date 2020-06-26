@@ -4,7 +4,11 @@
 <ng-template #elseBlock>
     <h3 *ngIf="enfermedadesData.length===0">Aún no se han registrado exámenes para procesar los datos del resumen</h3>
     <div *ngIf="enfermedadesData.length>0" class="row">
+        <div class="col-md-3">
+            <img src={{imagePath}} class="img-fluid mx-auto d-block" alt="Responsive image">
+        </div>
         <div class="col-md-12">
+            <hr>
             <h2>Resumen ejecutivo para Empresa: {{nombreEmpresa}}</h2>
         </div>
         <div *ngIf="fastSummaryData.length > 0" class="col-md-12">
