@@ -29,4 +29,4 @@ CORS(app)
 
 @app.route('/')
 def hello_world():
-    return 'Hello, World, not released yet'
+    return 'Release of July'

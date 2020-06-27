@@ -52,6 +52,8 @@ import { LoadingComponent } from './root-components/loading/loading.component';
       {path: 'Productos', component: ProductsComponent},
       {path: 'Ventas', component: SalesComponent},
       {path: 'Resumen', component: ChartsComponent},
+      {path: '**', redirectTo: '/Empresas'},
+      {path: '', redirectTo: '/Empresas', pathMatch: 'full'}
     ]),
     BrowserAnimationsModule,
     NgxChartsModule

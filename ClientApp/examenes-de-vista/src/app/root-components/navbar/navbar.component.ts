@@ -41,6 +41,6 @@ export class NavbarComponent implements OnInit {
 
   LogOut(){
     localStorage.setItem('token', '');
-    window.location.reload();
+    window.location.href = "/";
   } 
 }
