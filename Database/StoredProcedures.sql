@@ -361,11 +361,7 @@ delimiter ;
 delimiter //
 create PROCEDURE registraAbono(in _ventaId int, in _monto decimal(13,2), in _fechaAbono date, in _nombre varchar(50))
 BEGIN
-<<<<<<< HEAD
 	insert into Abonos (ventaId, monto, fechaAbono, fechaRegistro, RegistradoPor) values (_ventaId, _monto, _fechaAbono, curdate(), _nombre);
-=======
-	insert into abonos (ventaId, monto, fechaAbono, fechaRegistro, RegistradoPor) values (_ventaId, _monto, _fechaAbono, curdate(), _nombre);
->>>>>>> f46c4781518d43ba3975706b47ab4d521f62b30b
 END //
 delimiter ;
 delimiter //
