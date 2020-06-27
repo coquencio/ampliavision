@@ -1,5 +1,5 @@
 from src.Helpers.sql import MySqlHelper
-from src.Core.constants import SpOjos
+from src.Core import ojosConstants as SpOjos
 from src.Helpers.serializer import serialize_data_set
 
 

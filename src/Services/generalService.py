@@ -1,7 +1,9 @@
 from src.Helpers.sql import MySqlHelper
 from src.Helpers.serializer import serialize_data_set
 from src.Helpers.stringHelper import StringHelper
-from src.Core.constants import SpMarcas, SpColores, SpTamanios, SpModelos, SpMaterial, SpProteccion, SpLentes
+from src.Core import marcasConstants as SpMarcas, coloresConstants as SpColores,tamaniosConstants as SpTamanios, \
+    modelosConstants as SpModelos, materialConstants as SpMaterial,proteccionConstants as SpProteccion, \
+    lentesConstants as SpLentes
 
 
 class GeneralService:

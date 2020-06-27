@@ -1,4 +1,4 @@
-from src.Core.constants import SpVentas
+from src.Core import ventasConstants as SpVentas
 from src.Helpers.sql import MySqlHelper
 from src.Helpers.stringHelper import StringHelper
 from src.Helpers.serializer import serialize_data_set

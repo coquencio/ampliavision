@@ -1,5 +1,5 @@
 from src.Helpers.sql import MySqlHelper
-from src.Core.constants import SpExamen
+from src.Core import examenConstants as SpExamen
 from src.Helpers.stringHelper import StringHelper
 from src.Helpers.serializer import serialize_data_set
 

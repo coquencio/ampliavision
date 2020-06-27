@@ -1,4 +1,4 @@
-from src.Core.constants import SpCasosIso
+from src.Core import casosIsosConstants as SpCasosIso
 from src.Helpers.sql import MySqlHelper
 from src.Helpers.serializer import serialize_data_set
 from src.Services.beneficiariosService import BeneficiariosService

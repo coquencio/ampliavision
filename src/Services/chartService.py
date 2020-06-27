@@ -1,5 +1,5 @@
 from src.Helpers.sql import MySqlHelper
-from src.Core.constants import SpCharts
+from src.Core import chartsConstants as SpCharts
 from src.Services.empresaService import EmpresaService
 from src.Helpers.serializer import serialize_data_set
 from src.Helpers.stringHelper import StringHelper

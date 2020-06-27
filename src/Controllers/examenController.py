@@ -70,7 +70,7 @@ def update_examen():
             return Response(status=401)
         data = request.get_json()
         examen_service.update(data)
-        
+
         return Response(status=201)
     except ValueError as err:
         return Response(status=400, response=err.args)

@@ -1,5 +1,5 @@
 from src.Helpers.sql import MySqlHelper
-from src.Core.constants import SpBeneficiario
+from src.Core import beneficiariosConstants as SpBeneficiario
 from src.Services.empresaService import EmpresaService
 from src.Helpers.serializer import serialize_data_set
 from src.Helpers.stringHelper import StringHelper

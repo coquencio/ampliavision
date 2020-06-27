@@ -1,5 +1,5 @@
 from src.Helpers.sql import MySqlHelper
-from src.Core.constants import SpArmazon
+from src.Core import armazonConstants as SpArmazon
 from src.Helpers.serializer import serialize_data_set
 from src.Helpers.stringHelper import StringHelper
 

@@ -1,4 +1,4 @@
-from src.Core.constants import Connection
+from src.Core import connectionsConstants as Connection
 from src.Helpers.serializer import *
 import pymysql
 
