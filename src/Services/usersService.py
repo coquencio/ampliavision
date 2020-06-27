@@ -11,7 +11,9 @@ class UsersService:
         self.__sql_helper = MySqlHelper()
         self.__string_helper = StringHelper()
 
-    def create_user(self, user_name, password):
+    def create_user(self, user_name, password, token):
+        if not self.is_admin(token):
+            raise AssertionError("User registration can only be made by admins")
         if not self.__validate_string(user_name):
             raise ValueError("Invalid username")
         if not self.__validate_string(password):
