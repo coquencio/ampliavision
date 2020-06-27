@@ -1,4 +1,4 @@
-from flask import Response, Blueprint
+from flask import Response, Blueprint, request
 from src.Services.usersService import UsersService
 
 UserController = Blueprint('users', __name__)
