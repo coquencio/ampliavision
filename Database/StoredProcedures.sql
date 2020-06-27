@@ -361,11 +361,7 @@ delimiter ;
 delimiter //
 create PROCEDURE registraAbono(in _ventaId int, in _monto decimal(13,2), in _fechaAbono date, in _nombre varchar(50))
 BEGIN
-<<<<<<< HEAD
 	insert into Abonos (ventaId, monto, fechaAbono, fechaRegistro, RegistradoPor) values (_ventaId, _monto, _fechaAbono, curdate(), _nombre);
-=======
-	insert into abonos (ventaId, monto, fechaAbono, fechaRegistro, RegistradoPor) values (_ventaId, _monto, _fechaAbono, curdate(), _nombre);
->>>>>>> f46c4781518d43ba3975706b47ab4d521f62b30b
 END //
 delimiter ;
 delimiter //
@@ -387,6 +383,72 @@ BEGIN
 END //
 delimiter ;
 
+drop PROCEDURE seleccionaResumenVentasPorEmpresa;
+delimiter //
+create PROCEDURE seleccionaResumenVentasPorEmpresa(in _empresaId int)
+BEGIN
+		select v.ventaId as VentaId, v.TipoVentaID as Tipo, v.FolioExamen, b.nombres as Nombres, v.EstaLiquidada as EstaLiquidada, v.fechaVenta as Fecha ,b.apellidoPaterno as Apellido, b.Ocupacion as Puesto, ex.RequiereLentes, ex.comprolentes,  m.descripcion as Material, p.descripcion as Proteccion, t.descripcion as Lente, v.totalventa as Total, v.anticipo as Aticipo, v.abonos as Abonos from Ventas v inner join Beneficiarios b on v.beneficiarioId = b.beneficiarioId inner join Materiales m on v.materialId = m.materialId inner join Protecciones p on v.proteccionId = p.proteccionId inner join TipoLente t on v.lenteId = t.lenteId left join Examenes ex on v.examenId= ex.ExamenId where b.empresaId = _empresaId;
+END //
+delimiter ;
+
+drop PROCEDURE registraAbono;
+delimiter //
+create PROCEDURE registraAbono(in _ventaId int, in _monto decimal(13,2), in _fechaAbono date, in _nombre varchar(50))
+BEGIN
+	insert into Abonos (ventaId, monto, fechaAbono, fechaRegistro, RegistradoPor) values (_ventaId, _monto, _fechaAbono, curdate(), _nombre);
+END //
+delimiter ;
+
+delimiter //
+create PROCEDURE SeleccionaNombreConToken(in _token varchar(50))
+BEGIN
+	select userName from users where token = _token;
+END //
+delimiter ;
+delimiter //
+create PROCEDURE Admin(in _token varchar(50))
+BEGIN
+	select Admin from users where token = _token;
+END //
+delimiter ;
+
+drop procedure SeleccionaMarcas;
+
+delimiter //
+CREATE PROCEDURE SeleccionaMarcas()
+BEGIN
+	select * from MarcasArmazones where EstaActivo = 1;
+END //
+
+delimiter //
+CREATE PROCEDURE PuedeBorrar(in _ventaId int)
+BEGIN
+	select count(*) as total from Abonos where ventaID= _ventaId;
+END //
+delimiter ;
+
+
+delimiter //
+CREATE PROCEDURE BorraVenta(in _ventaId int)
+BEGIN
+	delete from Ventas where ventaID= _ventaId;
+END //
+delimiter ;
+
+delimiter //
+CREATE PROCEDURE SeleccionaResumentVentas (in _empresaid int)
+BEGIN
+	select sum(v.TotalVenta) as Total, sum(v.Anticipo) as Anticipos from Ventas v inner join Beneficiarios b on v.BeneficiarioID = b.BeneficiarioID where b.empresaID = _empresaid;
+END //
+delimiter ;
+
+delimiter //
+CREATE PROCEDURE SeleccionaTotalAbonos(in _empresaid int)
+BEGIN
+	select sum(monto) as Montos from Abonos a inner join Ventas v on a.VentaID = v.VentaID inner join Beneficiarios b on b.BeneficiarioID = v.BeneficiarioID where b.EmpresaID = _empresaid;
+END //
+delimiter ;
+drop PROCEDURE SelectSaldoVenta;
 delimiter //
 create PROCEDURE SelectSaldoVenta(in _ventaId int)
 BEGIN
