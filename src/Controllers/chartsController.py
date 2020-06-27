@@ -10,8 +10,6 @@ chart_service = ChartService()
 @ChartController.route('/api/empresas/<int:empresa_id>/grafico/<string:chart>', methods=['GET'])
 def get_sales_chart(empresa_id, chart):
     token = request.args.get('token')
-    if not token:
-        return Response(status=401)
     if not user_service.token_validation(token):
         return Response(status=401)
     data = chart_service.get_chart(empresa_id, chart)

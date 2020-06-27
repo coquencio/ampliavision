@@ -10,8 +10,6 @@ user_service = UsersService()
 def register(entity, description):
     try:
         token = request.args.get('token')
-        if not token:
-            return Response(status=401)
         if not user_service.token_validation(token):
             return Response(status=401)
 
@@ -29,18 +27,12 @@ def register(entity, description):
 def activation(entity, status, primary_key):
     try:
         token = request.args.get('token')
-        if not token:
-            return Response(status=401)
         if not user_service.token_validation(token):
             return Response(status=401)
-
         if status != 1 and status != 0:
             return Response(status=400, response="Invalid status")
         general_service = GeneralService(entity)
-        if status == 0:
-            general_service.active_status(primary_key, True)
-        else:
-            general_service.active_status(primary_key)
+        general_service.active_status(primary_key, status == 0)
         return Response(status=201, response="Se ha actualizado un registro en "+entity)
 
     except ValueError as err:
@@ -53,8 +45,6 @@ def activation(entity, status, primary_key):
 def get(entity):
     try:
         token = request.args.get('token')
-        if not token:
-            return Response(status=401)
         if not user_service.token_validation(token):
             return Response(status=401)
 

@@ -1,5 +1,5 @@
 from src.Helpers.sql import MySqlHelper
-from src.Core.constants import SpEmpresas
+from src.Core import empresasConstants as SpEmpresas
 from src.Helpers.serializer import serialize_data_set
 from src.Helpers.stringHelper import StringHelper
 
@@ -9,7 +9,10 @@ class EmpresaService:
         self.__sql_helper = MySqlHelper()
         self.__string_helper = StringHelper()
 
-    def create_empresa(self, nombre, domicilio, telefono):
+    def create_empresa(self, data):
+        nombre = data['Nombre']
+        domicilio = data['Domicilio']
+        telefono = data['Telefono']
         if not nombre:
             raise ValueError("Missing names")
         nombre = self.__string_helper.build_string(nombre)

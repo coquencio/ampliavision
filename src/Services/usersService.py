@@ -1,6 +1,6 @@
 import hashlib
 from datetime import datetime
-from src.Core.constants import SpUsers
+from src.Core import usersConstants as SpUsers
 from src.Helpers.serializer import serialize_data_set
 from src.Helpers.sql import MySqlHelper
 from src.Helpers.stringHelper import StringHelper
