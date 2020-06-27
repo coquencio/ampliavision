@@ -1,5 +1,5 @@
 from src.Helpers.sql import MySqlHelper
-from src.Core.constants import SpArmazon
+from src.Core import armazonConstants as SpArmazon
 from src.Helpers.serializer import serialize_data_set
 from src.Helpers.stringHelper import StringHelper
 
@@ -9,10 +9,19 @@ class ArmazonService:
         self.__sql_helper = MySqlHelper()
         self.__string_helper = StringHelper()
 
-    def register_and_get(self, args, detalle):
+    def register_and_get(self, data):
+        marca_id = data['MarcaId']
+        color_id = data['ColorId']
+        tamanio_id = data['TamanioId']
+        modelo_id = data['ModeloId']
+        detalle = data['DetalleEnArmazon']
+        args = (marca_id, color_id, tamanio_id, modelo_id)
+
         for arg in args:
             if not isinstance(arg, int):
-                raise ValueError("Invalid argument for ")
+
+                raise ValueError("Invalid data")
+
             # TODO Validate if all IDs exists
 
         if not isinstance(detalle, str):

@@ -11,11 +11,17 @@ import { Store } from '@ngrx/store';
 export class ListaEmpresasComponent implements OnInit {
 
   empresas: IEmpresas;
+  empresasMirror: IEmpresas;
   empresaRegistration = {
     Nombre: '',
     Domicilio: '',
     Telefono: ''
   };
+  criteria : string;
+  folio: string;
+  id: number;
+  loading: boolean = false;
+  loadingRegistration: boolean = false;
   @ViewChild('closeModal') private closeModal: ElementRef;
  
   constructor(
@@ -25,8 +31,16 @@ export class ListaEmpresasComponent implements OnInit {
      }
   
   ngOnInit(): void {
+    this.loading = true;
     this.empresaService.GetEmpresas().subscribe(
-      r => {this.empresas = r;}
+      r => {
+        this.empresas = r;
+        this.empresasMirror = {Empresas:[]};
+        this.empresas.Empresas.forEach(
+          e=> this.empresasMirror.Empresas.push(e)
+        );
+        this.loading = false;
+      }
     );
   }
 
@@ -57,8 +71,10 @@ export class ListaEmpresasComponent implements OnInit {
       window.alert('Introduce un número de teléfono válido');
       return;
     }
+    this.loadingRegistration = true;
     this.empresaService.Create(this.empresaRegistration).subscribe(
       r => {
+        this.loadingRegistration = false;
         window.alert(r);
         this.closeModal.nativeElement.click();
         this.ngOnInit();
@@ -78,5 +94,64 @@ export class ListaEmpresasComponent implements OnInit {
       }
     }
     return true;
+  }
+  searchByRelation(isByFolio: boolean = true){
+    this.criteria = null;
+    if (isByFolio){
+      this.id = null;
+      if (!this.folio || this.folio === ''){
+        window.alert('Introduce un folio válido');
+        return;
+      }
+      this.loading = true;
+      this.empresaService.GetIdByFolio(this.folio).subscribe(
+        r=> {
+          if (r.EmpresaID){
+            this.empresasMirror.Empresas=this.empresas.Empresas.filter(e=>e.EmpresaID === r.EmpresaID);
+            this.loading = false;
+          }
+        },
+        ()=> window.alert('No se ha encontrado una empresa con ese folio')
+      );
+    }
+    else{
+      this.folio = null;
+      this.loading = true;
+      if (!this.id){
+        window.alert('Introduce un id de venta válido');
+        return;
+      }
+      this.empresaService.GetIdBySale(this.id).subscribe(
+        r=> {
+            this.empresasMirror.Empresas=this.empresas.Empresas.filter(e=>e.EmpresaID === r.EmpresaID);
+            this.loading = false;
+        },
+        ()=> window.alert('No se ha encontrado una empresa con ese id de venta')
+      );
+    }
+  }
+  changeFolio(){
+      this.criteria = '';
+      this.searchByName();
+  }
+  
+  changeId(){
+      this.criteria = '';
+      this.searchByName();
+  }
+  searchByName(){
+    this.empresasMirror = {Empresas:[]};
+    if (!this.criteria){
+      this.empresas.Empresas.forEach(e=> this.empresasMirror.Empresas.push(e));
+    }
+    else{
+      this.empresas.Empresas.forEach(e=>
+         {
+           if (e.NombreEmpresa.toLowerCase().includes(this.criteria.toLowerCase())){
+            this.empresasMirror.Empresas.push(e);
+           }
+         }
+         );
+    }
   }
 }

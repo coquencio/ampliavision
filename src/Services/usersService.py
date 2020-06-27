@@ -1,6 +1,6 @@
 import hashlib
 from datetime import datetime
-from src.Core.constants import SpUsers
+from src.Core import usersConstants as SpUsers
 from src.Helpers.serializer import serialize_data_set
 from src.Helpers.sql import MySqlHelper
 from src.Helpers.stringHelper import StringHelper
@@ -11,7 +11,9 @@ class UsersService:
         self.__sql_helper = MySqlHelper()
         self.__string_helper = StringHelper()
 
-    def create_user(self, user_name, password):
+    def create_user(self, user_name, password, token):
+        if not self.is_admin(token):
+            raise AssertionError("User registration can only be made by admins")
         if not self.__validate_string(user_name):
             raise ValueError("Invalid username")
         if not self.__validate_string(password):

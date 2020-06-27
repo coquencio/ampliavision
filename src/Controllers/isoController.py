@@ -11,8 +11,6 @@ IsoController = Blueprint('iso', __name__)
 def get_active():
     try:
         token = request.args.get('token')
-        if not token:
-            return Response(status=401)
         if not user_service.token_validation(token):
             return Response(status=401)
         return iso_service.get_active_ones()
@@ -24,8 +22,6 @@ def get_active():
 def get_active_by_beneficiario(beneficiario_id):
     try:
         token = request.args.get('token')
-        if not token:
-            return Response(status=401)
         if not user_service.token_validation(token):
             return Response(status=401)
         data = iso_service.get_by_beneficiario(beneficiario_id)
@@ -40,8 +36,6 @@ def get_active_by_beneficiario(beneficiario_id):
 def create_relation(beneficiario_id, caso_id):
     try:
         token = request.args.get('token')
-        if not token:
-            return Response(status=401)
         if not user_service.token_validation(token):
             return Response(status=401)
         data = iso_service.create_relation(beneficiario_id, caso_id)
@@ -55,8 +49,6 @@ def create_relation(beneficiario_id, caso_id):
 def delete_relation(relation_id):
     try:
         token = request.args.get('token')
-        if not token:
-            return Response(status=401)
         if not user_service.token_validation(token):
             return Response(status=401)
         iso_service.delete_relation(relation_id);

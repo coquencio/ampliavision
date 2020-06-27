@@ -11,4 +11,5 @@ interface IResumenExamen{
     enfermedad: string;
     edad: number;
     requiereLentes: number;
+    VentaID: number;
 }

@@ -1,5 +1,5 @@
-<nav *ngIf="islogged" class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#"><h4>Almpliavisión bajío</h4></a>
+<nav id="navbar" *ngIf="islogged" class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#"><h4>Almpliavisión bajío</h4><p style="font-weight: lighter;">{{nombreEmpresa}}</p></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -7,23 +7,28 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul *ngIf="nombreEmpresa; else elseBlock" class="navbar-nav mr-auto">
         <li class="nav-item">
-            <a class="nav-link" routerLinkActive='active' [routerLink]="['/Empresas']"><h5>{{nombreEmpresa}}</h5></a>
+            <button class="btn btn-light nav-link button-nav" routerLinkActive='active' [routerLink]="['/Empresas']">Empresas</button>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLinkActive='active' [routerLink]="['/Examenes']">Examenes</a>
+          <button class="btn btn-light nav-link button-nav" routerLinkActive='active' [routerLink]="['/Examenes']">Examenes y Beneficiarios</button>
         </li>
         <li class="nav-item">
-            <a class="nav-link" routerLinkActive='active' [routerLink]="['/Defectos']">Estatus defefectos visuales</a>
+            <button class="btn btn-light nav-link button-nav" routerLinkActive='active' [routerLink]="['/Defectos']">Estatus defefectos visuales</button>
           </li>
           <li class="nav-item">
-            <a class="nav-link" routerLinkActive='active' [routerLink]="['/General']">Estatus general</a>
+            <button class="btn btn-light nav-link button-nav" routerLinkActive='active' [routerLink]="['/Productos']">Manejo de Productos</button>
           </li>
           <li class="nav-item">
-            <a class="nav-link" routerLinkActive='active' [routerLink]="['/Productos']">Manejo de Productos</a>
+            <button class="btn btn-light nav-link button-nav" routerLinkActive='active' [routerLink]="['/Ventas']">Ventas</button>
           </li>
           <li class="nav-item">
-            <a class="nav-link" routerLinkActive='active' [routerLink]="['/Ventas']">Ventas</a>
+            <button class="btn btn-light nav-link button-nav" routerLinkActive='active' [routerLink]="['/Resumen']">Resumen ejecutivo</button> 
           </li>
+      </ul>
+      <ul class="nav justify-content-end">
+        <li class="nav-item">
+         <button (click)="LogOut()" class="btn btn-light"><span class="strong">Cerrar sesión</span></button>
+        </li>
       </ul>
       <ng-template #elseBlock>
         <ul class="navbar-nav mr-auto">

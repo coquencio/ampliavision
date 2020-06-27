@@ -23,6 +23,7 @@ export class LoginFormComponent implements OnInit {
   userName: string ;
   password: string;
   token: string;
+  loading: boolean = false;
   
   ngOnInit(): void {
     if (this.authorizationService.IsLogged()){
@@ -47,6 +48,7 @@ export class LoginFormComponent implements OnInit {
   }
 
   private getToken(user: string, password: string): void{
+    this.loading = true;
     this.loginService.Login(user, password).subscribe(
       r => {
         this.token = r.Token;
@@ -54,12 +56,14 @@ export class LoginFormComponent implements OnInit {
           type: 'SET_TOKEN',
           payload: r.Token
         });
-        window.location.reload();
+        ()=> this.loading = false;
+        window.location.href = "/";
       },
       err => {
         this.errorMessage = err.error;
-      }
-    );
+        this.loading = false;
+      },()=>this.loading = false
+      );
   }
 
   login(): void{

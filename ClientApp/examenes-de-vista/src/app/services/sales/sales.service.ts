@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 import { IResumenVentas } from 'src/app/Interfaces/resumenVentasInterface';
 import { IAbono } from 'src/app/Interfaces/abonosInterface';
 import { IArmazonResponse } from 'src/app/Interfaces/armazonResponseInterface';
+import { IVentasResumen } from 'src/app/Interfaces/salesSummaryInterface';
 
 @Injectable({
   providedIn: 'root'
@@ -59,7 +60,7 @@ export class SalesService {
     return this.httpClient.get<IAbono[]>(url);
   }
 
-  DeletePament(abonoId: number){
+  DeletePayment(abonoId: number){
     const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
     const url = AppSettings.BASE_ADDRESS + 'abono/'+abonoId+'?token=' + this.tokenService.GetToken();
     return this.httpClient.delete(url, {headers, responseType:'text'});
@@ -81,5 +82,19 @@ export class SalesService {
   ArmazonDetails(ventaId: number): Observable<IArmazonResponse>{
     const url = AppSettings.BASE_ADDRESS + 'ventas/'+ventaId+'/armazon?token=' + this.tokenService.GetToken();
     return this.httpClient.get<IArmazonResponse>(url);
+  }
+
+  GetBalanceSummary(empresaId): Observable<IVentasResumen>{
+    const url = AppSettings.BASE_ADDRESS + 'empresas/'+empresaId+'/ventas/resumen?token=' + this.tokenService.GetToken();
+    return this.httpClient.get<IVentasResumen>(url);
+  }
+  UpdatePayment(abonoId: number, monto: number, fecha:string){
+    const payment = {
+      Monto: monto,
+      FechaAbono: fecha
+    };
+    const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
+    const url = AppSettings.BASE_ADDRESS + 'ventas/abonos/'+abonoId+'?token=' + this.tokenService.GetToken();
+    return this.httpClient.put(url, payment, {headers, responseType:'text'});
   }
 }

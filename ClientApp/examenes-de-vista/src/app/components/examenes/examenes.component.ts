@@ -97,14 +97,36 @@ export class ExamenesComponent implements OnInit {
     Ocupacion: '',
     FechaNacimiento: ''
   };
+  criteria:string;
+  beneficiariosMirror: IBeneficiarios;
+
   selectedBeneficiario: IBeneficiario;
+  loading: boolean = false;
   @ViewChild('closebutton') private closeModal: ElementRef;
   ngOnInit(): void {
+    this.loading = true;
     this.beneficiariosService.GetByEmpresa(this.currentEmpresaId).subscribe(
-      r => this.beneficiariosEmpresa = r
+      r => {
+        this.beneficiariosEmpresa = r;
+        this.beneficiariosMirror = {Beneficiarios:[]};
+        this.beneficiariosEmpresa.Beneficiarios.forEach(
+          b=>this.beneficiariosMirror.Beneficiarios.push(b)
+        );
+        this.loading = false;
+      }
       );
   }
-
+  SearchByNames(){
+    if (this.criteria){
+      this.beneficiariosMirror.Beneficiarios = this.beneficiariosEmpresa.Beneficiarios.filter(b=>{
+        const names = b.Nombres + ' ' + b.ApellidoPaterno + ' '+b.ApellidoMaterno;
+        return names.toLowerCase().includes(this.criteria.toLowerCase());
+      });
+    }
+    else{
+      this.beneficiariosMirror.Beneficiarios = this.beneficiariosEmpresa.Beneficiarios;
+    }
+  }
   private ValidateBeneficiarioFields(): boolean{
     if (this.beneficiarioRegistro.Nombres.trim()===''){
       window.alert('Favor de introducir el nombre de beneficiario');
@@ -401,6 +423,7 @@ export class ExamenesComponent implements OnInit {
 
   }
   RedirectToDetails(): void{
+    this.examenService.CleanFolio();
     this.router.navigate(['Examenes/Actualiza']);
   }
 }

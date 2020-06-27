@@ -13,6 +13,7 @@ import { IResumenVentas, IVenta } from 'src/app/Interfaces/resumenVentasInterfac
 import { IAbono } from 'src/app/Interfaces/abonosInterface';
 import { IVentaResponse } from 'src/app/Interfaces/ventaResponseInterface';
 import { IArmazonResponse } from 'src/app/Interfaces/armazonResponseInterface';
+import { IVentasResumen } from 'src/app/Interfaces/salesSummaryInterface';
 
 @Component({
   selector: 'app-sales',
@@ -37,6 +38,7 @@ export class SalesComponent implements OnInit {
   beneficiarios: IBeneficiario[];
 
   //For sale
+  isSelectorDisabled: boolean = false;
   marcaId: number;
   colorId: number;
   tamanioId: number;
@@ -76,13 +78,20 @@ export class SalesComponent implements OnInit {
   liquidadas:boolean = false;
   armazonDetails: IArmazonResponse;
 
+  summary: IVentasResumen;
+
+  currentAbonoId: number;
+  currentFecha : string;
+  currentMonto: number;
+
   constructor(
     private readonly ExamenesService: ExamenesService,
     store: Store<any>,
     private readonly SalesService: SalesService,
     private readonly generalService: GeneralService,
     private readonly armazonService: ArmazonesService,
-    private readonly beneficiarioService: BeneficiarioService
+    private readonly beneficiarioService: BeneficiarioService,
+    private readonly examenService: ExamenesService
     
     ) { 
       store.select('empresa').subscribe(
@@ -108,7 +117,26 @@ export class SalesComponent implements OnInit {
     this.beneficiarioService.GetByEmpresa(this.currentEmpresaId).subscribe(r=> this.beneficiarios= r.Beneficiarios);
     this.populateVentas();
   }
-
+  cleanCriterial(){
+    this.currentAbonoId = undefined;
+    this.currentMonto = undefined;
+    this.currentFecha = undefined;
+  }
+  setUpdateCriteria(id: number, monto: number, fecha: string){
+    this.currentAbonoId = id;
+    this.currentMonto = monto;
+    this.currentFecha = fecha;
+  }
+  UpdateAbono(){
+    this.SalesService.UpdatePayment(this.currentAbonoId, this.currentMonto, this.currentFecha).subscribe(
+      r=> {
+        window.alert(r);
+        this.getAbonosList(this.currentVentaId);
+        this.cleanCriterial();
+      },
+      err => window.alert(err.error)
+    );
+  }
   async RegisterSale(){
     if (
       !this.marcas ||
@@ -128,7 +156,6 @@ export class SalesComponent implements OnInit {
       !this.anticipo ||
       !this.periodicidad ||
       !this.montoAbonos ||
-      !this.folio||
       !this.tipoVenta ||
       !this.beneficiarioId
     ){
@@ -148,7 +175,7 @@ export class SalesComponent implements OnInit {
     };
     const armazonResponse = await this.armazonService.registerAndGetAsync(armazon);
     const sale = {
-      Folio: this.folio,
+      Folio: !this.folio? null: this.folio,
       TotalVenta: this.montoTotal,
       Anticipo: this.anticipo,
       Periodicidad: this.periodicidad,
@@ -215,6 +242,7 @@ export class SalesComponent implements OnInit {
     this.currentVentaId = id;
     this.currentVenta = this.resumenVentas.Ventas.find(v=>v.VentaId === id);
     this.getAbonosList(this.currentVentaId);
+    this.cleanCriterial();
   }
   paymentRegistration(){
     if (!this.montoARegistrar || this.montoARegistrar === 0){
@@ -228,7 +256,9 @@ export class SalesComponent implements OnInit {
 
     this.SalesService.PaymentRegistration(this.currentVentaId, this.montoARegistrar, this.fechaAbono).subscribe(
       () => {
-        this.getAbonosList(this.currentVentaId);
+        if (this.saldoPendiente - this.montoARegistrar === 0)
+          this.currentVenta.EstaLiquidada = 1;
+        this.getAbonosList(this.currentVentaId); 
         this.montoARegistrar = undefined;
         this.fechaAbono = undefined;
         window.alert('Abono registrado satisfactoriamente');
@@ -259,7 +289,7 @@ export class SalesComponent implements OnInit {
 
   DeletePayment(abonoId: number){
     if (window.confirm('¿Estás seguro que deseas eliminar este abono?')){
-      this.SalesService.DeletePament(abonoId).subscribe(
+      this.SalesService.DeletePayment(abonoId).subscribe(
         r => {
           this.getAbonosList(this.currentVentaId);
           window.alert(r);
@@ -292,7 +322,7 @@ export class SalesComponent implements OnInit {
   }
 
   DeleteSale(ventaId: number){
-  if(window.confirm('¿Estás seguro que deseas borrar esta venta?, esta acción sólo debe de realizarse cuando se capturaron mal datos de la venta y que dicha aún no tenga abonos registrados')){
+  if(window.confirm('¿Estás seguro que deseas borrar esta venta?, esta acción sólo debe de realizarse cuando se capturaron mal datos de la venta y que dicha venta aún no tenga abonos registrados')){
     this.SalesService.DeleteSale(ventaId).subscribe(
       r=>{
         window.alert(r);
@@ -322,5 +352,21 @@ export class SalesComponent implements OnInit {
     });
     this.folioSearch = '';
     this.idSearch = null;
+    this.getSummary();
+  }
+  OnFolioChange(){
+    this.isSelectorDisabled = (this.folio !== undefined && this.folio !== null && this.folio !== '')
+    if (this.isSelectorDisabled){
+      this.examenService.GetBeneficiarioIdByFolio(this.folio).subscribe(
+        r=> {
+          this.beneficiarioId = r.BeneficiarioID;
+        }
+      );
+    }
+  }
+  private getSummary(){
+    this.SalesService.GetBalanceSummary(this.currentEmpresaId).subscribe(
+      r=> this.summary = r
+    );
   }
 }

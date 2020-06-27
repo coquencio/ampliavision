@@ -4,14 +4,15 @@
 
     <div class="form-group">
       <label for="">Beneficiario</label>
-      <select required [(ngModel)]="beneficiarioId" name="beneficiario" class="form-control" *ngIf="folios">Folio
+      <select [disabled]="isSelectorDisabled" required [(ngModel)]="beneficiarioId" name="beneficiario" class="form-control" *ngIf="folios">Folio
         <option *ngFor="let beneficiario of beneficiarios" [value]="beneficiario.BeneficiarioID">
           {{beneficiario.Nombres}} {{beneficiario.ApellidoPaterno}} {{beneficiario.ApellidoMaterno}}</option>
       </select>
     </div>
     <div class="form-group">
-      <label for="">Folio</label>
-      <select required [(ngModel)]="folio" name="folio" class="form-control" *ngIf="folios">Folio
+      <label for="">Folio (Opcional)</label>
+      <select [(ngModel)]="folio"  (ngModelChange)="OnFolioChange()"name="folio" class="form-control" *ngIf="folios">Folio
+        <option value="">(Vacío)</option>
         <option *ngFor="let folio of folios.Folios" [value]="folio.folio">{{folio.folio}}</option>
       </select>
     </div>
@@ -99,7 +100,18 @@
 </div>
 <hr>
 <h3>Ventas</h3>
-<div class="row">
+<h5 *ngIf="!resumenVentas || resumenVentas.Ventas.length === 0">Aún no hay ventas registradas</h5>
+<div *ngIf="resumenVentas && resumenVentas.Ventas.length>0" class="row">
+  <div class="col-sm-12"><h5>Resumen de ventas (Sólo se calculan las ventas por liquidarse)</h5>
+  </div>
+  <div *ngIf="summary" class="col-md-6">
+    <p><span style="font-weight: bold;">Total Vendido:</span> {{summary.Total | currency}}</p> 
+    <p><span style="font-weight: bold;">Total Anticipos:</span> {{summary.Anticipos | currency}}</p>
+  </div>
+  <div class="col-md-6">
+    <p><span style="font-weight: bold;">Total Abonos:</span> {{summary.Abonos | currency}}</p>
+    <p><span style="font-weight: bold;">Total Pendiente de cobro:</span> {{(summary.TotalFake - summary.AnticiposFake - summary.Abonos) | currency}}</p> 
+  </div>
   <div class="col-md-5">
     <div class="form-group">
       <label for="">Folio a buscar</label>
@@ -174,7 +186,6 @@
     </div>
   </div>
 </div>
-<hr>
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -210,7 +221,38 @@
             </div>
           </div>
           <div class="col-sm-12">
-            <button class="btn btn-success" (click)="paymentRegistration()">Registra Abono</button>
+            <button class="btn btn-success btn-sm" (click)="paymentRegistration()">Registra Abono</button>
+          </div>
+        </div>
+        <hr *ngIf="currentAbonoId">
+        <div *ngIf="currentAbonoId" class="row">
+          <div class="col-sm-2">
+            <div class="form-group">
+              <label for="">Abono: {{currentAbonoId}}</label>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="form-group">
+              <label for="">Monto</label>
+              <input [(ngModel)]="currentMonto" type="number" name="montoactualiza" class="form-control" >
+            </div>
+          </div>
+          <div class="col-sm-5">
+            <div class="form-group">
+              <label for="">Fecha</label>
+              <input [(ngModel)]="currentFecha" type="date" name="fechaupdate" class="form-control" >
+            </div>
+          </div>
+          <div class="col-sm-6 text-center">
+            <div class="form-group">
+              <button (click)="UpdateAbono()" class="btn btn-info">Actualizar Abono</button>
+            </div>
+          </div>
+          
+          <div class="col-sm-6 text-center">
+            <div class="form-group">
+              <button (click)="cleanCriterial()" class="btn btn-danger">Cancelar</button>
+            </div>
           </div>
         </div>
         <hr>
@@ -220,23 +262,28 @@
           </div>
           <div *ngIf="abonosList" class="table-responsive">
             <h5 style="margin-left: 20px;" *ngIf="abonosList.length === 0">Aún no hay abonos registrados</h5>
-            <table *ngIf="abonosList.length > 0" class="table table-hover">
+            <table *ngIf="abonosList.length > 0" class="table table-hover table-sm">
               <thead>
                 <tr>
-                  <th scope="col">Monto</th>
-                  <th scope="col">Fecha de abono</th>
-                  <th scope="col">Fecha de registro</th>
-                  <th scope="col">Registrado por</th>
-                  <th scope="col">Acciones</th>
+                  <td scope="col">ID</td>
+                  <td scope="col">Monto</td>
+                  <td scope="col">Fecha de abono</td>
+                  <td scope="col">Fecha de registro</td>
+                  <td scope="col">Registrado por</td>
+                  <td scope="col">Acciones</td>
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let abono of abonosList">
+                <tr  *ngFor="let abono of abonosList">
+                  <td>{{abono.AbonoID}}</td>
                   <td>{{abono.Monto | currency}}</td>
                   <td>{{abono.FechaAbono | date:'dd/MM/yyyy'}}</td>
                   <td>{{abono.FechaRegistro | date:'dd/MM/yyyy'}}</td>
                   <td>{{abono.RegistradoPor}}</td>
-                  <td><button (click)="DeletePayment(abono.AbonoID)" class="btn btn-danger">Borrar</button></td>
+                  <td>
+                    <button (click)="DeletePayment(abono.AbonoID)" class="btn btn-danger btn-sm">Borrar</button>
+                    <button (click)="setUpdateCriteria(abono.AbonoID, abono.Monto, abono.FechaAbono)" data-toggle="modal" data-target="#updateModal" style="margin-top: 5px;" class="btn btn-info btn-sm">Editar</button>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -267,7 +314,6 @@
         <div class="row">
           <div class="col-sm-12">
             <div *ngIf="armazonDetails" class="table-responsive">
-              <h5 style="margin-left: 20px;" *ngIf="abonosList.length === 0">Aún no hay abonos registrados</h5>
               <table class="table table-hover">
                 <thead>
                   <tr>

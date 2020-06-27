@@ -11,29 +11,11 @@ VentaController = Blueprint('veta', __name__)
 def create_and_get():
     try:
         token = request.args.get('token')
-        if not token:
-            return Response(status=401)
         if not user_service.token_validation(token):
             return Response(status=401)
         data = request.get_json()
-        folio = data['Folio']
-        total = data['TotalVenta']
-        anticipo = data['Anticipo']
-        periodicidad = data['Periodicidad']
-        abonos = data['Abonos']
-        fecha_venta = data['FechaVenta']
-        armazon_id = data['ArmazonId']
-        material_id = data['MaterialId']
-        proteccion_id = data['ProteccionId']
-        lente_id = data['LenteId']
-        beneficiario_id = data['BeneficiarioId']
-        tipo_venta_id = data['TipoVentaId']
+        return venta_service.register_and_get(data)
 
-        if venta_service.is_folio_repeated(folio):
-            return Response(status=400, response='Este Folio ya pertenece a una venta')
-
-        return venta_service.register_and_get(folio, total, anticipo, periodicidad, abonos, fecha_venta, armazon_id,
-                                              material_id, proteccion_id, lente_id, beneficiario_id, tipo_venta_id)
     except ValueError as err:
         return Response(status=400, response=err.args)
     except KeyError as err:
@@ -44,8 +26,6 @@ def create_and_get():
 def get_summary_by_empresa(empresa_id):
     try:
         token = request.args.get('token')
-        if not token:
-            return Response(status=401)
         if not user_service.token_validation(token):
             return Response(status=401)
         data = venta_service.get_summary_by_company(empresa_id)
@@ -60,15 +40,12 @@ def get_summary_by_empresa(empresa_id):
 def register_payment(venta_id):
     try:
         token = request.args.get('token')
-        if not token:
-            return Response(status=401)
         if not user_service.token_validation(token):
             return Response(status=401)
         data = request.get_json()
-        monto = data['Monto']
-        fecha = data['FechaAbono']
         name = user_service.get_name(token)
-        venta_service.payment_register(venta_id, monto, fecha, name)
+        venta_service.payment_register(venta_id, data, name)
+
         return Response(status=201, response="Abono creado")
     except ValueError as err:
         return Response(status=400, response=err.args)
@@ -78,8 +55,6 @@ def register_payment(venta_id):
 def get_abonos(venta_id):
     try:
         token = request.args.get('token')
-        if not token:
-            return Response(status=401)
         if not user_service.token_validation(token):
             return Response(status=401)
         data = venta_service.get_payments_by_venta(venta_id)
@@ -93,14 +68,10 @@ def get_abonos(venta_id):
 def mark_as_paid(venta_id, paying):
     try:
         token = request.args.get('token')
-        if not token:
-            return Response(status=401)
         if not user_service.token_validation(token):
             return Response(status=401)
-        if paying == 1:
-            venta_service.paid_switch(venta_id)
-        else:
-            venta_service.paid_switch(venta_id, False)
+
+        venta_service.paid_switch(venta_id, paying == 1)
         return Response(status=201, response="Venta actualizada")
     except ValueError as err:
         return Response(status=400, response=err.args)
@@ -109,8 +80,6 @@ def mark_as_paid(venta_id, paying):
 def delete_payment (abono_id):
     try:
         token = request.args.get('token')
-        if not token:
-            return Response(status=401)
         if not user_service.token_validation(token):
             return Response(status=401)
 
@@ -123,8 +92,6 @@ def delete_payment (abono_id):
 def delete_sale(venta_id):
     try:
         token = request.args.get('token')
-        if not token:
-            return Response(status=401)
         if not user_service.token_validation(token):
             return Response(status=401)
 
@@ -134,3 +101,29 @@ def delete_sale(venta_id):
         return Response(status=400, response=err.args)
     except AttributeError as err:
         return Response(status=400, response=err.args)
+
+@VentaController.route('/api/empresas/<int:empresa_id>/ventas/resumen', methods=['GET'])
+def get_balance_summary(empresa_id):
+    try:
+        token = request.args.get('token')
+        if not user_service.token_validation(token):
+            return Response(status=401)
+        return venta_service.get_balance_summary(empresa_id)
+
+    except ValueError as err:
+        return Response(status=400, response=err.args)
+
+@VentaController.route('/api/ventas/abonos/<int:abono_id>', methods=['PUT'])
+def update_payment(abono_id):
+    try:
+        token = request.args.get('token')
+        if not user_service.token_validation(token):
+            return Response(status=401)
+        data = request.get_json()
+
+        venta_service.payment_update(abono_id, data, token)
+
+        return Response(status=201, response="Abono actualizado")
+    except ValueError as err:
+        return Response(status=400, response=err.args)
+

@@ -11,19 +11,11 @@ ArmazonController = Blueprint('armazon', __name__)
 def register_and_get():
     try:
         token = request.args.get('token')
-        if not token:
-            return Response(status=401)
         if not user_service.token_validation(token):
             return Response(status=401)
         data = request.get_json()
-        marca_id = data['MarcaId']
-        color_id = data['ColorId']
-        tamanio_id = data['TamanioId']
-        modelo_id = data['ModeloId']
-        detalle_armazon = data['DetalleEnArmazon']
 
-        args = (marca_id, color_id, tamanio_id, modelo_id)
-        return armazon_service.register_and_get(args, detalle_armazon)
+        return armazon_service.register_and_get(data)
     except ValueError as err:
         return Response(status=400, response=err.args)
 
@@ -32,8 +24,6 @@ def register_and_get():
 def get_by_venta(venta_id):
     try:
         token = request.args.get('token')
-        if not token:
-            return Response(status=401)
         if not user_service.token_validation(token):
             return Response(status=401)
         data = armazon_service.get_summary(venta_id)
