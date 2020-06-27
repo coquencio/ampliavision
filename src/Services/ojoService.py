@@ -16,7 +16,13 @@ class OjoService:
         }
         self.__sql_helper = MySqlHelper()
 
-    def register_and_get_single(self, lado_id, esfera, cilindro, eje, adiccion):
+    def register_and_get_single(self, lado, data):
+        lado_id =self.lado_dictionary[lado]
+        esfera = data['Esfera']
+        cilindro = data['Cilindro']
+        eje = data['Eje']
+        adiccion = data['Adiccion']
+
         args = (lado_id, esfera, cilindro, eje, adiccion)
         for arg in args:
             arg = str(arg)
@@ -26,7 +32,13 @@ class OjoService:
         data = serialize_data_set(self.__sql_helper.sp_get(SpOjos.Register_and_get_Single, args, True))
         return data
 
-    def register_and_get_pair(self, izquierdo_id, derecho_id, tipo_id, dp_lejos, obl):
+    def register_and_get_pair(self, data, tipo):
+        tipo_id = ojos_service.tipo_dictionary[tipo]
+
+        izquierdo_id = data['IzquierdoId']
+        derecho_id = data['DerechoId']
+        dp_lejos = data['DpLejos']
+        obl = data['Obl']
         args = (izquierdo_id, derecho_id, tipo_id, dp_lejos, obl)
         for arg in args:
             arg = str(arg)

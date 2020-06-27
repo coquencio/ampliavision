@@ -9,8 +9,6 @@ user_service = UsersService()
 def create_user(user_name, password):
     try:
         token = request.args.get('token')
-        if not token:
-            return Response(status=401)
         if not user_service.token_validation(token):
             return Response(status=401)
         user_service.create_user(user_name, password, token)

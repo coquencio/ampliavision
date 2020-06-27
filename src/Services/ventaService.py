@@ -13,8 +13,24 @@ class VentaService:
         self.__empresa_service = EmpresaService()
         self.__user_service = UsersService()
 
-    def register_and_get(self, folio_examen, total_venta, anticipo, periodicidad, abonos, fecha_venta, armazon_id,
-                         material_id, proteccion_id, lente_id, beneficiario_id, tipo_id):
+    def register_and_get(self, data):
+        folio_examen = data['Folio']
+        total_venta = data['TotalVenta']
+        anticipo = data['Anticipo']
+        periodicidad = data['Periodicidad']
+        abonos = data['Abonos']
+        fecha_venta = data['FechaVenta']
+        armazon_id = data['ArmazonId']
+        material_id = data['MaterialId']
+        proteccion_id = data['ProteccionId']
+        lente_id = data['LenteId']
+        beneficiario_id = data['BeneficiarioId']
+        tipo_id = data['TipoVentaId']
+
+        if folio_examen:
+            if self.is_folio_repeated(folio):
+                raise ValueError("Este folio ya pertenece a una venta")
+
         if not isinstance(armazon_id, int) or not isinstance(material_id, int) or not isinstance(proteccion_id, int) \
                 or not isinstance(lente_id, int) or not isinstance(beneficiario_id, int)\
                 or not isinstance(tipo_id, int):
@@ -53,7 +69,10 @@ class VentaService:
         data = serialize_data_set(data, "Ventas")
         return data
 
-    def payment_register(self, venta_id, monto, fecha, name):
+    def payment_register(self, venta_id, data, name):
+        monto = data['Monto']
+        fecha = data['FechaAbono']
+
         if not isinstance(venta_id, int):
             raise ValueError("Invalid venta id")
         if not isinstance(monto, float) and not isinstance(monto, int) :
@@ -149,7 +168,10 @@ class VentaService:
         data["AnticiposFake"] = real_balance["AnticiposFake"]
         return serialize_data_set(data)
 
-    def payment_update(self, abono_id, monto, fecha, token):
+    def payment_update(self, abono_id, data, token):
+        monto = data['Monto']
+        fecha = data['FechaAbono']
+
         if not self.__user_service.is_admin(token):
             raise ValueError("No tienes los permisos para realizar esta acción")
         if not isinstance(abono_id, int):

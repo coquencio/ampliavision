@@ -11,18 +11,11 @@ beneficiario_service = BeneficiariosService()
 def crea_beneficiario(empresa_id):
     try:
         token = request.args.get('token')
-        if not token:
-            return Response(status=401)
         if not user_service.token_validation(token):
             return Response(status=401)
 
         data = request.get_json()
-        nombre = data['Nombres']
-        apepat = data['ApellidoPaterno']
-        apemat = data['ApellidoMaterno']
-        fechanac = data['FechaNacimiento']
-        ocupacion = data['Ocupacion']
-        beneficiario_service.create_beneficiario(nombre, apepat, apemat, fechanac, ocupacion, empresa_id)
+        beneficiario_service.create_beneficiario(empresa_id, data)
         return Response(status=201, response="Beneficiario creado satisfactoriamente")
     except ValueError as err:
         return Response(status=400, response=err.args)
@@ -34,8 +27,6 @@ def crea_beneficiario(empresa_id):
 def get_by_empresa(empresa_id):
     try:
         token = request.args.get('token')
-        if not token:
-            return Response(status=401)
         if not user_service.token_validation(token):
             return Response(status=401)
         return beneficiario_service.get_beneficiario_by_empresa(empresa_id)
@@ -50,8 +41,6 @@ def get_by_empresa(empresa_id):
 def get_names_by_id(beneficiario_id):
     try:
         token = request.args.get('token')
-        if not token:
-            return Response(status=401)
         if not user_service.token_validation(token):
             return Response(status=401)
         return beneficiario_service.get_names_by_id (beneficiario_id)
@@ -66,18 +55,11 @@ def get_names_by_id(beneficiario_id):
 def update_beneficiario(beneficiario_id):
     try:
         token = request.args.get('token')
-        if not token:
-            return Response(status=401)
         if not user_service.token_validation(token):
             return Response(status=401)
 
         data = request.get_json()
-        nombre = data['Nombres']
-        apepat = data['ApellidoPaterno']
-        apemat = data['ApellidoMaterno']
-        fechanac = data['FechaNacimiento']
-        ocupacion = data['Ocupacion']
-        beneficiario_service.update_beneficiario(beneficiario_id, nombre, apepat, apemat, fechanac, ocupacion)
+        beneficiario_service.update_beneficiario(beneficiario_id, data)
         return Response(status=201, response="Beneficiario registrado satisfactoriamente")
     except ValueError as err:
         return Response(status=400, response=err.args)

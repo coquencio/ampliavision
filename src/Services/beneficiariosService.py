@@ -11,7 +11,12 @@ class BeneficiariosService:
         self.__empresa_servicio = EmpresaService()
         self.__string_helper = StringHelper()
 
-    def create_beneficiario(self, nombres, ape_pat, ape_mat, fecha_nac, ocupacion, empresa_id):
+    def create_beneficiario(self, empresa_id, data):
+        nombres = data['Nombres']
+        ape_pat = data['ApellidoPaterno']
+        ape_mat = data['ApellidoMaterno']
+        fecha_nac = data['FechaNacimiento']
+        ocupacion = data['Ocupacion']
 
         if not self.__empresa_servicio.validate_empresa(empresa_id):
             raise KeyError("Empresa no encontrada")
@@ -53,7 +58,13 @@ class BeneficiariosService:
         data = self.__sql_helper.sp_get(SpBeneficiario.get_name_by_id, args, True)
         return serialize_data_set(data, "Nombres")
 
-    def update_beneficiario(self, beneficiario_id, nombres, ape_pat, ape_mat, fecha_nac, ocupacion):
+    def update_beneficiario(self, beneficiario_id, data):
+        nombres = data['Nombres']
+        ape_pat = data['ApellidoPaterno']
+        ape_mat = data['ApellidoMaterno']
+        fecha_nac = data['FechaNacimiento']
+        ocupacion = data['Ocupacion']
+
         if not nombres or not ape_mat or not ape_pat or not fecha_nac or not ocupacion:
             raise ValueError("Datos faltantes")
 
