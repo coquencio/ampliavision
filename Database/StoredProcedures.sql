@@ -361,7 +361,11 @@ delimiter ;
 delimiter //
 create PROCEDURE registraAbono(in _ventaId int, in _monto decimal(13,2), in _fechaAbono date, in _nombre varchar(50))
 BEGIN
+<<<<<<< HEAD
 	insert into Abonos (ventaId, monto, fechaAbono, fechaRegistro, RegistradoPor) values (_ventaId, _monto, _fechaAbono, curdate(), _nombre);
+=======
+	insert into abonos (ventaId, monto, fechaAbono, fechaRegistro, RegistradoPor) values (_ventaId, _monto, _fechaAbono, curdate(), _nombre);
+>>>>>>> f46c4781518d43ba3975706b47ab4d521f62b30b
 END //
 delimiter ;
 delimiter //
@@ -677,3 +681,180 @@ AS edad, e.requiereLentes from Examenes e
     where b.empresaId = _empresaId;
 END //
 delimiter ;
+
+
+
+drop PROCEDURE GetResumenExamenesPorEmpresa;
+delimiter //
+create PROCEDURE GetResumenExamenesPorEmpresa(in _EmpresaId int)
+BEGIN
+
+select e.folio, b.beneficiarioId as BeneficiarioId, b.Nombres, b.Apellidopaterno, b.ocupacion, ev.descripcion as enfermedad,  YEAR(CURDATE()) - YEAR(fechanacimiento) -
+IF(STR_TO_DATE(CONCAT(YEAR(CURDATE()), '-', MONTH(fechanacimiento), '-', DAY(fechanacimiento)) ,'%Y-%c-%e') > CURDATE(), 1, 0)
+AS edad, e.requiereLentes from examenes e 
+    inner join enfermedadesvisuales ev 
+    on e.enfermedadId = ev.enfermedadId 
+    inner join beneficiarios b 
+    on e.beneficiarioId = b.beneficiarioId
+    where b.empresaId = _empresaId;
+	
+END //
+delimiter ;
+
+
+delimiter //
+create PROCEDURE DeleteIsoRelation(in _relationId int)
+BEGIN
+	delete from casosPorBeneficiario where casoPorBeneficiarioID = _relationId ;
+END //
+delimiter ;
+delimiter //
+create PROCEDURE GetBeneficiarioNombrePorId(in _beneficiario_id int)
+BEGIN
+	select nombres, apellidoPaterno, apellidoMaterno from beneficiarios where beneficiarioid = _beneficiario_id ;
+END //
+delimiter ;
+delimiter //
+create PROCEDURE ActualizaExamen(in _Folio varchar(10),in _BeneficiarioID INT,in _Anterior int,in _Total int,in _adaptacion int,in _requiereLentes bit,in _comproLentes bit,in _enfermedadID int,in _obervacion varchar(250))
+BEGIN
+	update Examenes set beneficiarioID = _BeneficiarioID , anterior=_Anterior, total=_Total, adaptacion=_adaptacion, requiereLentes=_requiereLentes , comproLentes=_comproLentes , enfermedadID = _enfermedadID , observacion = _obervacion  where Folio = _Folio;
+END //
+delimiter ;
+delimiter //
+drop procedure RegistraYSeleccionaOjo
+delimiter ;
+delimiter //
+CREATE PROCEDURE RegistraYSeleccionaOjo(in LadoId int,in Esfera int, in Cilindro int,in eje int, Addicion int)
+BEGIN
+	insert into Ojos (LadoID, esfera, cilindro, eje, adiccion) values (LadoId, Esfera, Cilindro, eje, Addicion);
+    select OjoID from ojos order by OjoID desc limit 1;
+END //
+delimiter ;
+delimiter //
+drop procedure RegistraExamen
+delimiter ;
+delimiter //
+create PROCEDURE RegistraExamen(in Folio varchar(10),in BeneficiarioID INT,in Anterior int,in Total int,in adaptacion int,in fechaExamen date,in requiereLentes bit,in comproLentes bit,in enfermedadID int,in obervacion varchar(250))
+BEGIN
+	insert into Examenes (Folio, beneficiarioID, anterior, total, adaptacion, fechaExamen, requiereLentes, comproLentes, enfermedadID, observacion) values(folio, beneficiarioID, anterior, total, adaptacion, fechaExamen, requiereLentes, comproLentes, enfermedadID, obervacion);
+END //
+delimiter ;
+
+delimiter //
+create PROCEDURE ActualizaBeneficiario(in _beneficiarioId int, in _nombres varchar(25),in _apepat varchar(25), in _apemat varchar(35),in _fechanac date, _ocupacion varchar(40))
+BEGIN
+	update beneficiarios set nombres = _nombres, apellidoPaterno=_apepat, apellidoMaterno=_apemat, FechaNacimiento=_fechanac, ocupacion=_ocupacion where BeneficiarioID = _beneficiarioId;
+END //
+delimiter ;
+
+
+
+drop PROCEDURE RegistraYSeleccionaVenta
+
+delimiter //
+
+create PROCEDURE RegistraYSeleccionaVenta(in FolioExamen varchar(10),in totalVenta decimal(13, 2), in Anticipo decimal(13, 2),in Periodicidad int, in abonos decimal(13, 2), in fechaVenta date, in armazonID int, in materialID int, in proteccionID int, in lenteID int, in beneficiarioID int, in tipoVentaID int)
+BEGIN
+	
+	select @ExamenID := ExamenID from Examenes where folio = FolioExamen;
+    insert into Ventas (folioExamen, totalVenta, anticipo, periodicidadDias, Abonos, fechaVenta, EstaLiquidada, armazonID, materialID, ProteccionID, LenteID, BeneficiarioID, ExamenID, TipoVentaID) values (folioExamen, totalVenta, anticipo, periodicidad, abonos, fechaventa, 0, armazonID, materialID, proteccionID, lenteID, beneficiarioID, @ExamenID, tipoVentaID);
+	select ventaID from ventas order by ventaID desc limit 1;
+END //
+delimiter ;
+
+delimiter //
+create PROCEDURE RegresaFolios(in empresa_Id int)
+BEGIN
+	select folio from examenes e inner join beneficiarios b on b.beneficiarioId = e.BeneficiarioId where b.empresaId = 1
+END //
+
+
+delimiter ;
+drop procedure RegistraYSeleccionaArmazon; 
+delimiter //
+CREATE PROCEDURE RegistraYSeleccionaArmazon(in MarcaID int, in ColorID int, in TamanioID int, in ModeloID int, in _DetalleEnArmazon varchar(35))
+BEGIN
+	insert into armazones (MarcaID, ColorID, TamanioID, ModeloID, DetalleEnArmazon ) values (marcaID, ColorID, TamanioID, ModeloID, _DetalleEnArmazon);
+    select ArmazonID from Armazones order by armazonID desc limit 1;
+END //
+delimiter ;
+
+drop PROCEDURE RegistraYSeleccionaVenta;
+delimiter //
+
+create PROCEDURE RegistraYSeleccionaVenta(in FolioExamen varchar(10),in totalVenta decimal(13, 2), in Anticipo decimal(13, 2),in Periodicidad int, in abonos decimal(13, 2), in fechaVenta date, in armazonID int, in materialID int, in proteccionID int, in lenteID int, in beneficiarioID int, in tipoVentaID int)
+BEGIN
+	select ExamenID into @ExamenID  from Examenes where folio = FolioExamen;
+    insert into Ventas (folioExamen, totalVenta, anticipo, periodicidadDias, Abonos, fechaVenta, EstaLiquidada, armazonID, materialID, ProteccionID, LenteID, BeneficiarioID, ExamenID, TipoVentaID) values (folioExamen, totalVenta, anticipo, periodicidad, abonos, fechaventa, 0, armazonID, materialID, proteccionID, lenteID, beneficiarioID, @ExamenID, tipoVentaID);
+	select ventaID from ventas order by ventaID desc limit 1;
+END //
+delimiter ;
+
+
+delimiter //
+create PROCEDURE ValidaFolio(in _FolioExamen varchar(10))
+BEGIN
+	select count(*) from ventas where FolioExamen = _FolioExamen;
+END //
+delimiter ;
+
+
+delimiter //
+create PROCEDURE desLiquidaVenta(in _ventaId int)
+BEGIN
+	update ventas set EstaLiquidada =  0 where VentaID = _ventaId;
+END //
+delimiter ;
+
+drop PROCEDURE seleccionaResumenVentasPorEmpresa;
+delimiter //
+create PROCEDURE seleccionaResumenVentasPorEmpresa(in _empresaId int)
+BEGIN
+		select v.ventaId as VentaId, v.TipoVentaID as Tipo, v.FolioExamen, b.nombres as Nombres, v.EstaLiquidada as EstaLiquidada, v.fechaVenta as Fecha ,b.apellidoPaterno as Apellido, b.Ocupacion as Puesto, ex.RequiereLentes, ex.comprolentes,  m.descripcion as Material, p.descripcion as Proteccion, t.descripcion as Lente, v.totalventa as Total, v.anticipo as Aticipo, v.abonos as Abonos from ventas v inner join beneficiarios b on v.beneficiarioId = b.beneficiarioId inner join materiales m on v.materialId = m.materialId inner join protecciones p on v.proteccionId = p.proteccionId inner join tipolente t on v.lenteId = t.lenteId left join examenes ex on v.examenId= ex.ExamenId where b.empresaId = _empresaId;
+END //
+delimiter ;
+
+drop PROCEDURE registraAbono;
+delimiter //
+create PROCEDURE registraAbono(in _ventaId int, in _monto decimal(13,2), in _fechaAbono date, in _nombre varchar(50))
+BEGIN
+	insert into abonos (ventaId, monto, fechaAbono, fechaRegistro, RegistradoPor) values (_ventaId, _monto, _fechaAbono, curdate(), _nombre);
+END //
+delimiter ;
+
+delimiter //
+create PROCEDURE SeleccionaNombreConToken(in _token varchar(50))
+BEGIN
+	select userName from users where token = _token;
+END //
+delimiter ;
+delimiter //
+create PROCEDURE Admin(in _token varchar(50))
+BEGIN
+	select Admin from users where token = _token;
+END //
+delimiter ;
+
+drop procedure SeleccionaMarcas;
+
+delimiter //
+CREATE PROCEDURE SeleccionaMarcas()
+BEGIN
+	select * from marcasarmazones where EstaActivo = 1;
+END //
+
+delimiter //
+CREATE PROCEDURE PuedeBorrar(in _ventaId int)
+BEGIN
+	select count(*) as total from abonos where ventaID= _ventaId;
+END //
+delimiter ;
+
+
+delimiter //
+CREATE PROCEDURE BorraVenta(in _ventaId int)
+BEGIN
+	delete from ventas where ventaID= _ventaId;
+END //
+delimiter ;
+

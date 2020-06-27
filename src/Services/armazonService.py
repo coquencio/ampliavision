@@ -19,7 +19,9 @@ class ArmazonService:
 
         for arg in args:
             if not isinstance(arg, int):
+
                 raise ValueError("Invalid data")
+
             # TODO Validate if all IDs exists
 
         if not isinstance(detalle, str):

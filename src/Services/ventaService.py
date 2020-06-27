@@ -13,6 +13,7 @@ class VentaService:
         self.__empresa_service = EmpresaService()
         self.__user_service = UsersService()
 
+
     def register_and_get(self, data):
         folio_examen = data['Folio']
         total_venta = data['TotalVenta']
@@ -51,7 +52,9 @@ class VentaService:
         proteccion_id = str(proteccion_id)
         lente_id = str(lente_id)
         beneficiario_id = str(beneficiario_id)
+
         tipo_id =  str(tipo_id)
+
         args = (folio_examen, total_venta, anticipo, periodicidad, abonos, fecha_venta, armazon_id, material_id,
                 proteccion_id, lente_id, beneficiario_id, tipo_id)
         data = self.__sql_helper.sp_get(SpVentas.Register_and_get, args, True)
@@ -68,6 +71,7 @@ class VentaService:
             return False
         data = serialize_data_set(data, "Ventas")
         return data
+
 
     def payment_register(self, venta_id, data, name):
         monto = data['Monto']
@@ -106,17 +110,18 @@ class VentaService:
         total_venta = data['total']
         data = self.__sql_helper.sp_get(SpVentas.Get_abono_sum_by_venta, args, True)
         if not data['sum(Monto)']:
+
             data['sum(Monto)'] = 0
         if is_updating:
             current_monto = self.__sql_helper.sp_get(SpVentas.Get_monto, (str(abono_id), ), True)
             data['sum(Monto)'] = data['sum(Monto)'] - current_monto["Monto"]
+
         total_abonos = float(data['sum(Monto)'])
         total_abonos = total_abonos + monto
         if total_venta == total_abonos:
             self.paid_switch(venta_id)
-        if total_venta < total_abonos:
-            return False
-        return True
+        return total_venta < total_abonos
+
 
     def delete_payment(self, payment_id, token):
         if not isinstance(payment_id, int):
@@ -129,6 +134,7 @@ class VentaService:
 
     def is_folio_repeated(self, folio):
         folio = self.__string_helper.build_string(folio)
+
         args = (folio, )
         data = self.__sql_helper.sp_get(SpVentas.Validate_folio, args, True);
         if data['count(*)'] == 0:
@@ -188,3 +194,4 @@ class VentaService:
         fecha = self.__string_helper.build_string(fecha)
         args = (abono_id, fecha, monto)
         self.__sql_helper.sp_set(SpVentas.Update_payment, args)
+

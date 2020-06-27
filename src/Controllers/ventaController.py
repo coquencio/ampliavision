@@ -14,8 +14,8 @@ def create_and_get():
         if not user_service.token_validation(token):
             return Response(status=401)
         data = request.get_json()
-
         return venta_service.register_and_get(data)
+
     except ValueError as err:
         return Response(status=400, response=err.args)
     except KeyError as err:
@@ -45,6 +45,7 @@ def register_payment(venta_id):
         data = request.get_json()
         name = user_service.get_name(token)
         venta_service.payment_register(venta_id, data, name)
+
         return Response(status=201, response="Abono creado")
     except ValueError as err:
         return Response(status=400, response=err.args)
@@ -125,3 +126,4 @@ def update_payment(abono_id):
         return Response(status=201, response="Abono actualizado")
     except ValueError as err:
         return Response(status=400, response=err.args)
+

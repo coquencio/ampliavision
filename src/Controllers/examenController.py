@@ -75,12 +75,14 @@ def update_examen():
     except ValueError as err:
         return Response(status=400, response=err.args)
 
+
 @ExamenController.route('/api/empresas/<int:empresa_id>/examenes/folios', methods=['GET'])
 def get_folios(empresa_id):
     try:
         token = request.args.get('token')
         if not user_service.token_validation(token):
             return Response(status=401)
+
         data = examen_service.get_folios(empresa_id)
         if not data:
             return Response(status=404, response="Folios not found")
@@ -97,3 +99,4 @@ def get_beneficiario_by_folio(folio):
         return examen_service.get_beneficiario_by_folio(folio)
     except ValueError as err:
         return Response(status=400, response=err.args)
+

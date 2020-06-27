@@ -59,7 +59,6 @@ class ExamenService:
             raise ValueError("Invalid Id")
         args = (str(empresa_id), )
         data = self.__sql_helper.sp_get(SpExamen.Get_summary_by_empresa, args)
-        print(data)
         return serialize_data_set(data, "Examenes")
 
     def update(self, data):

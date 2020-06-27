@@ -60,6 +60,7 @@ def update_beneficiario(beneficiario_id):
 
         data = request.get_json()
         beneficiario_service.update_beneficiario(beneficiario_id, data)
+
         return Response(status=201, response="Beneficiario registrado satisfactoriamente")
     except ValueError as err:
         return Response(status=400, response=err.args)
