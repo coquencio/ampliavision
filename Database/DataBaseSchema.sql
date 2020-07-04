@@ -238,6 +238,8 @@ insert into tipoVenta (Descripcion) values ('Efectivo');
 
 insert into tipoVenta (Descripcion) values ('Tarjeta de crédito');
 
+insert into tipoVenta (Descripcion) values ('Nómina');
+
 ALTER TABLE ventas
 add COLUMN TipoVentaID INT;
 
