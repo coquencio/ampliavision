@@ -4,6 +4,7 @@ from src.Helpers.stringHelper import StringHelper
 from src.Core import marcasConstants as SpMarcas, coloresConstants as SpColores,tamaniosConstants as SpTamanios, \
     modelosConstants as SpModelos, materialConstants as SpMaterial,proteccionConstants as SpProteccion, \
     lentesConstants as SpLentes
+from urllib.parse import unquote
 
 
 class GeneralService:
@@ -41,7 +42,10 @@ class GeneralService:
             self.__sql_helper.sp_set(self.__constant.Activate, args)
 
     def get(self, key):
-        return serialize_data_set(self.__sql_helper.sp_get(self.__constant.GetAll), key)
+        data  = self.__sql_helper.sp_get(self.__constant.GetAll)
+        for row in data:
+            row["Descripcion"] = unquote(row["Descripcion"])
+        return serialize_data_set(data, key)
 
     def __entity_helper(self, entity):
         if not isinstance(entity, str):
