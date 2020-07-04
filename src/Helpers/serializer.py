@@ -1,13 +1,15 @@
 import decimal
 import json
 import datetime
-
+from urllib.parse import unquote
 
 def __json_defaults(o):
     if isinstance(o, (datetime.datetime, datetime.date)):
         return o.strftime("%Y-%m-%d")
     if isinstance(o, decimal.Decimal):
         return float(o)
+    if isinstance(o, string):
+        return unquote(o)
 
 
 def serialize_data_set(data_set, key=None):

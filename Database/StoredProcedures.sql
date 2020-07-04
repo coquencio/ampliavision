@@ -739,7 +739,7 @@ AS edad, e.requiereLentes from Examenes e
     on e.enfermedadId = ev.enfermedadId 
     inner join Beneficiarios b 
     on e.beneficiarioId = b.beneficiarioId
-    right join Ventas v on e.folio = v.folioExamen
+    left join Ventas v on e.folio = v.folioExamen
     where b.empresaId = _empresaId;
 END //
 delimiter ;

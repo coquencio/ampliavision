@@ -25,15 +25,14 @@ class OjoService:
 
         args = (lado_id, esfera, cilindro, eje, adiccion)
         for arg in args:
-            arg = str(arg)
-            if not int(arg):
+            if not isinstance(arg, int) or not isinstance(arg, float):
                 raise ValueError("Missing arguments or invalid data type")
 
         data = serialize_data_set(self.__sql_helper.sp_get(SpOjos.Register_and_get_Single, args, True))
         return data
 
     def register_and_get_pair(self, data, tipo):
-        tipo_id = ojos_service.tipo_dictionary[tipo]
+        tipo_id = self.tipo_dictionary[tipo]
 
         izquierdo_id = data['IzquierdoId']
         derecho_id = data['DerechoId']
@@ -41,8 +40,7 @@ class OjoService:
         obl = data['Obl']
         args = (izquierdo_id, derecho_id, tipo_id, dp_lejos, obl)
         for arg in args:
-            arg = str(arg)
-            if not int(arg):
+            if not isinstance(arg, int) or not isinstance(arg, float):
                 raise ValueError("Missing arguments or invalid data type")
         data = serialize_data_set(self.__sql_helper.sp_get(SpOjos.Register_and_get_pair, args, True))
         return data

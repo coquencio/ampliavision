@@ -80,7 +80,7 @@
 
 <hr>
 <h4>Registra nuevo examen en empresa {{nombreEmpresa}}</h4>
-<form>
+<form *ngIf="!loadingExam">
     <div class="form-group">
         <label>Folio:</label>
         <input type="text" [(ngModel)]="folio"class="form-control" name="folio" placeholder="Folio de examen">
@@ -325,7 +325,9 @@
       <hr>
       <button (click)="RegistraExamenAsync()" class="btn btn-primary">Registra Examen</button>
 </form>
-
+<div *ngIf="loadingExam">
+    <app-loading></app-loading>
+</div>
   
   <!-- Modal -->
   <div class="modal fade in" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

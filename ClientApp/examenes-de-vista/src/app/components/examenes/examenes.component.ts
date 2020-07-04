@@ -102,6 +102,8 @@ export class ExamenesComponent implements OnInit {
 
   selectedBeneficiario: IBeneficiario;
   loading: boolean = false;
+  loadingExam: boolean = false;
+
   @ViewChild('closebutton') private closeModal: ElementRef;
   ngOnInit(): void {
     this.loading = true;
@@ -185,6 +187,7 @@ export class ExamenesComponent implements OnInit {
     if (this.observaciones === ""){
       this.observaciones = ' ';
     }
+    this.loadingExam = true;
     const anteriorId = this.incluyeAnterior? await this._RegistraParAsync('anterior') : 'NULL';
     const totalId = this.incluyeTotal? await this._RegistraParAsync('total') : 'NULL';
     const adaptacionId = this.incluyeAdaptacion? await this._RegistraParAsync('adaptacion') : 'NULL';
@@ -203,8 +206,13 @@ export class ExamenesComponent implements OnInit {
     }
     this.examenService.PostExam(examen).subscribe(
       r => {
+        this.loadingExam = false;
         window.alert('Examen registrado satisfactoriamente');
         this.LimpiaCamposExamen();
+    },
+    err => {
+      this.loadingExam = false;
+      window.alert(err.error);
     }
     );
   }

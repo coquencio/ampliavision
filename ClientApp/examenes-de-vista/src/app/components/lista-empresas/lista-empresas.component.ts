@@ -75,12 +75,16 @@ export class ListaEmpresasComponent implements OnInit {
     this.empresaService.Create(this.empresaRegistration).subscribe(
       r => {
         this.loadingRegistration = false;
-        window.alert(r);
         this.closeModal.nativeElement.click();
         this.ngOnInit();
         this.empresaRegistration.Nombre='';
         this.empresaRegistration.Domicilio='';
         this.empresaRegistration.Telefono='';
+        window.alert(r);
+      },
+      err => {
+        this.loadingRegistration = false;
+        window.alert(err.error);
       }
     );
   }
