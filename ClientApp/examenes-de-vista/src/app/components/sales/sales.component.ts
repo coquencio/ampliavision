@@ -143,37 +143,52 @@ export class SalesComponent implements OnInit {
   async RegisterSale(){
     if (this.marcaId === undefined || this.marcaId === null){
       window.alert('Favor de seleccionar una marca antes');
+      return;
     }
     if (this.colorId === undefined || this.colorId=== null){
       window.alert('Favor de seleccionar un color antes');
+      return;
     }
     if (this.tamanioId === undefined || this.tamanioId === null){
       window.alert('Favor de seleccionar un tamaño antes');
+      return;
     }
     if (this.modeloId === undefined || this.modeloId === null){
       window.alert('Favor de seleccionar un modelo antes');
+      return;
     }if (this.lenteId === undefined || this.lenteId === null){
       window.alert('Favor de seleccionar un lente antes');
+      return;
     }if (this.descArmazon === undefined || this.descArmazon === null){
       window.alert('Favor introduce una descripción de armazón antes');
+      return;
     }if (this.proteccionId === undefined || this.proteccionId === null){
       window.alert('Favor de seleccionar una protección antes');
+      return;
     }if (this.fechaExamen === undefined || this.fechaExamen === null){
       window.alert('Favor de seleccionar una fecha antes');
+      return;
     }if (this.materialId === undefined || this.materialId === null){
       window.alert('Favor de seleccionar un material antes');
+      return;
     }if (this.montoTotal === undefined || this.montoTotal === null){
       window.alert('Favor de introduce un monto total antes');
+      return;
     }if (this.anticipo === undefined || this.anticipo === null){
       window.alert('Favor de introduce un anticipo antes');
+      return;
     }if (this.periodicidad === undefined || this.periodicidad === null){
       window.alert('Favor de introduce una preiodicidad antes');
+      return;
     }if (this.montoAbonos === undefined || this.montoAbonos === null){
       window.alert('Favor de introduce un monto de abonos antes');
+      return;
     }if (this.tipoVenta === undefined || this.tipoVenta === null){
       window.alert('Favor de seleccionar un tipo de venta antes');
+      return;
     }if (this.beneficiarioId === undefined || this.beneficiarioId === null){
       window.alert('Favor de seleccionar un empleado antes');
+      return;
     }
     if ((this.anticipo + this.montoAbonos) > this.montoTotal){
       window.alert('Anticipo sumado con el primer abono no puede ser mayor a total de la venta');
@@ -370,7 +385,8 @@ export class SalesComponent implements OnInit {
         }
       });
     this.loadingSales = false;
-    });
+    },
+    ()=> this.loadingSales = false);
     this.folioSearch = '';
     this.idSearch = null;
     this.getSummary();
