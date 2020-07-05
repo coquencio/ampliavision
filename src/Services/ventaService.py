@@ -157,7 +157,6 @@ class VentaService:
     def __can_be_deleted(self, venta_id):
         venta_id = str(venta_id)
         data = self.__sql_helper.sp_get(SpVentas.Can_delete, (venta_id,), True)
-        print(data)
         return data["total"] == 0
 
     def delete_sale(self, venta_id):
