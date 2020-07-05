@@ -1,6 +1,17 @@
 from src.Helpers.sql import MySqlHelper
 from src.Core import ojosConstants as SpOjos
 from src.Helpers.serializer import serialize_data_set
+from src.Helpers.stringHelper import StringHelper
+
+
+def are_characters_valid(argument):
+    if isinstance(argument, int):
+        return True
+    allowed_characters = "1234567890-."
+    for letter in argument:
+        if not letter in allowed_characters:
+            return False
+    return True
 
 
 class OjoService:
@@ -15,6 +26,7 @@ class OjoService:
             "adaptacion": 3,
         }
         self.__sql_helper = MySqlHelper()
+        self.__string_helper = StringHelper()
 
     def register_and_get_single(self, lado, data):
         lado_id =self.lado_dictionary[lado]
@@ -25,9 +37,14 @@ class OjoService:
 
         args = (lado_id, esfera, cilindro, eje, adiccion)
         for arg in args:
-            if not isinstance(arg, int) or not isinstance(arg, float):
-                raise ValueError("Missing arguments or invalid data type")
+            if not are_characters_valid(arg):
+                raise ValueError("Sólo pueden añadirse datos númericos")
+        esfera = self.__string_helper.build_string(str(esfera))
+        cilindro= self.__string_helper.build_string(str(cilindro))
+        eje = self.__string_helper.build_string(str(eje))
+        adiccion = self.__string_helper.build_string(str(adiccion))
 
+        args = (lado_id, esfera, cilindro, eje, adiccion)
         data = serialize_data_set(self.__sql_helper.sp_get(SpOjos.Register_and_get_Single, args, True))
         return data
 
@@ -40,8 +57,13 @@ class OjoService:
         obl = data['Obl']
         args = (izquierdo_id, derecho_id, tipo_id, dp_lejos, obl)
         for arg in args:
-            if not isinstance(arg, int) or not isinstance(arg, float):
-                raise ValueError("Missing arguments or invalid data type")
+            if not are_characters_valid(arg):
+                raise ValueError("Sólo pueden añadirse datos númericos")
+
+        dp_lejos = self.__string_helper.build_string(str(dp_lejos))
+        obl = self.__string_helper.build_string(str(obl))
+        args = (izquierdo_id, derecho_id, tipo_id, dp_lejos, obl)
+
         data = serialize_data_set(self.__sql_helper.sp_get(SpOjos.Register_and_get_pair, args, True))
         return data
 

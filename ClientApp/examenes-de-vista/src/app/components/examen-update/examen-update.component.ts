@@ -23,122 +23,123 @@ export class ExamenUpdateComponent implements OnInit {
     Cilindro: undefined,
     Eje: undefined,
     Adiccion: undefined
-    };
-    dant = {
-      Esfera: undefined,
-      Cilindro: undefined,
-      Eje: undefined,
-      Adiccion: undefined  
-    };
-    dtot = {
-      Esfera: undefined,
-      Cilindro: undefined,
-      Eje: undefined,
-      Adiccion: undefined  
-    };
-    itot = {
-      Esfera: undefined,
-      Cilindro: undefined,
-      Eje: undefined,
-      Adiccion: undefined  
-    };
-    dada = {
-      Esfera: undefined,
-      Cilindro: undefined,
-      Eje: undefined,
-      Adiccion: undefined  
-    };
-    iada = {
-      Esfera: undefined,
-      Cilindro: undefined,
-      Eje: undefined,
-      Adiccion: undefined  
-    };
-    detalleAnterior = {
-      Lejos: undefined,
-      Obl: undefined
-    };
-    detalleTotal = {
-      Lejos: undefined,
-      Obl: undefined
-    };
-    detalleAdaptacion = {
-      Lejos: undefined,
-      Obl: undefined
-    };
-    enfermedadId: number;
-    beneficiarioId: number;
-    requiereLentes: boolean;
-    comproLentes: boolean;
-    observaciones: string;
-    beneficiariosEmpresa: IBeneficiarios;
+  };
+  dant = {
+    Esfera: undefined,
+    Cilindro: undefined,
+    Eje: undefined,
+    Adiccion: undefined
+  };
+  dtot = {
+    Esfera: undefined,
+    Cilindro: undefined,
+    Eje: undefined,
+    Adiccion: undefined
+  };
+  itot = {
+    Esfera: undefined,
+    Cilindro: undefined,
+    Eje: undefined,
+    Adiccion: undefined
+  };
+  dada = {
+    Esfera: undefined,
+    Cilindro: undefined,
+    Eje: undefined,
+    Adiccion: undefined
+  };
+  iada = {
+    Esfera: undefined,
+    Cilindro: undefined,
+    Eje: undefined,
+    Adiccion: undefined
+  };
+  detalleAnterior = {
+    Lejos: undefined,
+    Obl: undefined
+  };
+  detalleTotal = {
+    Lejos: undefined,
+    Obl: undefined
+  };
+  detalleAdaptacion = {
+    Lejos: undefined,
+    Obl: undefined
+  };
+  enfermedadId: number;
+  beneficiarioId: number;
+  requiereLentes: boolean;
+  comproLentes: boolean;
+  observaciones: string;
+  beneficiariosEmpresa: IBeneficiarios;
 
-    incluyeAdaptacion: boolean;
-    incluyeTotal: boolean;
-    incluyeAnterior: boolean;
-    currentEmpresaId: number;
-    constructor(
+  incluyeAdaptacion: boolean;
+  incluyeTotal: boolean;
+  incluyeAnterior: boolean;
+  currentEmpresaId: number;
+  loadingUpdate: boolean = false;
+  constructor(
     private router: Router,
     private examenService: ExamenesService,
     private ojoService: OjosService,
     private beneficiarioService: BeneficiarioService,
     store: Store<any>
-    ) { 
-      store.select('empresa').subscribe(
-        e => {
-          this.currentEmpresaId = e.empresaId;
-        }
-      );
-    }
+  ) {
+    store.select('empresa').subscribe(
+      e => {
+        this.currentEmpresaId = e.empresaId;
+      }
+    );
+  }
 
   ngOnInit(): void {
     this.beneficiarioService.GetByEmpresa(this.currentEmpresaId).subscribe(
-      r =>{
-      this.beneficiariosEmpresa = r;   
-      this.folio = this.examenService.GetFolio();
-      if (this.folio){
-        this.GetExamen();
+      r => {
+        this.beneficiariosEmpresa = r;
+        this.folio = this.examenService.GetFolio();
+        if (this.folio) {
+          this.GetExamen();
+        }
       }
-    }
     );
   }
 
   async GetExamen() {
     this.errorMessage = '';
-    if (this.folio === '' || this.folio === undefined){
+    if (this.folio === '' || this.folio === undefined) {
       window.alert("Introduce un folio");
       return;
     }
-    try{
+    try {
       this.examResponse = await this.examenService.GetByFolio(this.folio);
-      if (this.AssignBeneficiario()){
+      if (this.AssignBeneficiario()) {
         this.ValidaConjuntos();
         this.AssingData();
         this.canDisplayDetails = true;
       }
-      else{
+      else {
         this.errorMessage = 'Este folio de examen no pertenece a esta compañía';
       }
     }
-    catch(Exception){
+    catch (Exception) {
       this.errorMessage = 'Examen no encontrado';
       this.canDisplayDetails = false;
     }
   }
 
-  private AssignBeneficiario(): boolean{
+  private AssignBeneficiario(): boolean {
     let isInThisCompany: boolean = false;
-    this.beneficiariosEmpresa.Beneficiarios.forEach(b=> {
-      if (this.examResponse.BeneficiarioID == b.BeneficiarioID){
-         isInThisCompany = true;
+    this.beneficiariosEmpresa.Beneficiarios.forEach(b => {
+      if (this.examResponse.BeneficiarioID == b.BeneficiarioID) {
+        isInThisCompany = true;
       }
     });
     if (isInThisCompany)
       this.beneficiarioId = this.examResponse.BeneficiarioID;
-    return isInThisCompany;  
+    return isInThisCompany;
   }
-  private async AssingData(){
-    if(this.incluyeAnterior){
+  private async AssingData() {
+    if (this.incluyeAnterior) {
       const anterior = await this.ojoService.GetPair(this.examResponse.Anterior);
       this.detalleAnterior.Lejos = anterior.DpLejos;
       this.detalleAnterior.Obl = anterior.Obl;
@@ -147,7 +148,7 @@ export class ExamenUpdateComponent implements OnInit {
       this.iant = izquierdo;
       this.dant = derecho;
     }
-    if(this.incluyeTotal){
+    if (this.incluyeTotal) {
       const total = await this.ojoService.GetPair(this.examResponse.Total);
       this.detalleTotal.Lejos = total.DpLejos;
       this.detalleTotal.Obl = total.Obl;
@@ -156,7 +157,7 @@ export class ExamenUpdateComponent implements OnInit {
       this.itot = izquierdo;
       this.dtot = derecho;
     }
-    if(this.incluyeAdaptacion){
+    if (this.incluyeAdaptacion) {
       const adaptacion = await this.ojoService.GetPair(this.examResponse.Adaptacion);
       this.detalleAdaptacion.Lejos = adaptacion.DpLejos;
       this.detalleAdaptacion.Obl = adaptacion.Obl;
@@ -166,96 +167,108 @@ export class ExamenUpdateComponent implements OnInit {
       this.dada = derecho;
     }
     this.enfermedadId = this.examResponse.EnfermedadID;
-    this.requiereLentes = this.examResponse.RequiereLentes == 1? true : false;
-    this.comproLentes = this.examResponse.ComproLentes == 1? true : false;
+    this.requiereLentes = this.examResponse.RequiereLentes == 1 ? true : false;
+    this.comproLentes = this.examResponse.ComproLentes == 1 ? true : false;
     this.observaciones = this.examResponse.Observacion;
   }
-  private ValidaConjuntos(): void{
-    this.incluyeAdaptacion = this.examResponse.Adaptacion === null? false : true;
-    this.incluyeAnterior = this.examResponse.Anterior === null? false : true;
-    this.incluyeTotal = this.examResponse.Total === null? false : true;
+  private ValidaConjuntos(): void {
+    this.incluyeAdaptacion = this.examResponse.Adaptacion === null ? false : true;
+    this.incluyeAnterior = this.examResponse.Anterior === null ? false : true;
+    this.incluyeTotal = this.examResponse.Total === null ? false : true;
   }
 
-  async UpdateExam(){
-    if (this.incluyeAnterior){
+  async UpdateExam() {
+    if (this.incluyeAnterior) {
       if (!this._ValidaCamposOjos('anterior')) {
         window.alert('Es necesario completar los datos en la sección con el nombre "anterior"');
         return;
       }
     }
-    if (this.incluyeTotal){
+    if (this.incluyeTotal) {
       if (!this._ValidaCamposOjos('total')) {
         window.alert('Es necesario completar los datos en la sección con el nombre "total"');
         return;
       }
     }
-    if (this.incluyeAdaptacion){
+    if (this.incluyeAdaptacion) {
       if (!this._ValidaCamposOjos('adaptacion')) {
         window.alert('Es necesario completar los datos en la sección con el nombre "adaptación"');
         return;
       }
     }
-    const anteriorId = this.incluyeAnterior? await this._RegistraParAsync('anterior') : 'NULL';
-    const totalId = this.incluyeTotal? await this._RegistraParAsync('total') : 'NULL';
-    const adaptacionId = this.incluyeAdaptacion? await this._RegistraParAsync('adaptacion') : 'NULL';
+    try {
+      this.loadingUpdate = true;
+      const anteriorId = this.incluyeAnterior ? await this._RegistraParAsync('anterior') : 'NULL';
+      const totalId = this.incluyeTotal ? await this._RegistraParAsync('total') : 'NULL';
+      const adaptacionId = this.incluyeAdaptacion ? await this._RegistraParAsync('adaptacion') : 'NULL';
 
-    const examen = {
-      Folio: this.folio, 
-      BeneficiarioId: parseInt(this.beneficiarioId.toString()),
-      AnteriorId: anteriorId,
-      TotalId: totalId,
-      AdaptacionId: adaptacionId,
-      RequiereLentes: this.requiereLentes? 1 : 0,
-      ComproLentes: this.comproLentes? 1 : 0,
-      EnfermedadId: parseInt(this.enfermedadId.toString()),
-      Observaciones: this.observaciones
+      const examen = {
+        Folio: this.folio,
+        BeneficiarioId: parseInt(this.beneficiarioId.toString()),
+        AnteriorId: anteriorId,
+        TotalId: totalId,
+        AdaptacionId: adaptacionId,
+        RequiereLentes: this.requiereLentes ? 1 : 0,
+        ComproLentes: this.comproLentes ? 1 : 0,
+        EnfermedadId: parseInt(this.enfermedadId.toString()),
+        Observaciones: this.observaciones? this.observaciones : 'NULL'
+      }
+      this.examenService.UpdateExam(examen).subscribe(
+        r => {
+          this.loadingUpdate = false;
+          window.alert('Examen actualizado satisfactoriamente');
+          this.folio = '';
+          this.canDisplayDetails = false;
+        },
+        err => {
+          this.loadingUpdate = false;
+          window.alert(err.error);
+        }
+      );
     }
-    this.examenService.UpdateExam(examen).subscribe(
-      r => {
-        window.alert('Examen actualizado satisfactoriamente');
-        this.folio = '';
-        this.canDisplayDetails = false;
+    catch (error) {
+      this.loadingUpdate = false;
+      window.alert(error.error);
     }
-    );
   }
-  private _ValidaCamposOjos(tipo: string): boolean{
+  private _ValidaCamposOjos(tipo: string): boolean {
     let izquierdo = {
       Esfera: undefined,
       Cilindro: undefined,
       Eje: undefined,
-      Adiccion: undefined  
+      Adiccion: undefined
     };
     let derecho = {
       Esfera: undefined,
       Cilindro: undefined,
       Eje: undefined,
-      Adiccion: undefined  
+      Adiccion: undefined
     };
     let detalle = {
       Lejos: undefined,
       Obl: undefined
     };;
-    switch (tipo){
+    switch (tipo) {
       case 'anterior':
         derecho = this.dant;
         izquierdo = this.iant;
         detalle = this.detalleAnterior;
-      break;
+        break;
       case 'total':
         derecho = this.dtot;
         izquierdo = this.itot;
         detalle = this.detalleTotal;
-      break;
+        break;
       case 'adaptacion':
         derecho = this.dada;
         izquierdo = this.iada;
         detalle = this.detalleAdaptacion;
-      break;
+        break;
       default:
         break;
     }
-    
-    if(
+
+    if (
       izquierdo.Adiccion === undefined ||
       izquierdo.Cilindro === undefined ||
       izquierdo.Eje === undefined ||
@@ -276,14 +289,13 @@ export class ExamenUpdateComponent implements OnInit {
       derecho.Esfera === null ||
       detalle.Lejos === null ||
       detalle.Obl === null
-      
-      )
-    {
+
+    ) {
       return false;
     }
     return true;
   }
-  private async _RegistraParAsync(tipo: string){
+  private async _RegistraParAsync(tipo: string) {
     let izquierdoId: Number;
     let derechoId: Number;
     let derechoConjunto: {};
@@ -291,9 +303,9 @@ export class ExamenUpdateComponent implements OnInit {
     let detalles: {
       Lejos: undefined,
       Obl: undefined
-      };
+    };
     let conjuntoId;
-    switch (tipo){
+    switch (tipo) {
       case 'anterior':
         derechoConjunto = this.dant;
         izquierdoConjunto = this.iant;
@@ -314,8 +326,8 @@ export class ExamenUpdateComponent implements OnInit {
     }
     izquierdoId = (await this.ojoService.AddSingleEyeAsync(izquierdoConjunto, 'izquierdo')).OjoID;
     derechoId = (await this.ojoService.AddSingleEyeAsync(derechoConjunto, 'derecho')).OjoID;
-    
+
     conjuntoId = (await this.ojoService.AddPairAsync(izquierdoId, derechoId, detalles.Lejos, detalles.Obl, tipo)).ConjuntoID;
-    return conjuntoId; 
+    return conjuntoId;
   }
 }
