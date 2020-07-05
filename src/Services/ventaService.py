@@ -4,6 +4,7 @@ from src.Helpers.stringHelper import StringHelper
 from src.Helpers.serializer import serialize_data_set
 from src.Services.empresaService import EmpresaService
 from src.Services.usersService import UsersService
+from urllib.parse import unquote
 
 
 class VentaService:
@@ -69,6 +70,10 @@ class VentaService:
         data = self.__sql_helper.sp_get(SpVentas.Get_summary_by_empresa, args)
         if not data:
             return False
+        for row in data:
+            row["Material"] = unquote(row["Material"])
+            row["Proteccion"] = unquote(row["Proteccion"])
+            row["Lente"] = unquote(row["Lente"])
         data = serialize_data_set(data, "Ventas")
         return data
 
@@ -110,7 +115,6 @@ class VentaService:
         total_venta = data['total']
         data = self.__sql_helper.sp_get(SpVentas.Get_abono_sum_by_venta, args, True)
         if not data['sum(Monto)']:
-
             data['sum(Monto)'] = 0
         if is_updating:
             current_monto = self.__sql_helper.sp_get(SpVentas.Get_monto, (str(abono_id), ), True)
@@ -120,7 +124,7 @@ class VentaService:
         total_abonos = total_abonos + monto
         if total_venta == total_abonos:
             self.paid_switch(venta_id)
-        return total_venta < total_abonos
+        return total_venta >= total_abonos
 
 
     def delete_payment(self, payment_id, token):

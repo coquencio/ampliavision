@@ -44,3 +44,17 @@ def get_by_sale(venta_id):
         return Response(status=401)
 
     return empresa_service.get_by_venta(venta_id)
+
+@EmpresaController.route('/api/empresas/<int:empresa_id>/update', methods=['PUT'])
+def update_empresa(empresa_id):
+    try:
+        token = request.args.get('token')
+        if not user_service.token_validation(token):
+            return Response(status=401)
+
+        data = request.get_json()
+        empresa_service.update_empresa(empresa_id, data)
+        return Response(status=201, response="Empresa actualizada")
+    except ValueError as err:
+        return Response(status=400, response=err.args)
+

@@ -30,6 +30,10 @@ export class EmpresasService {
     const url = AppSettings.BASE_ADDRESS + 'empresas/ventas/'+ ventaId + '?token=' + this.tokenService.GetToken();
     return this.httpClient.get<IEmpresaIdResponse>(url);
   }
+  Update(empresa: {}, id: number): Observable<any>{
+    const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
+    return this.httpClient.put(AppSettings.BASE_ADDRESS + 'empresas/' + id + '/update' + '?token=' + this.tokenService.GetToken(),empresa,{headers, responseType:'text'});
+  }
 }
 
 interface IEmpresaIdResponse{

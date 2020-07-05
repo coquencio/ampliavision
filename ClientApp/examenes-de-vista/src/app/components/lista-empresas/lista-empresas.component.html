@@ -42,6 +42,7 @@
         <th scope="col">Empresa</th>
         <th scope="col">Domicilio</th>
         <th scope="col">Telefono</th>
+        <th scope="col">Acciones</th>
       </tr>
     </thead>
     <tbody *ngIf="empresasMirror">
@@ -50,6 +51,7 @@
         <td>{{empresa.NombreEmpresa}}</td>
         <td>{{empresa.Domicilio}}</td>
         <td>{{empresa.Telefono}}</td>
+        <td><Button class="btn btn-primary" data-toggle="modal" (click)="setEmpresaUpdate(empresa)" data-target="#editempresa">Actualizar</Button></td>
       </tr>
     </tbody>
   </table>
@@ -93,3 +95,40 @@
       </div>
     </div>
   </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="editempresa" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Actualizar datos de empresa</h5>
+            <button type="button" #closeUpdate class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label>Nombre empresa: </label>
+                <input maxlength="60" name="nombre" [(ngModel)]="empresaUpdate.NombreEmpresa" type="Text" class="form-control" name="nombre" placeholder="Nombre de empresa">
+              </div>
+              <div class="form-group">
+                <label>Domicilio: </label>
+                <input name="domicilio" [(ngModel)]="empresaUpdate.Domicilio" type="Text" class="form-control"  placeholder="Domicilio">
+              </div>
+              <div class="form-group">
+                <label>Teléfono: </label>
+                <input maxlength="20" name="telefono" [(ngModel)]="empresaUpdate.Telefono" type="tel" class="form-control"  placeholder="Teléfono">
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <div *ngIf="loadingRegistration">
+              <app-loading></app-loading>
+            </div>
+            <button *ngIf="!loadingRegistration" type="button"  class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            <button *ngIf="!loadingRegistration" type="button" (click)="UpdateEmpresa()" class="btn btn-primary">Actualizar Datos empresa</button>
+          </div>
+        </div>
+      </div>
+    </div>
