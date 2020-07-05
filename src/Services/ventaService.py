@@ -29,7 +29,7 @@ class VentaService:
         tipo_id = data['TipoVentaId']
 
         if folio_examen:
-            if self.is_folio_repeated(folio):
+            if self.is_folio_repeated(folio_examen):
                 raise ValueError("Este folio ya pertenece a una venta")
 
         if not isinstance(armazon_id, int) or not isinstance(material_id, int) or not isinstance(proteccion_id, int) \

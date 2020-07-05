@@ -21,49 +21,49 @@ export class ExamenesComponent implements OnInit {
     private ojosService: OjosService,
     private examenService: ExamenesService,
     private router: Router,
-    ) { 
-      store.select('empresa').subscribe(
-        e => {
-          this.currentEmpresaId = e.empresaId;
-          this.nombreEmpresa = e.nombreEmpresa;
-        }
-      );
-    }
+  ) {
+    store.select('empresa').subscribe(
+      e => {
+        this.currentEmpresaId = e.empresaId;
+        this.nombreEmpresa = e.nombreEmpresa;
+      }
+    );
+  }
   iant = {
-  Esfera: undefined,
-  Cilindro: undefined,
-  Eje: undefined,
-  Adiccion: undefined
+    Esfera: undefined,
+    Cilindro: undefined,
+    Eje: undefined,
+    Adiccion: undefined
   };
   dant = {
     Esfera: undefined,
     Cilindro: undefined,
     Eje: undefined,
-    Adiccion: undefined  
+    Adiccion: undefined
   };
   dtot = {
     Esfera: undefined,
     Cilindro: undefined,
     Eje: undefined,
-    Adiccion: undefined  
+    Adiccion: undefined
   };
   itot = {
     Esfera: undefined,
     Cilindro: undefined,
     Eje: undefined,
-    Adiccion: undefined  
+    Adiccion: undefined
   };
   dada = {
     Esfera: undefined,
     Cilindro: undefined,
     Eje: undefined,
-    Adiccion: undefined  
+    Adiccion: undefined
   };
   iada = {
     Esfera: undefined,
     Cilindro: undefined,
     Eje: undefined,
-    Adiccion: undefined  
+    Adiccion: undefined
   };
   detalleAnterior = {
     Lejos: undefined,
@@ -93,160 +93,174 @@ export class ExamenesComponent implements OnInit {
   beneficiarioRegistro = {
     Nombres: '',
     ApellidoPaterno: '',
-    ApellidoMaterno:'',
+    ApellidoMaterno: '',
     Ocupacion: '',
     FechaNacimiento: ''
   };
-  criteria:string;
+  criteria: string;
   beneficiariosMirror: IBeneficiarios;
 
   selectedBeneficiario: IBeneficiario;
   loading: boolean = false;
+  loadingExam: boolean = false;
+
   @ViewChild('closebutton') private closeModal: ElementRef;
   ngOnInit(): void {
     this.loading = true;
     this.beneficiariosService.GetByEmpresa(this.currentEmpresaId).subscribe(
       r => {
         this.beneficiariosEmpresa = r;
-        this.beneficiariosMirror = {Beneficiarios:[]};
+        this.beneficiariosMirror = { Beneficiarios: [] };
         this.beneficiariosEmpresa.Beneficiarios.forEach(
-          b=>this.beneficiariosMirror.Beneficiarios.push(b)
+          b => this.beneficiariosMirror.Beneficiarios.push(b)
         );
         this.loading = false;
       }
-      );
+    );
   }
-  SearchByNames(){
-    if (this.criteria){
-      this.beneficiariosMirror.Beneficiarios = this.beneficiariosEmpresa.Beneficiarios.filter(b=>{
-        const names = b.Nombres + ' ' + b.ApellidoPaterno + ' '+b.ApellidoMaterno;
+  SearchByNames() {
+    if (this.criteria) {
+      this.beneficiariosMirror.Beneficiarios = this.beneficiariosEmpresa.Beneficiarios.filter(b => {
+        const names = b.Nombres + ' ' + b.ApellidoPaterno + ' ' + b.ApellidoMaterno;
         return names.toLowerCase().includes(this.criteria.toLowerCase());
       });
     }
-    else{
+    else {
       this.beneficiariosMirror.Beneficiarios = this.beneficiariosEmpresa.Beneficiarios;
     }
   }
-  private ValidateBeneficiarioFields(): boolean{
-    if (this.beneficiarioRegistro.Nombres.trim()===''){
+  private ValidateBeneficiarioFields(): boolean {
+    if (this.beneficiarioRegistro.Nombres.trim() === '') {
       window.alert('Favor de introducir el nombre de beneficiario');
       return false;
     }
-    if (this.beneficiarioRegistro.ApellidoPaterno.trim()===''){
+    if (this.beneficiarioRegistro.ApellidoPaterno.trim() === '') {
       window.alert('Favor de introducir el Apellido paterno');
       return false;
     }
-    if (this.beneficiarioRegistro.ApellidoMaterno.trim()===''){
+    if (this.beneficiarioRegistro.ApellidoMaterno.trim() === '') {
       window.alert('Favor de introducir el Apellido materno');
       return false;
     }
-    if (this.beneficiarioRegistro.Ocupacion.trim()===''){
+    if (this.beneficiarioRegistro.Ocupacion.trim() === '') {
       window.alert('Favor de introducir la ocupación del beneficiario');
       return false;
     }
-    if (this.beneficiarioRegistro.FechaNacimiento.trim()===''){
+    if (this.beneficiarioRegistro.FechaNacimiento.trim() === '') {
       window.alert('Favor de introducir la fecha de nacimiento');
       return false;
     }
     return true;
   }
-  async RegistraExamenAsync(){
-    if(this.folio.trim() === ''){
+  async RegistraExamenAsync() {
+    if (this.folio.trim() === '') {
       window.alert('Introduce un folio válido');
       return;
     }
-    if(this.beneficiarioId === undefined){
+    if (this.beneficiarioId === undefined) {
       window.alert('Selecciona un beneficiario para registrar el examen');
       return;
     }
-    if (this.incluyeAnterior){
+    if (this.incluyeAnterior) {
       if (!this._ValidaCamposOjos('anterior')) {
         window.alert('Es necesario completar los datos en la sección con el nombre "anterior"');
         return;
       }
     }
-    if (this.incluyeTotal){
+    if (this.incluyeTotal) {
       if (!this._ValidaCamposOjos('total')) {
         window.alert('Es necesario completar los datos en la sección con el nombre "total"');
         return;
       }
     }
-    if (this.incluyeAdaptacion){
+    if (this.incluyeAdaptacion) {
       if (!this._ValidaCamposOjos('adaptacion')) {
         window.alert('Es necesario completar los datos en la sección con el nombre "adaptación"');
         return;
       }
     }
-    if (this.enfermedadId === undefined){
+    if (this.enfermedadId === undefined) {
       window.alert('Selecciona una enfermedad');
       return;
     }
     this.observaciones = this.observaciones.trim();
-    if (this.observaciones === ""){
+    if (this.observaciones === "") {
       this.observaciones = ' ';
     }
-    const anteriorId = this.incluyeAnterior? await this._RegistraParAsync('anterior') : 'NULL';
-    const totalId = this.incluyeTotal? await this._RegistraParAsync('total') : 'NULL';
-    const adaptacionId = this.incluyeAdaptacion? await this._RegistraParAsync('adaptacion') : 'NULL';
+    this.loadingExam = true;
+    try {
+      const anteriorId = this.incluyeAnterior ? await this._RegistraParAsync('anterior') : 'NULL';
+      const totalId = this.incluyeTotal ? await this._RegistraParAsync('total') : 'NULL';
+      const adaptacionId = this.incluyeAdaptacion ? await this._RegistraParAsync('adaptacion') : 'NULL';
 
-    const examen = {
-      Folio: this.folio, 
-      BeneficiarioId: parseInt(this.beneficiarioId.toString()),
-      AnteriorId: anteriorId,
-      TotalId: totalId,
-      AdaptacionId: adaptacionId,
-      FechaExamen:  new Date().toISOString().substring(0,10),
-      RequiereLentes: this.requiereLentes? 1 : 0,
-      ComproLentes: this.comproLentes? 1 : 0,
-      EnfermedadId: parseInt(this.enfermedadId.toString()),
-      Observaciones: this.observaciones
+      const examen = {
+        Folio: this.folio,
+        BeneficiarioId: parseInt(this.beneficiarioId.toString()),
+        AnteriorId: anteriorId,
+        TotalId: totalId,
+        AdaptacionId: adaptacionId,
+        FechaExamen: new Date().toISOString().substring(0, 10),
+        RequiereLentes: this.requiereLentes ? 1 : 0,
+        ComproLentes: this.comproLentes ? 1 : 0,
+        EnfermedadId: parseInt(this.enfermedadId.toString()),
+        Observaciones: this.observaciones
+      }
+      this.examenService.PostExam(examen).subscribe(
+        r => {
+          this.loadingExam = false;
+          window.alert('Examen registrado satisfactoriamente');
+          this.LimpiaCamposExamen();
+        },
+        err => {
+          this.loadingExam = false;
+          window.alert(err.error);
+        }
+      );
     }
-    this.examenService.PostExam(examen).subscribe(
-      r => {
-        window.alert('Examen registrado satisfactoriamente');
-        this.LimpiaCamposExamen();
+    catch (error) {
+      this.loadingExam = false;
+      window.alert(error.error);
     }
-    );
   }
 
-  private _ValidaCamposOjos(tipo: string): boolean{
+  private _ValidaCamposOjos(tipo: string): boolean {
     let izquierdo = {
       Esfera: undefined,
       Cilindro: undefined,
       Eje: undefined,
-      Adiccion: undefined  
+      Adiccion: undefined
     };
     let derecho = {
       Esfera: undefined,
       Cilindro: undefined,
       Eje: undefined,
-      Adiccion: undefined  
+      Adiccion: undefined
     };
     let detalle = {
       Lejos: undefined,
       Obl: undefined
     };;
-    switch (tipo){
+    switch (tipo) {
       case 'anterior':
         derecho = this.dant;
         izquierdo = this.iant;
         detalle = this.detalleAnterior;
-      break;
+        break;
       case 'total':
         derecho = this.dtot;
         izquierdo = this.itot;
         detalle = this.detalleTotal;
-      break;
+        break;
       case 'adaptacion':
         derecho = this.dada;
         izquierdo = this.iada;
         detalle = this.detalleAdaptacion;
-      break;
+        break;
       default:
         break;
     }
-    
-    if(
+
+    if (
       izquierdo.Adiccion === undefined ||
       izquierdo.Cilindro === undefined ||
       izquierdo.Eje === undefined ||
@@ -267,14 +281,13 @@ export class ExamenesComponent implements OnInit {
       derecho.Esfera === null ||
       detalle.Lejos === null ||
       detalle.Obl === null
-      
-      )
-    {
+
+    ) {
       return false;
     }
     return true;
   }
-  private async _RegistraParAsync(tipo: string){
+  private async _RegistraParAsync(tipo: string) {
     let izquierdoId: Number;
     let derechoId: Number;
     let derechoConjunto: {};
@@ -282,9 +295,9 @@ export class ExamenesComponent implements OnInit {
     let detalles: {
       Lejos: undefined,
       Obl: undefined
-      };
+    };
     let conjuntoId;
-    switch (tipo){
+    switch (tipo) {
       case 'anterior':
         derechoConjunto = this.dant;
         izquierdoConjunto = this.iant;
@@ -305,73 +318,73 @@ export class ExamenesComponent implements OnInit {
     }
     izquierdoId = (await this.ojosService.AddSingleEyeAsync(izquierdoConjunto, 'izquierdo')).OjoID;
     derechoId = (await this.ojosService.AddSingleEyeAsync(derechoConjunto, 'derecho')).OjoID;
-    
+
     conjuntoId = (await this.ojosService.AddPairAsync(izquierdoId, derechoId, detalles.Lejos, detalles.Obl, tipo)).ConjuntoID;
-    return conjuntoId; 
+    return conjuntoId;
   }
-  private LimpiaCamposExamen(): void{
+  private LimpiaCamposExamen(): void {
     this.iant = {
       Esfera: undefined,
       Cilindro: undefined,
       Eje: undefined,
       Adiccion: undefined
-      };
-      this.dant = {
-        Esfera: undefined,
-        Cilindro: undefined,
-        Eje: undefined,
-        Adiccion: undefined  
-      };
-      this.dtot = {
-        Esfera: undefined,
-        Cilindro: undefined,
-        Eje: undefined,
-        Adiccion: undefined  
-      };
-      this.itot = {
-        Esfera: undefined,
-        Cilindro: undefined,
-        Eje: undefined,
-        Adiccion: undefined  
-      };
-      this.dada = {
-        Esfera: undefined,
-        Cilindro: undefined,
-        Eje: undefined,
-        Adiccion: undefined  
-      };
-      this.iada = {
-        Esfera: undefined,
-        Cilindro: undefined,
-        Eje: undefined,
-        Adiccion: undefined  
-      };
-      this.detalleAnterior = {
-        Lejos: undefined,
-        Obl: undefined
-      };
-      this.detalleTotal = {
-        Lejos: undefined,
-        Obl: undefined
-      };
-      this.detalleAdaptacion = {
-        Lejos: undefined,
-        Obl: undefined
-      };
-      this.enfermedadId = undefined;
-      this.beneficiarioId = undefined;
-      this.requiereLentes = false;
-      this.comproLentes = false;
-      this.observaciones = '';
-      this.folio = '';
-    
-      this.incluyeAdaptacion = true;
-      this.incluyeTotal = true;
-      this.incluyeAnterior = true;
+    };
+    this.dant = {
+      Esfera: undefined,
+      Cilindro: undefined,
+      Eje: undefined,
+      Adiccion: undefined
+    };
+    this.dtot = {
+      Esfera: undefined,
+      Cilindro: undefined,
+      Eje: undefined,
+      Adiccion: undefined
+    };
+    this.itot = {
+      Esfera: undefined,
+      Cilindro: undefined,
+      Eje: undefined,
+      Adiccion: undefined
+    };
+    this.dada = {
+      Esfera: undefined,
+      Cilindro: undefined,
+      Eje: undefined,
+      Adiccion: undefined
+    };
+    this.iada = {
+      Esfera: undefined,
+      Cilindro: undefined,
+      Eje: undefined,
+      Adiccion: undefined
+    };
+    this.detalleAnterior = {
+      Lejos: undefined,
+      Obl: undefined
+    };
+    this.detalleTotal = {
+      Lejos: undefined,
+      Obl: undefined
+    };
+    this.detalleAdaptacion = {
+      Lejos: undefined,
+      Obl: undefined
+    };
+    this.enfermedadId = undefined;
+    this.beneficiarioId = undefined;
+    this.requiereLentes = false;
+    this.comproLentes = false;
+    this.observaciones = '';
+    this.folio = '';
+
+    this.incluyeAdaptacion = true;
+    this.incluyeTotal = true;
+    this.incluyeAnterior = true;
   }
 
-  BeneficiarioRegistration(): void{
-    if (this.ValidateBeneficiarioFields()){
+  BeneficiarioRegistration(): void {
+    if (this.ValidateBeneficiarioFields()) {
       this.beneficiariosService.Create(this.currentEmpresaId, this.beneficiarioRegistro).subscribe(
         () => {
           this.ngOnInit();
@@ -379,7 +392,7 @@ export class ExamenesComponent implements OnInit {
           this.beneficiarioRegistro = {
             Nombres: '',
             ApellidoPaterno: '',
-            ApellidoMaterno:'',
+            ApellidoMaterno: '',
             Ocupacion: '',
             FechaNacimiento: ''
           };
@@ -387,34 +400,34 @@ export class ExamenesComponent implements OnInit {
       );
     }
   }
-  SeleccionaBeneficiario(beneficiarioId: number): void{
+  SeleccionaBeneficiario(beneficiarioId: number): void {
     this.beneficiariosEmpresa.Beneficiarios.forEach(
       b => {
-        if(b.BeneficiarioID === beneficiarioId){
+        if (b.BeneficiarioID === beneficiarioId) {
           this.selectedBeneficiario = b;
         }
       }
     );
   }
-  ActualizaBeneficiatio(){
-    if (this.selectedBeneficiario.Nombres === undefined || this.selectedBeneficiario.Nombres === ''){
+  ActualizaBeneficiatio() {
+    if (this.selectedBeneficiario.Nombres === undefined || this.selectedBeneficiario.Nombres === '') {
       window.alert('Introduce un nombre válido');
       return;
     }
-    if (this.selectedBeneficiario.ApellidoPaterno === undefined || this.selectedBeneficiario.ApellidoPaterno === ''){
+    if (this.selectedBeneficiario.ApellidoPaterno === undefined || this.selectedBeneficiario.ApellidoPaterno === '') {
       window.alert('Introduce un apellido paterno válido');
       return;
     }
-    if (this.selectedBeneficiario.FechaNacimiento === undefined || this.selectedBeneficiario.FechaNacimiento === ''){
+    if (this.selectedBeneficiario.FechaNacimiento === undefined || this.selectedBeneficiario.FechaNacimiento === '') {
       window.alert('Introduce una fecha de nacimiento válida');
       return;
     }
-    if (this.selectedBeneficiario.Ocupacion === undefined || this.selectedBeneficiario.Ocupacion === ''){
+    if (this.selectedBeneficiario.Ocupacion === undefined || this.selectedBeneficiario.Ocupacion === '') {
       window.alert('Introduce una ocupación válida');
       return;
     }
     this.beneficiariosService.Update(this.selectedBeneficiario).subscribe(
-      ()=>{
+      () => {
         window.alert('Beneficiario actualizado satisfactoriamente');
         this.closeModal.nativeElement.click();
         this.ngOnInit();
@@ -422,7 +435,7 @@ export class ExamenesComponent implements OnInit {
     );
 
   }
-  RedirectToDetails(): void{
+  RedirectToDetails(): void {
     this.examenService.CleanFolio();
     this.router.navigate(['Examenes/Actualiza']);
   }
