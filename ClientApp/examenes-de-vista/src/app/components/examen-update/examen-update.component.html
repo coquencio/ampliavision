@@ -7,7 +7,7 @@
 <button (click)="GetExamen()" class="btn btn-primary">Buscar examen</button>
 <p style="color: red;">{{errorMessage}}</p>
 
-<form *ngIf="canDisplayDetails">
+<form *ngIf="canDisplayDetails && !loadingUpdate">
     <div *ngIf="beneficiariosEmpresa" name="selecionaEmpleados" class="form-group">
         <label>Empleado:</label>
         <select [(ngModel)]="beneficiarioId" class="form-control" name="beneficiarioId">
@@ -42,7 +42,7 @@
                     <h5>Izquierdo</h5>
                     <div class="form-group">
                         <label>Esfera:</label>
-                        <input type="number" [(ngModel)]="iant.Esfera"class="form-control" name="EsferaIzAnt" placeholder="Esfera">
+                        <input type="text" [(ngModel)]="iant.Esfera"class="form-control" name="EsferaIzAnt" placeholder="Esfera">
                     </div>
                     <div class="form-group">
                         <label>Cilindro:</label>
@@ -50,40 +50,40 @@
                     </div>
                     <div class="form-group">
                         <label>Eje:</label>
-                        <input type="number" [(ngModel)]="iant.Eje" class="form-control" name="EjeIzAnt" placeholder="Eje">
+                        <input type="text" [(ngModel)]="iant.Eje" class="form-control" name="EjeIzAnt" placeholder="Eje">
                     </div>
                     <div class="form-group">
                         <label>Adicción:</label>
-                        <input type="number" [(ngModel)]="iant.Adiccion" class="form-control" name="AdicionIzAnt" placeholder="Adicción">
+                        <input type="text" [(ngModel)]="iant.Adiccion" class="form-control" name="AdicionIzAnt" placeholder="Adicción">
                     </div>
                 </div>
                 <div class="col-md">
                     <h5>Derecho</h5>
                     <div class="form-group">
                         <label>Esfera:</label>
-                        <input type="number" [(ngModel)]="dant.Esfera"class="form-control" name="EsferaDerAnt" placeholder="Esfera">
+                        <input type="text" [(ngModel)]="dant.Esfera"class="form-control" name="EsferaDerAnt" placeholder="Esfera">
                     </div>
                     <div class="form-group">
                         <label>Cilindro:</label>
-                        <input type="number" [(ngModel)]="dant.Cilindro" class="form-control" name="CilindroDerAnt" placeholder="Cilindro">
+                        <input type="text" [(ngModel)]="dant.Cilindro" class="form-control" name="CilindroDerAnt" placeholder="Cilindro">
                     </div>
                     <div class="form-group">
                         <label>Eje:</label>
-                        <input type="number" [(ngModel)]="dant.Eje" class="form-control" name="EjeDerAnt" placeholder="Eje">
+                        <input type="text" [(ngModel)]="dant.Eje" class="form-control" name="EjeDerAnt" placeholder="Eje">
                     </div>
                     <div class="form-group">
                         <label>Adicción:</label>
-                        <input type="number" [(ngModel)]="dant.Adiccion" class="form-control" name="AdicionDerAnt" placeholder="Adicción">
+                        <input type="text" [(ngModel)]="dant.Adiccion" class="form-control" name="AdicionDerAnt" placeholder="Adicción">
                     </div>
                 </div>
             </div>
             <div class="form-group"*ngIf="incluyeAnterior">
                 <label>D.P. Lejos:</label>
-                <input [(ngModel)]="detalleAnterior.Lejos" type="number" class="form-control" name="DpLejosAnt" placeholder="D.P. lejos">
+                <input [(ngModel)]="detalleAnterior.Lejos" type="text" class="form-control" name="DpLejosAnt" placeholder="D.P. lejos">
             </div>
             <div class="form-group"*ngIf="incluyeAnterior">
                 <label>Obl.:</label>
-                <input [(ngModel)]="detalleAnterior.Obl" type="number" class="form-control" name="OblAnt" placeholder="Obl.">
+                <input [(ngModel)]="detalleAnterior.Obl" type="text" class="form-control" name="OblAnt" placeholder="Obl.">
             </div>
 
         </div>
@@ -102,48 +102,48 @@
                     <h5>Izquierdo</h5>
                     <div class="form-group">
                         <label>Esfera:</label>
-                        <input [(ngModel)]="itot.Esfera" type="number" class="form-control" name="EsferaIzT" placeholder="Esfera">
+                        <input [(ngModel)]="itot.Esfera" type="text" class="form-control" name="EsferaIzT" placeholder="Esfera">
                     </div>
                     <div class="form-group">
                         <label>Cilindro:</label>
-                        <input [(ngModel)]="itot.Cilindro" type="number" class="form-control" name="CilindroIzT" placeholder="Cilindro">
+                        <input [(ngModel)]="itot.Cilindro" type="text" class="form-control" name="CilindroIzT" placeholder="Cilindro">
                     </div>
                     <div class="form-group">
                         <label>Eje:</label>
-                        <input [(ngModel)]="itot.Eje" type="number" class="form-control" name="EjeIzT" placeholder="Eje">
+                        <input [(ngModel)]="itot.Eje" type="text" class="form-control" name="EjeIzT" placeholder="Eje">
                     </div>
                     <div class="form-group">
                         <label>Adicción:</label>
-                        <input [(ngModel)]="itot.Adiccion" type="number" class="form-control" name="AdicionIzT" placeholder="Adicción">
+                        <input [(ngModel)]="itot.Adiccion" type="text" class="form-control" name="AdicionIzT" placeholder="Adicción">
                     </div>
                 </div>
                 <div class="col-md">
                     <h5>Derecho</h5>
                     <div class="form-group">
                         <label>Esfera:</label>
-                        <input [(ngModel)]="dtot.Esfera" type="number" class="form-control" name="EsferaDerT" placeholder="Esfera">
+                        <input [(ngModel)]="dtot.Esfera" type="text" class="form-control" name="EsferaDerT" placeholder="Esfera">
                     </div>
                     <div class="form-group">
                         <label>Cilindro:</label>
-                        <input [(ngModel)]="dtot.Cilindro" type="number" class="form-control" name="CilindroDerT" placeholder="Cilindro">
+                        <input [(ngModel)]="dtot.Cilindro" type="text" class="form-control" name="CilindroDerT" placeholder="Cilindro">
                     </div>
                     <div class="form-group">
                         <label>Eje:</label>
-                        <input [(ngModel)]="dtot.Eje" type="number" class="form-control" name="EjeDerT" placeholder="Eje">
+                        <input [(ngModel)]="dtot.Eje" type="text" class="form-control" name="EjeDerT" placeholder="Eje">
                     </div>
                     <div class="form-group">
                         <label>Adicción:</label>
-                        <input [(ngModel)]="dtot.Adiccion" type="number" class="form-control" name="AdicionDerT" placeholder="Adicción">
+                        <input [(ngModel)]="dtot.Adiccion" type="text" class="form-control" name="AdicionDerT" placeholder="Adicción">
                     </div>
                 </div>
             </div>
             <div class="form-group"*ngIf="incluyeTotal">
                 <label>D.P. Lejos:</label>
-                <input [(ngModel)]="detalleTotal.Lejos" type="number" class="form-control" name="DpLejosT" placeholder="D.P. lejos">
+                <input [(ngModel)]="detalleTotal.Lejos" type="text" class="form-control" name="DpLejosT" placeholder="D.P. lejos">
             </div>
             <div class="form-group"*ngIf="incluyeTotal">
                 <label>Obl.:</label>
-                <input [(ngModel)]="detalleTotal.Obl" type="number" class="form-control" name="OblT" placeholder="Obl.">
+                <input [(ngModel)]="detalleTotal.Obl" type="text" class="form-control" name="OblT" placeholder="Obl.">
             </div>
 
         </div>
@@ -161,48 +161,48 @@
                     <h5>Izquierdo</h5>
                     <div class="form-group">
                         <label>Esfera:</label>
-                        <input [(ngModel)]="iada.Esfera" type="number" class="form-control" name="EsferaIzA" placeholder="Esfera">
+                        <input [(ngModel)]="iada.Esfera" type="text" class="form-control" name="EsferaIzA" placeholder="Esfera">
                     </div>
                     <div class="form-group">
                         <label>Cilindro:</label>
-                        <input [(ngModel)]="iada.Cilindro" type="number" class="form-control" name="CilindroIzA" placeholder="Cilindro">
+                        <input [(ngModel)]="iada.Cilindro" type="text" class="form-control" name="CilindroIzA" placeholder="Cilindro">
                     </div>
                     <div class="form-group">
                         <label>Eje:</label>
-                        <input [(ngModel)]="iada.Eje" type="number" class="form-control" name="EjeIzA" placeholder="Eje">
+                        <input [(ngModel)]="iada.Eje" type="text" class="form-control" name="EjeIzA" placeholder="Eje">
                     </div>
                     <div class="form-group">
                         <label>Adicción:</label>
-                        <input [(ngModel)]="iada.Adiccion" type="number" class="form-control" name="AdicionIzA" placeholder="Adicción">
+                        <input [(ngModel)]="iada.Adiccion" type="text" class="form-control" name="AdicionIzA" placeholder="Adicción">
                     </div>
                 </div>
                 <div class="col-md">
                     <h5>Derecho</h5>
                     <div class="form-group">
                         <label>Esfera:</label>
-                        <input [(ngModel)]="dada.Esfera" type="number" class="form-control" name="EsferaDerA" placeholder="Esfera">
+                        <input [(ngModel)]="dada.Esfera" type="text" class="form-control" name="EsferaDerA" placeholder="Esfera">
                     </div>
                     <div class="form-group">
                         <label>Cilindro:</label>
-                        <input [(ngModel)]="dada.Cilindro" type="number" class="form-control" name="CilindroDerA" placeholder="Cilindro">
+                        <input [(ngModel)]="dada.Cilindro" type="text" class="form-control" name="CilindroDerA" placeholder="Cilindro">
                     </div>
                     <div class="form-group">
                         <label>Eje:</label>
-                        <input [(ngModel)]="dada.Eje" type="number" class="form-control" name="EjeDerA" placeholder="Eje">
+                        <input [(ngModel)]="dada.Eje" type="text" class="form-control" name="EjeDerA" placeholder="Eje">
                     </div>
                     <div class="form-group">
                         <label>Adicción:</label>
-                        <input [(ngModel)]="dada.Adiccion" type="number" class="form-control" name="AdicionDerA" placeholder="Adicción">
+                        <input [(ngModel)]="dada.Adiccion" type="text" class="form-control" name="AdicionDerA" placeholder="Adicción">
                     </div>
                 </div>
             </div>
             <div class="form-group"*ngIf="incluyeAdaptacion">
                 <label>D.P. Lejos:</label>
-                <input [(ngModel)]="detalleAdaptacion.Lejos" type="number" class="form-control" name="DpLejosA" placeholder="D.P. lejos">
+                <input [(ngModel)]="detalleAdaptacion.Lejos" type="text" class="form-control" name="DpLejosA" placeholder="D.P. lejos">
             </div>
             <div class="form-group"*ngIf="incluyeAdaptacion">
                 <label>Obl.:</label>
-                <input [(ngModel)]="detalleAdaptacion.Obl" type="number" class="form-control" name="OblA" placeholder="Obl.">
+                <input [(ngModel)]="detalleAdaptacion.Obl" type="text" class="form-control" name="OblA" placeholder="Obl.">
             </div>
 
         </div>
@@ -249,3 +249,7 @@
       <button (click)="UpdateExam()" class="btn btn-success">Actualiza datos</button>
       <hr>
 </form>
+<div *ngIf="loadingUpdate">
+    <app-loading></app-loading>
+</div>
+  

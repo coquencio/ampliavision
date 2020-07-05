@@ -14,16 +14,16 @@ interface IPairResponse{
   IzquierdoID: number;
   DerechoID: number;
   TipoConjuntoID: number;
-  DpLejos: number;
-  Obl: number;
+  DpLejos: string;
+  Obl: string;
 }
 interface ISingleResponse{
   OjoID: number;
   LadoID: number;
-  Esfera: number;
-  Cilindro: number;
-  Eje: number;
-  Adiccion: number;
+  Esfera: string;
+  Cilindro: string;
+  Eje: string;
+  Adiccion: string;
 }
 @Injectable({
   providedIn: 'root'
