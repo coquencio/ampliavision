@@ -17,13 +17,20 @@ export class ListaEmpresasComponent implements OnInit {
     Domicilio: '',
     Telefono: ''
   };
+  empresaUpdate = {
+    EmpresaID:0,
+    NombreEmpresa: '',
+    Domicilio: '',
+    Telefono: ''
+  };
   criteria : string;
   folio: string;
   id: number;
   loading: boolean = false;
   loadingRegistration: boolean = false;
   @ViewChild('closeModal') private closeModal: ElementRef;
- 
+  @ViewChild('closeUpdate') private closeUpdate: ElementRef;
+
   constructor(
     private empresaService: EmpresasService,
     private store: Store<any>,
@@ -88,11 +95,11 @@ export class ListaEmpresasComponent implements OnInit {
       }
     );
   }
-  private PhoneValidation(): boolean{
+  private PhoneValidation(isUpdate = false): boolean{
     const allowedCharacters = '1234567890()- +';
-    
-    for (var i = 0; i < this.empresaRegistration.Telefono.length; i++) {
-      const character = this.empresaRegistration.Telefono.charAt(i);
+    const phoneToValidate = isUpdate? this.empresaUpdate.Telefono : this.empresaRegistration.Telefono;
+    for (var i = 0; i < phoneToValidate.length; i++) {
+      const character = phoneToValidate.charAt(i);
       if (!allowedCharacters.includes(character)){
         return false;
       }
@@ -133,6 +140,52 @@ export class ListaEmpresasComponent implements OnInit {
         ()=> window.alert('No se ha encontrado una empresa con ese id de venta')
       );
     }
+  }
+  setEmpresaUpdate(empresa){
+    this.empresaUpdate.EmpresaID = empresa.EmpresaID;
+    this.empresaUpdate.NombreEmpresa= empresa.NombreEmpresa;
+    this.empresaUpdate.Domicilio = empresa.Domicilio;
+    this.empresaUpdate.Telefono = empresa.Telefono;
+  }
+  cleanUpdate (){
+    this.empresaUpdate = {
+      EmpresaID: 0,
+      NombreEmpresa: '',
+      Domicilio: '',
+      Telefono: ''
+    };
+  }
+  UpdateEmpresa(){
+    if (this.empresaUpdate.NombreEmpresa === undefined || this.empresaUpdate.NombreEmpresa === null || this.empresaUpdate.NombreEmpresa.trim() === ''){
+      window.alert('Introduce un nombre válido');
+      return;
+    }
+    if (this.empresaUpdate.Domicilio === undefined || this.empresaUpdate.Domicilio === null || this.empresaUpdate.Domicilio.trim() === ''){
+      window.alert('Introduce un domicilio válido');
+      return;
+    }
+    if (this.empresaUpdate.Telefono === undefined || this.empresaUpdate.Telefono === null || this.empresaUpdate.Telefono.trim() === ''){
+      window.alert('Introduce un teléfono válido');
+      return;
+    }
+    if (!this.PhoneValidation(true)){
+      window.alert('Introduce un teléfono válido');
+      return;
+    }
+    this.loadingRegistration = true;
+    this.empresaService.Update(this.empresaUpdate, this.empresaUpdate.EmpresaID).subscribe(
+      r=> {
+        this.loadingRegistration = false;
+        this.cleanUpdate();
+        this.closeUpdate.nativeElement.click();
+        this.ngOnInit();
+        window.alert(r);
+      },
+      err=>{
+        this.loadingRegistration = false;
+        window.alert(err.error);
+      }
+      );
   }
   changeFolio(){
       this.criteria = '';

@@ -21,6 +21,18 @@ class EmpresaService:
         args = (nombre, domicilio, telefono)
         self.__sql_helper.sp_set(SpEmpresas.Register, args)
 
+    def update_empresa(self,empresa_id, data):
+        nombre = data['NombreEmpresa']
+        domicilio = data['Domicilio']
+        telefono = data['Telefono']
+        if not nombre:
+            raise ValueError("Missing names")
+        nombre = self.__string_helper.build_string(nombre)
+        domicilio = self.__string_helper.build_string(domicilio)
+        telefono = self.__string_helper.build_string(telefono)
+        args = (str(empresa_id), nombre, domicilio, telefono)
+        self.__sql_helper.sp_set(SpEmpresas.Update, args)
+
     def validate_empresa(self, empresa_id):
         empresa_id = int(empresa_id)
         args = (str(empresa_id), )

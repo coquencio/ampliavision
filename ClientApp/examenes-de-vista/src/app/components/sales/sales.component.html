@@ -172,7 +172,7 @@
             <td>{{venta.Proteccion}}</td>
             <td>{{venta.Lente}}</td>
             <td>{{venta.Total | currency}}</td>
-            <td>{{venta.Tipo ===1? 'Efectivo' : 'Tarjeta'}}</td>
+            <td>{{venta.Tipo ===1? 'Efectivo' : venta.Tipo ===2? 'Tarjeta':'Nómina'}}</td>
             <td>{{venta.Aticipo | currency}}</td>
             <td>{{venta.Abonos | currency}}</td>
             <td>{{venta.EstaLiquidada === 1?'Sí':'No'}}</td>

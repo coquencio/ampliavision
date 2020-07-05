@@ -7,7 +7,7 @@ from src.Helpers.stringHelper import StringHelper
 def are_characters_valid(argument):
     if isinstance(argument, int):
         return True
-    allowed_characters = "1234567890-."
+    allowed_characters = "1234567890-.+"
     for letter in argument:
         if not letter in allowed_characters:
             return False

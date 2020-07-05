@@ -372,6 +372,9 @@ CREATE DEFINER=`dormirey2`@`localhost` PROCEDURE `validaToken` (IN `keyToken` VA
 	select count(*) as Result from users where token = keyToken;
 END$$
 
+CREATE DEFINER=`dormirey2`@`localhost` PROCEDURE `ActualizaEmpresa` (IN `_id` INT, IN `_nombre` VARCHAR(60), IN `_Domicilio` VARCHAR(150), IN `_telefono` VARCHAR(20))  BEGIN
+	update Empresas set Nombreempresa = _nombre, Domicilio=_Domicilio, telefono= _telefono where EmpresaID = _id;
+END$$
 DELIMITER ;
 
 -- --------------------------------------------------------
