@@ -1,5 +1,5 @@
 from src.Helpers.sql import MySqlHelper
-from src.Core import empresasConstants as SpEmpresas
+from src.Core import empresasConstants as SpEmpresas, reglasConstants
 from src.Helpers.serializer import serialize_data_set
 from src.Helpers.stringHelper import StringHelper
 
@@ -42,8 +42,9 @@ class EmpresaService:
 
         return False
 
-    def get_empresas(self):
+    def get_empresas(self, token):
         empresas = self.__sql_helper.sp_get(SpEmpresas.Get_all)
+        empresas = self.__filter_empresas(empresas, token)
         return serialize_data_set(empresas, "Empresas")
 
     def get_by_folio(self, folio):
@@ -60,3 +61,18 @@ class EmpresaService:
         if not data:
             return "Empresa not found"
         return serialize_data_set(data)
+
+    def __filter_empresas(self, empresas, token):
+        restricted = self.__load_user_restrictions(token)
+        if restricted:
+            for empresa in empresas:
+                if {"Empresa":empresa["NombreEmpresa"]} in restricted:
+                    empresas.remove(empresa)
+
+        return empresas
+
+    def __load_user_restrictions(self, token):
+        token = self.__string_helper.build_string(token)
+        args = (token, )
+        return self.__sql_helper.sp_get(reglasConstants.Get_Empresas_restrictions, args)
+

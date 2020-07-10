@@ -27,7 +27,7 @@ def get_all_empresas():
     if not user_service.token_validation(token):
         return Response(status=401)
 
-    return empresa_service.get_empresas()
+    return empresa_service.get_empresas(token)
 
 @EmpresaController.route('/api/empresas/folio/<string:folio>', methods=['GET'])
 def get_by_folio(folio):

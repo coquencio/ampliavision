@@ -4,7 +4,6 @@ import datetime
 from urllib.parse import unquote
 
 def __json_defaults(o):
-    print(o)
     if isinstance(o, (datetime.datetime, datetime.date)):
         return o.strftime("%Y-%m-%d")
     if isinstance(o, decimal.Decimal):
