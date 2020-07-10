@@ -65,9 +65,14 @@ class EmpresaService:
     def __filter_empresas(self, empresas, token):
         restricted = self.__load_user_restrictions(token)
         if restricted:
+            founded = []
             for empresa in empresas:
-                if {"Empresa":empresa["NombreEmpresa"]} in restricted:
-                    empresas.remove(empresa)
+                retriction = {"Empresa": empresa["NombreEmpresa"]}
+                if  retriction in restricted:
+                    founded.append(empresa)
+            if founded:
+                for item in founded:
+                    empresas.remove(item)
 
         return empresas
 
