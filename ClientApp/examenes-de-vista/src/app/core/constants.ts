@@ -1,3 +1,3 @@
 export class AppSettings{
-    public static BASE_ADDRESS:string = 'http://servicios.ampliavisionbajio.com/api/';
+    public static BASE_ADDRESS:string = 'http://127.0.0.1:5000/api/';
 }
