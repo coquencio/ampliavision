@@ -20,7 +20,6 @@ class VentaService:
         total_venta = data['TotalVenta']
         anticipo = data['Anticipo']
         periodicidad = data['Periodicidad']
-        abonos = data['Abonos']
         fecha_venta = data['FechaVenta']
         armazon_id = data['ArmazonId']
         material_id = data['MaterialId']
@@ -28,6 +27,7 @@ class VentaService:
         lente_id = data['LenteId']
         beneficiario_id = data['BeneficiarioId']
         tipo_id = data['TipoVentaId']
+        number_of_payments = data['NumeroPagos']
 
         if folio_examen:
             if self.is_folio_repeated(folio_examen):
@@ -35,7 +35,7 @@ class VentaService:
 
         if not isinstance(armazon_id, int) or not isinstance(material_id, int) or not isinstance(proteccion_id, int) \
                 or not isinstance(lente_id, int) or not isinstance(beneficiario_id, int)\
-                or not isinstance(tipo_id, int):
+                or not isinstance(tipo_id, int) or not isinstance(number_of_payments, int):
             raise ValueError("Missing reference from product")
 
         if not folio_examen:
@@ -47,17 +47,17 @@ class VentaService:
         total_venta = str(total_venta)
         anticipo = str(anticipo)
         periodicidad = str(periodicidad)
-        abonos = str(abonos)
         armazon_id = str(armazon_id)
         material_id = str(material_id)
         proteccion_id = str(proteccion_id)
         lente_id = str(lente_id)
         beneficiario_id = str(beneficiario_id)
+        number_of_payments = str(number_of_payments)
 
         tipo_id =  str(tipo_id)
 
-        args = (folio_examen, total_venta, anticipo, periodicidad, abonos, fecha_venta, armazon_id, material_id,
-                proteccion_id, lente_id, beneficiario_id, tipo_id)
+        args = (folio_examen, total_venta, anticipo, periodicidad, fecha_venta, armazon_id, material_id,
+                proteccion_id, lente_id, beneficiario_id, tipo_id, number_of_payments)
         data = self.__sql_helper.sp_get(SpVentas.Register_and_get, args, True)
         return serialize_data_set(data)
 

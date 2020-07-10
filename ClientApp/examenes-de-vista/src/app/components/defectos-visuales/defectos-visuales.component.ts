@@ -114,6 +114,6 @@ export class DefectosVisualesComponent implements OnInit {
     XLSX.utils.book_append_sheet(wb, ws, 'Hoja 1');
 
     /* save to file */
-    XLSX.writeFile(wb, this.nombreEmpresa + new Date().toISOString().slice(0,10)+'.xlsx');
+    XLSX.writeFile(wb, this.nombreEmpresa + new Date().toISOString().slice(0,10)+'Examenes.xlsx');
   }
 }

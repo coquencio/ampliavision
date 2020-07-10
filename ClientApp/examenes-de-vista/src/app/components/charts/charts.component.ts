@@ -57,8 +57,8 @@ export class ChartsComponent implements OnInit {
         this.ventas = r;
         this.fastSummaryData = this.BuildFastSummary(r);
         this.fullSumarySaleData = [
-          { name: "Requieren lentes y no compraron lentes", value: this.ventas[0]? this.ventas[0].DataSet : 0},
-          { name: "Requieren lentes y compraron lentes", value: this.ventas[1]? this.ventas[1].DataSet : 0},
+          { name: "Requieren lentes y compraron lentes", value: this.ventas[0]? this.ventas[0].DataSet : 0},
+          { name: "Requieren lentes y no compraron lentes", value: this.ventas[1]? this.ventas[1].DataSet : 0},
           { name: "No requieren lentes y no compraron lentes", value: this.ventas[2]?this.ventas[2].DataSet:0},
           { name: "No requieren lentes y compraron lentes", value: this.ventas[3]? this.ventas[3].DataSet: 0},      
         ];

@@ -14,6 +14,7 @@ import { IAbono } from 'src/app/Interfaces/abonosInterface';
 import { IVentaResponse } from 'src/app/Interfaces/ventaResponseInterface';
 import { IArmazonResponse } from 'src/app/Interfaces/armazonResponseInterface';
 import { IVentasResumen } from 'src/app/Interfaces/salesSummaryInterface';
+import * as XLSX from 'xlsx'; 
 
 @Component({
   selector: 'app-sales',
@@ -52,10 +53,10 @@ export class SalesComponent implements OnInit {
   montoTotal: number;
   anticipo: number;
   periodicidad: number;
-  montoAbonos: number;
   folio: string;
   tipoVenta: number;
   beneficiarioId: number;
+  numeroPagos: number;
 
   //Ventas Resumen
   resumenVentas: IResumenVentas;
@@ -178,20 +179,16 @@ export class SalesComponent implements OnInit {
       window.alert('Favor de introduce un anticipo antes');
       return;
     }if (this.periodicidad === undefined || this.periodicidad === null){
-      window.alert('Favor de introduce una preiodicidad antes');
+      window.alert('Favor de introduce una periodicidad antes');
       return;
-    }if (this.montoAbonos === undefined || this.montoAbonos === null){
-      window.alert('Favor de introduce un monto de abonos antes');
+    }if (this.numeroPagos === undefined || this.numeroPagos === null){
+      window.alert('Favor de introduce un numero de pagos antes');
       return;
     }if (this.tipoVenta === undefined || this.tipoVenta === null){
       window.alert('Favor de seleccionar un tipo de venta antes');
       return;
     }if (this.beneficiarioId === undefined || this.beneficiarioId === null){
       window.alert('Favor de seleccionar un empleado antes');
-      return;
-    }
-    if ((this.anticipo + this.montoAbonos) > this.montoTotal){
-      window.alert('Anticipo sumado con el primer abono no puede ser mayor a total de la venta');
       return;
     }
     this.loadingRegis = true;
@@ -208,7 +205,7 @@ export class SalesComponent implements OnInit {
       TotalVenta: this.montoTotal,
       Anticipo: this.anticipo,
       Periodicidad: this.periodicidad,
-      Abonos: this.montoAbonos,
+      NumeroPagos: this.numeroPagos,
       FechaVenta: this.fechaExamen,
       ArmazonId: armazonResponse.ArmazonID,
       MaterialId: parseInt(this.materialId.toString()),
@@ -225,7 +222,6 @@ export class SalesComponent implements OnInit {
         this.folio = undefined;
         this.anticipo = undefined;
         this.periodicidad = undefined;
-        this.montoAbonos = undefined;
         this.fechaExamen = undefined;
         this.materialId = undefined;
         this.proteccionId = undefined;
@@ -400,6 +396,17 @@ export class SalesComponent implements OnInit {
         }
       );
     }
+  }
+  ExportTable(){
+    const element = document.getElementById('reporteVentas'); 
+    const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
+
+    /* generate workbook and add the worksheet */
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Hoja 1');
+
+    /* save to file */
+    XLSX.writeFile(wb, this.nombreEmpresa + new Date().toISOString().slice(0,10)+'Venta.xlsx');
   }
   private getSummary(){
     this.SalesService.GetBalanceSummary(this.currentEmpresaId).subscribe(

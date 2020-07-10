@@ -122,7 +122,10 @@ export class ListaEmpresasComponent implements OnInit {
             this.loading = false;
           }
         },
-        ()=> window.alert('No se ha encontrado una empresa con ese folio')
+        ()=> {
+          this.loading = false;
+          window.alert('No se ha encontrado una empresa con ese folio');
+        }
       );
     }
     else{
@@ -137,7 +140,10 @@ export class ListaEmpresasComponent implements OnInit {
             this.empresasMirror.Empresas=this.empresas.Empresas.filter(e=>e.EmpresaID === r.EmpresaID);
             this.loading = false;
         },
-        ()=> window.alert('No se ha encontrado una empresa con ese id de venta')
+        ()=> {
+          this.loading = false;
+          window.alert('No se ha encontrado una empresa con ese id de venta');
+        }
       );
     }
   }

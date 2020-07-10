@@ -2,7 +2,6 @@
 # Total venta
 # Anticipo
 # Periodicidad días
-# Abonos
 # Fecha de la venta
 # Armazon ID
 # Material ID
@@ -10,6 +9,7 @@
 # LenteID
 # Beneficiario ID
 # TipoVentaID
+# Numero pagos
 Register_and_get = "RegistraYSeleccionaVenta"
 
 # Empresa Id
