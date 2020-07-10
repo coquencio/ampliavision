@@ -378,6 +378,10 @@ CREATE DEFINER=`dormirey2`@`localhost` PROCEDURE `ActualizaEmpresa` (IN `_id` IN
 END$$
 DELIMITER ;
 
+CREATE DEFINER=`dormirey2`@`localhost` PROCEDURE `RestriccionesPorUsuario` (IN `_token` VARCHAR(40))  BEGIN
+	select r.Empresa from Restricciones r inner join users u on r.userID = u.userID where u.token = _token;
+END$$
+
 -- --------------------------------------------------------
 
 --
@@ -391,6 +395,18 @@ CREATE TABLE `Abonos` (
   `FechaAbono` date DEFAULT NULL,
   `FechaRegistro` date NOT NULL,
   `RegistradoPor` varchar(50) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Restricciones`
+--
+
+CREATE TABLE `Restricciones` (
+  `RestriccionID` int(11) NOT NULL,
+  `userID` int(11) NOT NULL,
+  `Empresa` varchar(100) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -923,6 +939,12 @@ ALTER TABLE `CasosPorBeneficiario`
 --
 ALTER TABLE `colores`
   ADD PRIMARY KEY (`ColorID`);
+--
+-- Indexes for table `Restricciones`
+--
+ALTER TABLE `Restricciones`
+  ADD PRIMARY KEY (`RestriccionID`),
+  ADD KEY `userID` (`userID`);
 
 --
 -- Indexes for table `ConjuntoOjos`
@@ -1079,6 +1101,12 @@ ALTER TABLE `Beneficiarios`
 --
 ALTER TABLE `CasosMaterialesISO`
   MODIFY `CasoID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `Restricciones`
+--
+ALTER TABLE `Restricciones`
+  MODIFY `RestriccionID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `CasosPorBeneficiario`
