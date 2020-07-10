@@ -19,4 +19,5 @@ export interface IVenta{
     EstaLiquidada: number;
     Fecha: string;
     Tipo: number;
+    TotalPagos: number;
 }

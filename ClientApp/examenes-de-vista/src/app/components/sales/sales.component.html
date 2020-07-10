@@ -37,9 +37,9 @@
       <label for="">Periodicidad de pagos (Días)</label>
       <input required [(ngModel)]="periodicidad" name="periodicidad" class="form-control" type="number" min="1">
     </div>
-    <div class="form-group">
-      <label for="">Monto de Abonos</label>
-      <input required [(ngModel)]="montoAbonos" name="montoAbonos" class="form-control" type="number" min="0">
+        <div class="form-group">
+      <label for="">Total de pagos que se harán</label>
+      <input required [(ngModel)]="numeroPagos" name="numeroPagos" class="form-control" type="number" min="1">
     </div>
     <div class="form-group">
       <label for="">Fecha de venta</label>
@@ -144,7 +144,6 @@
             <th scope="col">Apellido</th>
             <th scope="col">Puesto</th>
             <th scope="col">Requiere lentes</th>
-            <th scope="col">Compró lentes</th>
             <th scope="col">Material</th>
             <th scope="col">Protección</th>
             <th scope="col">Lente</th>
@@ -152,6 +151,7 @@
             <th scope="col">Método de pago</th>
             <th scope="col">Anticipo</th>
             <th scope="col">Abonos de</th>
+            <th scope="col">Número de pagos</th>
             <th scope="col">Está liquidada</th>
             <th scope="col">Fecha</th>
             <th scope="col">Historial de Abonos</th>
@@ -167,7 +167,6 @@
             <td>{{venta.Apellido}}</td>
             <td>{{venta.Puesto}}</td>
             <td>{{venta.RequiereLentes===1?'Sí': 'No'}}</td>
-            <td>{{venta.comprolentes===1?'Sí': 'No'}}</td>
             <td>{{venta.Material}}</td>
             <td>{{venta.Proteccion}}</td>
             <td>{{venta.Lente}}</td>
@@ -175,6 +174,8 @@
             <td>{{venta.Tipo ===1? 'Efectivo' : venta.Tipo ===2? 'Tarjeta':'Nómina'}}</td>
             <td>{{venta.Aticipo | currency}}</td>
             <td>{{venta.Abonos | currency}}</td>
+            <td>{{venta.TotalPagos}}
+            </td>
             <td>{{venta.EstaLiquidada === 1?'Sí':'No'}}</td>
             <td>{{venta.Fecha | date:'dd/MM/yyyy'}}</td>
             <td><button type="button" (click)="setCurrentVentaId(venta.VentaId)" class="btn btn-success"
@@ -185,8 +186,49 @@
           </tr>
         </tbody>
       </table>
+      <table hidden id="reporteVentas" *ngIf="resumenVentas" class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Venta Id</th>
+            <th scope="col">Folio Examen</th>
+            <th scope="col">Nombres</th>
+            <th scope="col">Apellido</th>
+            <th scope="col">Puesto</th>
+            <th scope="col">Requiere lentes</th>
+            <th scope="col">Material</th>
+            <th scope="col">Protección</th>
+            <th scope="col">Lente</th>
+            <th scope="col">Total</th>
+            <th scope="col">Método de pago</th>
+            <th scope="col">Anticipo</th>
+            <th scope="col">Abonos de</th>
+            <th scope="col">Número de pagos</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let venta of resumenVentas.Ventas">
+            <td>{{venta.VentaId}}</td>
+            <td>{{venta.FolioExamen}}</td>
+            <td>{{venta.Nombres}}</td>
+            <td>{{venta.Apellido}}</td>
+            <td>{{venta.Puesto}}</td>
+            <td>{{venta.RequiereLentes===1?'Sí': 'No'}}</td>
+            <td>{{venta.Material}}</td>
+            <td>{{venta.Proteccion}}</td>
+            <td>{{venta.Lente}}</td>
+            <td>{{venta.Total | currency}}</td>
+            <td>{{venta.Tipo ===1? 'Efectivo' : venta.Tipo ===2? 'Tarjeta':'Nómina'}}</td>
+            <td>{{venta.Aticipo | currency}}</td>
+            <td>{{venta.Abonos | currency}}</td>
+            <td>{{venta.TotalPagos}}
+            </td>
+            </tr>
+        </tbody>
+      </table>
       <p class="text-center" *ngIf="resumenVentasMirror.Ventas.length === 0">No se han encontrado ventas</p>
     </div>
+    <br *ngIf="resumenVentasMirror.Ventas.length > 0">
+    <button (click)="ExportTable()" class="btn btn-success btn-lg" *ngIf="resumenVentas && resumenVentas.Ventas.length > 0">Genera reporte de ventas</button>
   </div>
 </div>
 <div *ngIf="loadingSales">

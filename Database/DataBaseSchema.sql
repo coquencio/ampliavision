@@ -231,14 +231,15 @@ CREATE DEFINER=`dormirey2`@`localhost` PROCEDURE `RegistraYSeleccionaConjuntoOjo
     Select ConjuntoID from ConjuntoOjos order By ConjuntoID desc Limit 1;
 END$$
 
-CREATE DEFINER=`dormirey2`@`localhost` PROCEDURE `RegistraYSeleccionaOjo` (IN `LadoId` INT, IN `Esfera` VARCHAR(10), IN `Cilindro` VARCHAR(10), IN `eje` VARCHAR(10), IN `Addicion` VARCHAR(10))  BEGIN
-	insert into Ojos (LadoID, esfera, cilindro, eje, adiccion) values (LadoId, Esfera, Cilindro, eje, Addicion);
-    select OjoID from Ojos order by OjoID desc limit 1;
+CREATE DEFINER=`dormirey2`@`localhost` PROCEDURE  `RegistraYSeleccionaVenta` (IN `FolioExamen` VARCHAR(10), IN `totalVenta` DECIMAL(13,2), IN `Anticipo` DECIMAL(13,2), IN `Periodicidad` INT, IN `fechaVenta` DATE, IN `armazonID` INT, IN `materialID` INT, IN `proteccionID` INT, IN `lenteID` INT, IN `beneficiarioID` INT, IN `tipoVentaID` INT, IN `numeroPagos` INT)  BEGIN
+	select ExamenID into @ExamenID  from Examenes where folio = FolioExamen;
+    insert into Ventas (folioExamen, totalVenta, anticipo, periodicidadDias, Abonos, fechaVenta, EstaLiquidada, armazonID, materialID, ProteccionID, LenteID, BeneficiarioID, ExamenID, TipoVentaID, NumeroPagos) values (folioExamen, totalVenta, anticipo, periodicidad, (totalVenta - anticipo)/numeroPagos, fechaventa, 0, armazonID, materialID, proteccionID, lenteID, beneficiarioID, @ExamenID, tipoVentaID, numeroPagos);
+	select ventaID from Ventas order by ventaID desc limit 1;
 END$$
 
-CREATE DEFINER=`dormirey2`@`localhost` PROCEDURE `RegistraYSeleccionaVenta` (IN `FolioExamen` VARCHAR(10), IN `totalVenta` DECIMAL(13,2), IN `Anticipo` DECIMAL(13,2), IN `Periodicidad` INT, IN `abonos` DECIMAL(13,2), IN `fechaVenta` DATE, IN `armazonID` INT, IN `materialID` INT, IN `proteccionID` INT, IN `lenteID` INT, IN `beneficiarioID` INT, IN `tipoVentaID` INT)  BEGIN
+CREATE DEFINER=`dormirey2`@`localhost` PROCEDURE `RegistraYSeleccionaVenta` (IN `FolioExamen` VARCHAR(10), IN `totalVenta` DECIMAL(13,2), IN `Anticipo` DECIMAL(13,2), IN `Periodicidad` INT, IN `abonos` DECIMAL(13,2), IN `fechaVenta` DATE, IN `armazonID` INT, IN `materialID` INT, IN `proteccionID` INT, IN `lenteID` INT, IN `beneficiarioID` INT, IN `tipoVentaID` INT, IN `numeroPagos` INT)  BEGIN
 	select ExamenID into @ExamenID  from Examenes where folio = FolioExamen;
-    insert into Ventas (folioExamen, totalVenta, anticipo, periodicidadDias, Abonos, fechaVenta, EstaLiquidada, armazonID, materialID, ProteccionID, LenteID, BeneficiarioID, ExamenID, TipoVentaID) values (folioExamen, totalVenta, anticipo, periodicidad, abonos, fechaventa, 0, armazonID, materialID, proteccionID, lenteID, beneficiarioID, @ExamenID, tipoVentaID);
+    insert into Ventas (folioExamen, totalVenta, anticipo, periodicidadDias, Abonos, fechaVenta, EstaLiquidada, armazonID, materialID, ProteccionID, LenteID, BeneficiarioID, ExamenID, TipoVentaID, NumeroPagos) values (folioExamen, totalVenta, anticipo, periodicidad, abonos, fechaventa, 0, armazonID, materialID, proteccionID, lenteID, beneficiarioID, @ExamenID, tipoVentaID, numeroPagos);
 	select ventaID from Ventas order by ventaID desc limit 1;
 END$$
 
@@ -329,7 +330,7 @@ CREATE DEFINER=`dormirey2`@`localhost` PROCEDURE `SeleccionaResumentVentas` (IN 
 END$$
 
 CREATE DEFINER=`dormirey2`@`localhost` PROCEDURE `seleccionaResumenVentasPorEmpresa` (IN `_empresaId` INT)  BEGIN
-		select v.ventaId as VentaId, v.TipoVentaID as Tipo, v.FolioExamen, b.nombres as Nombres, v.EstaLiquidada as EstaLiquidada, v.fechaVenta as Fecha ,b.apellidoPaterno as Apellido, b.Ocupacion as Puesto, ex.RequiereLentes, ex.comprolentes,  m.descripcion as Material, p.descripcion as Proteccion, t.descripcion as Lente, v.totalventa as Total, v.anticipo as Aticipo, v.abonos as Abonos from Ventas v inner join Beneficiarios b on v.beneficiarioId = b.beneficiarioId inner join Materiales m on v.materialId = m.materialId inner join Protecciones p on v.proteccionId = p.proteccionId inner join TipoLente t on v.lenteId = t.lenteId left join Examenes ex on v.examenId= ex.ExamenId where b.empresaId = _empresaId;
+		select v.ventaId as VentaId, v.TipoVentaID as Tipo, v.FolioExamen, b.nombres as Nombres, v.EstaLiquidada as EstaLiquidada, v.fechaVenta as Fecha ,b.apellidoPaterno as Apellido, b.Ocupacion as Puesto, ex.RequiereLentes, ex.comprolentes,  m.descripcion as Material, p.descripcion as Proteccion, t.descripcion as Lente, v.totalventa as Total, v.anticipo as Aticipo, v.abonos as Abonos,  v.NumeroPagos as TotalPagos from Ventas v inner join Beneficiarios b on v.beneficiarioId = b.beneficiarioId inner join Materiales m on v.materialId = m.materialId inner join Protecciones p on v.proteccionId = p.proteccionId inner join TipoLente t on v.lenteId = t.lenteId left join Examenes ex on v.examenId= ex.ExamenId where b.empresaId = _empresaId;
 END$$
 
 CREATE DEFINER=`dormirey2`@`localhost` PROCEDURE `seleccionaSumAbonosPorVenta` (IN `_ventaId` INT)  BEGIN
