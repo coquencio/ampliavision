@@ -97,17 +97,22 @@ export class ChartsComponent implements OnInit {
   private BuildFastSummary(data: IVentasChart[]){
     let total: number = 0;
     let buyers: number = 0;
+    let need: number = 0;
     data.forEach(e=>{
       total = total+e.DataSet;
       if (e.comproLentes === 1){
         buyers = buyers + e.DataSet;
+      }
+      if(e.requiereLentes === 1){
+        need = need + e.DataSet;
       }
     });
 
     const dataSet = 
     [
       {name:'Total', value:total},
-      {name:'Requieren lentes', value:buyers}
+      {name:'Compraron lentes', value:buyers},
+      {name:'Requieren lentes', value:need}
     ]
     return dataSet;
   }
