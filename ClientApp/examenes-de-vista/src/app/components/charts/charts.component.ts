@@ -56,30 +56,63 @@ export class ChartsComponent implements OnInit {
       r=> {
         this.ventas = r;
         this.fastSummaryData = this.BuildFastSummary(r);
-        this.fullSumarySaleData = [
-          { name: "Requieren lentes y compraron lentes", value: this.ventas[0]? this.ventas[0].DataSet : 0},
-          { name: "Requieren lentes y no compraron lentes", value: this.ventas[1]? this.ventas[1].DataSet : 0},
-          { name: "No requieren lentes y no compraron lentes", value: this.ventas[2]?this.ventas[2].DataSet:0},
-          { name: "No requieren lentes y compraron lentes", value: this.ventas[3]? this.ventas[3].DataSet: 0},      
-        ];
+        this.buildSataSets();
       }
     );
+  }
+  private buildSataSets(): void{
+    const require = 'Requieren lentes y ';
+    const buy = 'compraron lentes'
+    this.ventas.forEach(
+      v=>{
+        let nameBuild = '';
+        nameBuild = v.requiereLentes === 1 ? require : 'No '+require;
+        nameBuild = v.comproLentes === 1 ? nameBuild + buy : nameBuild + 'no '+ buy;
+        this.fullSumarySaleData.push({name: nameBuild, value:v.DataSet});
+      }
+    );
+    if (this.fullSumarySaleData.length<4){
+      this.getMissingClusters();
+    }
+  }
+  private getMissingClusters(){
+    if(!this.ventas.find(v=>v.comproLentes==1&&v.requiereLentes==1)){
+      const data = {name:'Requiren lentes y compraron lentes', value:0};
+      this.fullSumarySaleData.push(data);
+    }
+    if(!this.ventas.find(v=>v.comproLentes==0&&v.requiereLentes==1)){
+      const data = {name:'No Requiren lentes y compraron lentes', value:0};
+      this.fullSumarySaleData.push(data);
+    }
+    if(!this.ventas.find(v=>v.comproLentes==0&&v.requiereLentes==0)){
+      const data = {name:'No Requiren lentes y no compraron lentes', value:0};
+      this.fullSumarySaleData.push(data);
+    }
+    if(!this.ventas.find(v=>v.comproLentes==1&&v.requiereLentes==0)){
+      const data = {name:'Requiren lentes y no compraron lentes', value:0};
+      this.fullSumarySaleData.push(data);
+    }
   }
 
   private BuildFastSummary(data: IVentasChart[]){
     let total: number = 0;
     let buyers: number = 0;
+    let need: number = 0;
     data.forEach(e=>{
       total = total+e.DataSet;
       if (e.comproLentes === 1){
         buyers = buyers + e.DataSet;
+      }
+      if(e.requiereLentes === 1){
+        need = need + e.DataSet;
       }
     });
 
     const dataSet = 
     [
       {name:'Total', value:total},
-      {name:'Requieren lentes', value:buyers}
+      {name:'Compraron lentes', value:buyers},
+      {name:'Requieren lentes', value:need}
     ]
     return dataSet;
   }
