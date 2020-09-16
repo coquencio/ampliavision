@@ -18,6 +18,8 @@ class UsersService:
             raise ValueError("Invalid username")
         if not self.__validate_string(password):
             raise ValueError("Username must contain more than 5 letters")
+        if self.is_name_taken(user_name):
+            raise ValueError("Username already taken")
 
         user_name = self.__string_helper.build_string(user_name)
         password = self.__string_helper.build_string(self.__encrypt(password))
@@ -62,6 +64,11 @@ class UsersService:
         if data["Admin"] == 1:
             return True
         return False
+
+    def is_name_taken(self, user_name):
+        user_name = self.__string_helper.build_string(user_name)
+        data = self.__sql_helper.sp_get(SpUsers.Check_existance, (user_name, ), True)
+        return data["count(*)"] > 0
 
     @staticmethod
     def __encrypt(string):
