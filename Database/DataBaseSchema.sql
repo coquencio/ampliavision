@@ -345,8 +345,7 @@ CREATE DEFINER=`dormirey2`@`localhost` PROCEDURE `SeleccionaTotalAbonos` (IN `_e
 	select sum(monto) as Montos from Abonos a inner join Ventas v on a.VentaID = v.VentaID inner join Beneficiarios b on b.BeneficiarioID = v.BeneficiarioID where b.EmpresaID = _empresaid;
 END$$
 
-CREATE DEFINER=`dormirey2`@`localhost` PROCEDURE `seleccionaTotalAbonosSinLiquidar` (IN `_empresaid` INT)  NO SQL
-BEGIN
+CREATE DEFINER=`dormirey2`@`localhost` PROCEDURE `seleccionaTotalAbonosSinLiquidar` (IN `_empresaid` INT)  BEGIN
 	select sum(monto) as Montos from Abonos a inner join Ventas v on a.VentaID = v.VentaID inner join Beneficiarios b on b.BeneficiarioID = v.BeneficiarioID where b.EmpresaID = _empresaid and v.EstaLiquidada = 0;
 END$$
 
@@ -368,6 +367,10 @@ END$$
 
 CREATE DEFINER=`dormirey2`@`localhost` PROCEDURE `validaEmpresa` (IN `Id` INT)  BEGIN
 	select count(*) from Empresas where EmpresaId = Id;
+END$$
+
+CREATE DEFINER=`dormirey2`@`localhost` PROCEDURE `validaExistenciaUsuario` (IN `_nombre` VARCHAR(100))  BEGIN
+	select count(*) from users where userName = _nombre;
 END$$
 
 CREATE DEFINER=`dormirey2`@`localhost` PROCEDURE `ValidaFolio` (IN `_FolioExamen` VARCHAR(10))  BEGIN
