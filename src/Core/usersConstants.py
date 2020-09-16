@@ -9,3 +9,6 @@ Get_name = "SeleccionaNombreConToken"
 
 # Token
 Is_Admin = "Admin"
+
+# User Name
+Check_existance = "validaExistenciaUsuario"
