@@ -55,6 +55,9 @@ Get_sales_summary = "SeleccionaResumentVentas"
 Get_payments_summary = "SeleccionaTotalAbonos"
 
 # Venta Id
+Get_payment_summary_of_updaid_sales = "seleccionaTotalAbonosSinLiquidar"
+
+# Venta Id
 Get_real_balance="BalanceSinLiquidar"
 
 # Abono Id

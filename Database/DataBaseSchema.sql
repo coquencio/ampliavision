@@ -345,6 +345,11 @@ CREATE DEFINER=`dormirey2`@`localhost` PROCEDURE `SeleccionaTotalAbonos` (IN `_e
 	select sum(monto) as Montos from Abonos a inner join Ventas v on a.VentaID = v.VentaID inner join Beneficiarios b on b.BeneficiarioID = v.BeneficiarioID where b.EmpresaID = _empresaid;
 END$$
 
+CREATE DEFINER=`dormirey2`@`localhost` PROCEDURE `seleccionaTotalAbonosSinLiquidar` (IN `_empresaid` INT)  NO SQL
+BEGIN
+	select sum(monto) as Montos from Abonos a inner join Ventas v on a.VentaID = v.VentaID inner join Beneficiarios b on b.BeneficiarioID = v.BeneficiarioID where b.EmpresaID = _empresaid and v.EstaLiquidada = 0;
+END$$
+
 CREATE DEFINER=`dormirey2`@`localhost` PROCEDURE `SeleccionaVentaPorAbono` (IN `_abonoID` INT)  BEGIN
 	select v.VentaID as Id from Ventas v inner join Abonos a on a.VentaID=v.VentaID where a.AbonoID = _abonoID;
 END$$
