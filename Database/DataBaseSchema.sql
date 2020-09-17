@@ -1240,3 +1240,81 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+--
+-- PROPERTIES AND EMAILS
+-- 
+
+
+create table emails
+(
+	mailId int primary key auto_increment,
+	mail varchar(100) not null unique,
+    pswd varchar(100) not null
+)
+
+delimiter //
+CREATE PROCEDURE InsertaMail(in _mail varchar(100), _pswd varchar(100))
+BEGIN
+	insert into emails (mail, pswd) values (_mail, _pswd);
+END //
+delimiter ;
+delimiter //
+CREATE PROCEDURE RegresaContra(in _mail varchar(100))
+BEGIN
+	select pswd from emails where mail = _mail;
+END //
+delimiter ;
+delimiter //
+CREATE PROCEDURE EliminaMail(in _mail varchar(100))
+BEGIN
+	delete from emails where mail = _mail;
+END //
+delimiter ;
+delimiter //
+CREATE PROCEDURE RegresaMails()
+BEGIN
+	select mail from emails;
+END //
+delimiter ;
+delimiter //
+CREATE PROCEDURE ActualizaContra(in _mail varchar(100), in _pswd varchar(10000))
+BEGIN
+	update emails set pswd = _pswd where mail = _mail;
+END //
+delimiter ;
+create table properties
+(
+	propertyId int primary key auto_increment,
+	propertyName varchar(100) not null unique,
+    propertyValue varchar(10000) not null
+)
+
+delimiter //
+CREATE PROCEDURE ConsultaPropiedad(in _name varchar(100))
+BEGIN
+	select propertyValue from properties where propertyName = _name;
+END //
+delimiter ;
+
+delimiter //
+CREATE PROCEDURE InsertaPropiedad(in _name varchar(100), in _value varchar(10000))
+BEGIN
+	insert into properties (propertyName, propertyValue) values (_name, _value);
+END //
+delimiter ;
+
+delimiter //
+CREATE PROCEDURE ActualizaPropiedad(in _name varchar(100), in _value varchar(10000))
+BEGIN
+	update properties set propertyValue = _value where propertyName = _name;
+END //
+delimiter ;
+
+delimiter //
+CREATE PROCEDURE EliminaPropiedad(in _name varchar(100))
+BEGIN
+	DELETE from properties where propertyName = _name;
+END //
+delimiter ;
+
