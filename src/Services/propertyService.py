@@ -25,7 +25,7 @@ class PropertyService:
 
     def create_property(self, name, value):
         # Hardcoded rule, user should not interact with this property
-        if property_name == "key":
+        if name == "key":
             raise ValueError("Nombre de Propiedad reservado para sistema")
 
         if self.get_property_value(name):
@@ -39,7 +39,7 @@ class PropertyService:
 
     def delete_property(self, name):
         # Hardcoded rule, user should not interact with this property
-        if property_name == "key":
+        if name == "key":
             raise ValueError("Propiedad no encontrada")
 
         if not self.get_property_value(name):
@@ -49,7 +49,7 @@ class PropertyService:
 
     def update_property(self, name, new_value):
         # Hardcoded rule, property is not encrypted
-        if property_name == "key":
+        if name == "key":
             raise ValueError("Propiedad no encontrada")
 
         if not self.get_property_value(name):
