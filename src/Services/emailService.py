@@ -5,7 +5,12 @@ from src.Core import mailConstants as SpMail
 from src.Helpers.stringHelper import StringHelper
 from src.Helpers.encryptionHelper import EncryptionService
 from src.Helpers.serializer import serialize_data_set
-from nslookup import Nslookup
+from email.mime.text import MIMEText
+import urllib.request
+from email.mime.multipart import MIMEMultipart
+from email import encoders
+from email.mime.base import MIMEBase
+from src.Helpers import validators
 
 class EmailService:
 
@@ -45,9 +50,14 @@ class EmailService:
         if not data["message"]:
             raise KeyError("message")
 
+        if not data["subject"]:
+            raise KeyError("subject")
+
+
         sender_mail = data["sender"]
         reciever_mail = data["reciever"]
         message = data["message"]
+        subject = data["subject"]
         password = self.get_password(sender_mail)
 
         if not password:
@@ -56,12 +66,22 @@ class EmailService:
         if not self.__are_credentials_valid(sender_mail, password):
             raise ValueError("Es necesario actualizar la contraseña para mail: " + sender_mail)
 
-        if not self.is_domain_valid(reciever_mail):
+        if not validators.is_email_valid(reciever_mail):
             raise ValueError("La dirección a la que se trata de enviar el correo es inválida")
 
         self.__open_connection()
         self.__server.login(sender_mail, password)
-        self.__server.sendmail(sender_mail, reciever_mail, message)
+        template = MIMEText(self.get_email_template(), "html")
+        message = MIMEText(message, "plain")
+        mail = MIMEMultipart()
+        mail['Subject'] = subject
+        mail['From'] = sender_mail
+        mail['To'] = reciever_mail
+
+        mail.attach(message)
+        mail.attach(template)
+        mail.attach(self.get_pdf_attachment())
+        self.__server.sendmail(sender_mail, reciever_mail, mail.as_string())
         self.__close_connection()
 
     def get_password(self, mail):
@@ -126,16 +146,31 @@ class EmailService:
         self.__sql.sp_set(SpMail.Update_password, args)
 
     @staticmethod
-    def is_domain_valid(email):
-        if not "@" in email:
-            return False
-        domain = email.split("@")
-        domain = domain[1]
-        dns_query = Nslookup(dns_servers=["1.1.1.1"])
+    def get_email_template():
+        # TODO set this url as property from properties services
+        fp = urllib.request.urlopen("http://ampliavisionbajio.com/mail.html")
+        mybytes = fp.read()
 
-        ips_record = dns_query.dns_lookup(domain)
-        print(ips_record.response_full, ips_record.answer)
-        if not ips_record.response_full or not ips_record.answer:
-            return False
+        mystr = mybytes.decode("utf8")
+        fp.close()
+        return mystr
 
-        return True
+    @staticmethod
+    def get_pdf_attachment():
+        # TODO set this url as property from properties services
+        url = "http://ampliavisionbajio.com/attachment/BrochureAmpliavivio%cc%81n.pdf"  # In same directory as script
+        fp = urllib.request.urlopen(url)
+        # Add file as application/octet-stream
+        # Email client can usually download this automatically as attachment
+        part = MIMEBase("application", "octet-stream")
+        part.set_payload(fp.read())
+
+        # Encode file in ASCII characters to send by email
+        encoders.encode_base64(part)
+
+        # Add header as key/value pair to attachment part
+        part.add_header(
+            "Content-Disposition",
+            "attachment; filename= BrochureAmpliaVision.pdf",
+        )
+        return part

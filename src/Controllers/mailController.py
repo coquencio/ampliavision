@@ -44,7 +44,7 @@ def send_mail():
             return Response(status=401)
         data = request.get_json()
         mail_service.send_mail(data)
-        return Response(status=201, response="Email enviado")
+        return Response(status=200, response="Email enviado")
     except ValueError as err:
         return Response(status = 400, response = err.args)
     except KeyError as err:

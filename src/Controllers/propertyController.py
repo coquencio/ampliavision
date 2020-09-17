@@ -41,7 +41,7 @@ def delete_property(name):
             return Response(status = 401)
 
         property_service.delete_property(name)
-        return Response(status = 201, response = "Propiedad eliminada")
+        return Response(status = 200, response = "Propiedad eliminada")
 
     except ValueError as err:
         return Response(status = 400, response = err.args)
@@ -54,7 +54,7 @@ def update_property(name, value):
             return Response(status = 401)
 
         property_service.update_property(name, value)
-        return Response(status = 201, response = "Propiedad actualizada")
+        return Response(status = 200, response = "Propiedad actualizada")
 
     except ValueError as err:
         return Response(status = 400, response = err.args)
