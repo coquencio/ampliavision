@@ -10,6 +10,10 @@ class PropertyService:
         self.__encryption = EncryptionService()
 
     def get_property_value(self, property_name):
+        # Hardcoded rule, property is not encrypted
+        if property_name == "key":
+            return None
+
         property_name = self.__string_helper.build_string(property_name)
         data = self.__sql.sp_get(SpProperties.Get_property_value, (property_name,), True)
 
@@ -20,6 +24,10 @@ class PropertyService:
 
 
     def create_property(self, name, value):
+        # Hardcoded rule, user should not interact with this property
+        if property_name == "key":
+            raise ValueError("Nombre de Propiedad reservado para sistema")
+
         if self.get_property_value(name):
             raise ValueError("Ya existe una propiedad con este nombre")
 
@@ -30,12 +38,20 @@ class PropertyService:
         self.__sql.sp_set(SpProperties.Create_property, args)
 
     def delete_property(self, name):
+        # Hardcoded rule, user should not interact with this property
+        if property_name == "key":
+            raise ValueError("Propiedad no encontrada")
+
         if not self.get_property_value(name):
             raise ValueError("Propiedad no encontrada")
         name = self.__string_helper.build_string(name)
         self.__sql.sp_set(SpProperties.Delete_property, (name, ))
 
     def update_property(self, name, new_value):
+        # Hardcoded rule, property is not encrypted
+        if property_name == "key":
+            raise ValueError("Propiedad no encontrada")
+
         if not self.get_property_value(name):
             raise ValueError("Propiedad no encontrada")
         value = self.__encryption.encrypt(new_value)
