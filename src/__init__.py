@@ -10,7 +10,8 @@ from src.Controllers.armazonController import ArmazonController
 from src.Controllers.ventaController import VentaController
 from src.Controllers.isoController import IsoController
 from src.Controllers.chartsController import ChartController
-
+from src.Controllers.propertyController import PropertyController
+from src.Controllers.mailController import EmailController
 
 app = Flask(__name__)
 app.register_blueprint(UserController)
@@ -23,6 +24,8 @@ app.register_blueprint(ArmazonController)
 app.register_blueprint(VentaController)
 app.register_blueprint(IsoController)
 app.register_blueprint(ChartController)
+app.register_blueprint(PropertyController)
+app.register_blueprint(EmailController)
 # CORS
 CORS(app)
 
