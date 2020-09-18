@@ -35,9 +35,9 @@
       </ul>
       <ng-template #elseBlock>
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="nav-link">Selecciona empresa</a>
-            </li>
+          <li class="nav-item">
+            <button class="btn btn-light nav-link button-nav" routerLinkActive='active' [routerLink]="['/Empresas']">Selecciona empresa</button>
+        </li>
             <li class="nav-item">
               <button class="btn btn-light nav-link button-nav" routerLinkActive='active' [routerLink]="['/Mail']">Mail</button> 
             </li>
