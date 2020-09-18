@@ -1,0 +1,30 @@
+<h2>Enviar correo de campaña de salud visual</h2>
+<div *ngIf="isLoading">
+    <app-loading></app-loading>
+</div>
+<div *ngIf="!isLoading">
+    <form [formGroup]="mailForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">  
+            <label for="sender">Enviar desde:</label>
+            <select formControlName="sender" id="sender" class="form-control">
+                <option *ngFor="let mail of mailResponse.Emails" [value]="mail.mail">
+                    {{mail.mail}}
+                </option>
+            </select>
+        </div>
+        <div class="form-group">  
+            <label for="receiver">Enviar a:</label>
+            <input formControlName="receiver" id="receiver" type="email" placeholder="correo.destino@dominio.com" class="form-control">
+        </div>
+        <div class="form-group">  
+            <label for="subject">Asunto:</label>
+            <input formControlName="subject" id="subject" type="text" placeholder="Asunto del correo" class="form-control">
+        </div>
+        <div class="form-group">  
+            <label for="content">Contenido:</label>
+            <textarea formControlName="message" id="content" type="text" placeholder="Ejemplo: Hola te envío información sobre nuestra campaña visual" rows="3" class="form-control"></textarea>
+            <small id="aviso" class="form-text text-muted">Esto se añadrirá como parte de la plantilla de la campaña de salud visual.</small>
+        </div>
+        <button type="submit" [disabled]="!mailForm.valid" class="btn btn-primary">Enviar</button>
+    </form>    
+</div>

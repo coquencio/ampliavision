@@ -10,7 +10,7 @@ import { LoginFormComponent } from './components/login-form/login-form.component
 import { reducer } from './core/state/login.reducer';
 import { ListaEmpresasComponent } from './components/lista-empresas/lista-empresas.component';
 import { reducerEmpresa } from './core/state/empresa.reducer';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DefectosVisualesComponent } from './components/defectos-visuales/defectos-visuales.component';
 import { ExamenesComponent } from './components/examenes/examenes.component';
 import { ExamenUpdateComponent } from './components/examen-update/examen-update.component';
@@ -20,6 +20,7 @@ import { ChartsComponent } from './components/charts/charts.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { LoadingComponent } from './root-components/loading/loading.component';
+import { MailComponent } from './components/mail/mail.component';
 
 @NgModule({
   declarations: [
@@ -33,11 +34,13 @@ import { LoadingComponent } from './root-components/loading/loading.component';
     ProductsComponent,
     SalesComponent,
     ChartsComponent,
-    LoadingComponent
+    LoadingComponent,
+    MailComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
+    ReactiveFormsModule,
     AppRoutingModule,
     HttpClientModule,
     StoreModule.forRoot({}),
@@ -52,6 +55,7 @@ import { LoadingComponent } from './root-components/loading/loading.component';
       {path: 'Productos', component: ProductsComponent},
       {path: 'Ventas', component: SalesComponent},
       {path: 'Resumen', component: ChartsComponent},
+      {path: 'Mail', component: MailComponent},
       {path: '**', redirectTo: '/Empresas'},
       {path: '', redirectTo: '/Empresas', pathMatch: 'full'}
     ]),

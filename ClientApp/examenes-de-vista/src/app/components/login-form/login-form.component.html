@@ -7,15 +7,17 @@
             <img src={{imagePath}} class="img-fluid mx-auto d-block" alt="Responsive image">
    
             <p style="color: red;">{{errorMessage}}</p>  
+            <form>
                 <div class="form-group">
                      <label>Usuario</label>
-                     <input type="text" [(ngModel)]="userName" class="form-control" placeholder="Usuario">
+                     <input name="userName" type="text" [(ngModel)]="userName" class="form-control" placeholder="Usuario">
                 </div>
                 <div class="form-group">
                     <label>Contraseña</label>
-                    <input [(ngModel)]="password" type="password" class="form-control" placeholder="Contraseña">  
+                    <input name="password" [(ngModel)]="password" type="password" class="form-control" placeholder="Contraseña">  
                 </div>
-            <button (click)="login()" class="btn btn-primary">Enviar</button>
+            <button (click)="login()" type="submit" class="btn btn-primary">Enviar</button>
+        </form>
         </div>
         <br>
         <br>
