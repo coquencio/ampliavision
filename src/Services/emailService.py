@@ -11,6 +11,8 @@ from email.mime.multipart import MIMEMultipart
 from email import encoders
 from email.mime.base import MIMEBase
 from src.Helpers import validators
+from src.Integration.verifalia import VerifaliaService
+from src.Core import resourcesConstants
 
 class EmailService:
 
@@ -41,11 +43,14 @@ class EmailService:
             self.__close_connection()
 
     def send_mail(self, data):
+        if not data:
+            raise ValueError("Datos faltantes")
+
         if not data["sender"]:
             raise KeyError("sender")
 
-        if not data["reciever"]:
-            raise KeyError("reciever")
+        if not data["receiver"]:
+            raise KeyError("receiver")
 
         if not data["message"]:
             raise KeyError("message")
@@ -55,7 +60,7 @@ class EmailService:
 
 
         sender_mail = data["sender"]
-        reciever_mail = data["reciever"]
+        receiver_mail = data["receiver"]
         message = data["message"]
         subject = data["subject"]
         password = self.get_password(sender_mail)
@@ -66,7 +71,12 @@ class EmailService:
         if not self.__are_credentials_valid(sender_mail, password):
             raise ValueError("Es necesario actualizar la contraseña para mail: " + sender_mail)
 
-        if not validators.is_email_valid(reciever_mail):
+        if not validators.is_email_valid(receiver_mail):
+            raise ValueError("La dirección a la que se trata de enviar el correo es inválida")
+
+        # Class instance at run time due to bearer token request
+        verifalia = VerifaliaService()
+        if not verifalia.validate(receiver_mail):
             raise ValueError("La dirección a la que se trata de enviar el correo es inválida")
 
         self.__open_connection()
@@ -76,12 +86,12 @@ class EmailService:
         mail = MIMEMultipart()
         mail['Subject'] = subject
         mail['From'] = sender_mail
-        mail['To'] = reciever_mail
+        mail['To'] = receiver_mail
 
         mail.attach(message)
         mail.attach(template)
         mail.attach(self.get_pdf_attachment())
-        self.__server.sendmail(sender_mail, reciever_mail, mail.as_string())
+        self.__server.sendmail(sender_mail, receiver_mail, mail.as_string())
         self.__close_connection()
 
     def get_password(self, mail):
@@ -93,6 +103,9 @@ class EmailService:
         return data
 
     def save_email(self, data):
+        if not data:
+            raise ValueError("Datos incompletos")
+
         if not data["email"]:
             raise KeyError("email")
 
@@ -147,8 +160,8 @@ class EmailService:
 
     @staticmethod
     def get_email_template():
-        # TODO set this url as property from properties services
-        fp = urllib.request.urlopen("http://ampliavisionbajio.com/mail.html")
+        url = resourcesConstants.email_template
+        fp = urllib.request.urlopen(url)
         mybytes = fp.read()
 
         mystr = mybytes.decode("utf8")
@@ -157,14 +170,12 @@ class EmailService:
 
     @staticmethod
     def get_pdf_attachment():
-        # TODO set this url as property from properties services
-        url = "http://ampliavisionbajio.com/attachment/BrochureAmpliavivio%cc%81n.pdf"  # In same directory as script
+        url = resourcesConstants.pdf_attachment
         fp = urllib.request.urlopen(url)
         # Add file as application/octet-stream
         # Email client can usually download this automatically as attachment
         part = MIMEBase("application", "octet-stream")
         part.set_payload(fp.read())
-
         # Encode file in ASCII characters to send by email
         encoders.encode_base64(part)
 
