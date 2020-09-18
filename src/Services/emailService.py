@@ -112,6 +112,9 @@ class EmailService:
         if not data["password"]:
             raise KeyError("password")
 
+        if not validators.is_email_valid(data["email"]):
+            raise ValueError("Correo inválido")
+
         if not self.__are_credentials_valid(data["email"], data["password"]):
             raise ValueError("Credenciales inválidas")
         mail = data["email"]
