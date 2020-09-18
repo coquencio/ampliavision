@@ -20,13 +20,14 @@ def get_value(name):
 
     return value
 
-@PropertyController.route('/api/propiedades/<string:name>/<string:value>', methods=['POST'])
-def create_property(name, value):
+@PropertyController.route('/api/propiedades/<string:name>', methods=['POST'])
+def create_property(name):
     try:
         token = request.args.get('token')
         if not user_service.token_validation(token):
             return Response(status = 401)
 
+        value = request.get_json()["value"]
         property_service.create_property(name, value)
         return Response(status = 201, response = "Propiedad añadida")
 
@@ -46,13 +47,13 @@ def delete_property(name):
     except ValueError as err:
         return Response(status = 400, response = err.args)
 
-@PropertyController.route('/api/propiedades/<string:name>/<string:value>', methods=['PUT'])
+@PropertyController.route('/api/propiedades/<string:name>', methods=['PUT'])
 def update_property(name, value):
     try:
         token = request.args.get('token')
         if not user_service.token_validation(token):
             return Response(status = 401)
-
+        value =  data = request.get_json()["value"]
         property_service.update_property(name, value)
         return Response(status = 200, response = "Propiedad actualizada")
 

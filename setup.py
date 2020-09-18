@@ -4,7 +4,7 @@ from setuptools import setup
 # File setup
 setup(
     name="AmpliaVision",
-    version="1.2.0",
+    version="1.2.3",
     description="Api controllers for database administration",
-    install_requires=["flask", "pymysql", "cryptography", "flask-cors", "secure-smtplib"],
+    install_requires=["flask", "pymysql", "cryptography", "flask-cors", "secure-smtplib", "requests"],
 )
