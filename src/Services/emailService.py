@@ -137,6 +137,9 @@ class EmailService:
         self.__sql.sp_set(SpMail.Delete_mail, (mail, ))
 
     def update_password(self, data):
+        if not data:
+            raise ValueError("Datos incompletos")
+
         if not data["email"]:
             raise KeyError("email")
 
