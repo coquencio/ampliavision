@@ -21,6 +21,7 @@ def insert_mail():
     except KeyError as err:
         return Response(status=400, response="Campo faltante: " + err.args[0])
 
+
 @EmailController.route('/api/mail/password', methods=['PUT'])
 def update_password():
     try:
@@ -43,10 +44,10 @@ def send_mail():
         if not user_service.token_validation(token):
             return Response(status=401)
         data = request.get_json()
-        mail_service.send_mail(data)
+        mail_service.validate_and_send_mail(data)
         return Response(status=200, response="Email enviado")
     except ValueError as err:
-        return Response(status = 400, response = err.args)
+        return Response(status=400, response = err.args)
     except KeyError as err:
         return Response(status=400, response="Campo faltante: " + err.args[0])
 
@@ -59,7 +60,7 @@ def get_mails():
             return Response(status=401)
         return mail_service.get_emails()
     except ValueError as err:
-        return Response(status = 400, response = err.args)
+        return Response(status=400, response = err.args)
     except KeyError as err:
         return Response(status=400, response="Campo faltante:" + err.args)
 
