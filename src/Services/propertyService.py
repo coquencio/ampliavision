@@ -3,6 +3,7 @@ from src.Core import propertyConstants as SpProperties
 from src.Helpers.stringHelper import StringHelper
 from src.Helpers.encryptionHelper import EncryptionService
 
+
 class PropertyService:
     def __init__(self):
         self.__sql = MySqlHelper()
@@ -21,7 +22,6 @@ class PropertyService:
             return self.__encryption.decrypt(data["propertyValue"])
 
         return data
-
 
     def create_property(self, name, value):
         # Hardcoded rule, user should not interact with this property

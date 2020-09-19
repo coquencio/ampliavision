@@ -4,6 +4,7 @@ from src.Helpers.sql import MySqlHelper
 from src.Helpers.stringHelper import StringHelper
 from src.Core import propertyConstants as SpProperties
 
+
 class EncryptionService:
     def __init__(self):
         self.__sql = MySqlHelper()
