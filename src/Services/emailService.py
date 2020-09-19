@@ -13,6 +13,8 @@ from email.mime.base import MIMEBase
 from src.Helpers import validators
 from src.Integration.verifalia import VerifaliaService
 from src.Core import resourcesConstants
+import threading
+
 
 class EmailService:
 
@@ -42,7 +44,7 @@ class EmailService:
         finally:
             self.__close_connection()
 
-    def send_mail(self, data):
+    def validate_and_send_mail(self, data):
         if not data:
             raise ValueError("Datos faltantes")
 
@@ -57,7 +59,6 @@ class EmailService:
 
         if not data["subject"]:
             raise KeyError("subject")
-
 
         sender_mail = data["sender"]
         receiver_mail = data["receiver"]
@@ -79,6 +80,11 @@ class EmailService:
         if not verifalia.validate(receiver_mail):
             raise ValueError("La dirección a la que se trata de enviar el correo es inválida")
 
+        threading.Thread(target=self.__send_email,
+                         args=(sender_mail, receiver_mail, message, subject, password),
+                         daemon=True).start()
+
+    def __send_email(self, sender_mail, receiver_mail, message, subject, password):
         self.__open_connection()
         self.__server.login(sender_mail, password)
         template = MIMEText(self.get_email_template(), "html")
