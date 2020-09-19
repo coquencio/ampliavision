@@ -80,7 +80,6 @@ class EmailService:
         if not verifalia.validate(receiver_mail):
             raise ValueError("La dirección a la que se trata de enviar el correo es inválida")
 
-        print("From here should be safe")
         threading.Thread(target=self.__send_email,
                          args=(sender_mail, receiver_mail, message, subject, password),
                          daemon=True).start()
@@ -100,7 +99,6 @@ class EmailService:
         mail.attach(self.get_pdf_attachment())
         self.__server.sendmail(sender_mail, receiver_mail, mail.as_string())
         self.__close_connection()
-        print("Done faker")
 
     def get_password(self, mail):
         mail = self.__str_helper.build_string(mail)
