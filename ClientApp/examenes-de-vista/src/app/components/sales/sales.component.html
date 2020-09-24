@@ -1,10 +1,13 @@
 <div *ngIf="loadingRegis">
   <app-loading></app-loading>
 </div>
-<div *ngIf="!loadingRegis" class="row align-items-center">
+<div class="row align-items-center">
+  <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+    <h3>Registra una venta &#8594;</h3>
+  </button>
+</div>
+<div id="collapseOne" *ngIf="!loadingRegis" class="row align-items-center collapse">
   <div class="col-sm-6">
-    <h3>Registra una venta</h3>
-
     <div class="form-group">
       <label for="">Beneficiario</label>
       <select [disabled]="isSelectorDisabled" required [(ngModel)]="beneficiarioId" name="beneficiario" class="form-control" *ngIf="folios">Folio
@@ -102,138 +105,145 @@
   </div>
 </div>
 <hr>
-<h3>Ventas</h3>
-<h5 *ngIf="(!resumenVentas || resumenVentas.Ventas.length === 0) && !loadingSales">Aún no hay ventas registradas</h5>
-<div *ngIf="(resumenVentas && resumenVentas.Ventas.length>0 && !loadingSales)" class="row">
-  <div class="col-sm-12"><h5>Resumen de ventas (Sólo se calculan las ventas por liquidarse)</h5>
-  </div>
-  <div *ngIf="summary" class="col-md-6">
-    <p><span style="font-weight: bold;">Total Vendido:</span> {{summary.Total | currency}}</p> 
-    <p><span style="font-weight: bold;">Total Anticipos:</span> {{summary.Anticipos | currency}}</p>
-  </div>
-  <div class="col-md-6">
-    <p><span style="font-weight: bold;">Total Abonos:</span> {{summary.Abonos | currency}}</p>
-    <p><span style="font-weight: bold;">Total Pendiente de cobro:</span> {{(summary.TotalFake - summary.AnticiposFake - summary.Abonos) | currency}}</p> 
-  </div>
-  <div class="col-md-5">
-    <div class="form-group">
-      <label for="">Folio a buscar</label>
-      <input [(ngModel)]="folioSearch" (ngModelChange)="searchFolio()" name="folio-search" type="text"
-        class="form-control">
+<div class="row align-items-center">
+  <button class="btn btn-link" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseOne">
+    <h3>Consulta Ventas &#8594;</h3>
+  </button>
+</div>
+<div id="collapseTwo" class="collapse">
+  <h5 *ngIf="(!resumenVentas || resumenVentas.Ventas.length === 0) && !loadingSales">Aún no hay ventas registradas</h5>
+  <div *ngIf="(resumenVentas && resumenVentas.Ventas.length>0 && !loadingSales)" class="row">
+    <div class="col-sm-12"><h5>Resumen de ventas (Sólo se calculan las ventas por liquidarse)</h5>
     </div>
-  </div>
-  <div class="col-md-5">
-    <div class="form-group">
-      <label for="">Busca por ID</label>
-      <input [(ngModel)]="idSearch" (ngModelChange)="searchId()" name="id-search" type="number" class="form-control">
+    <div *ngIf="summary" class="col-md-6">
+      <p><span style="font-weight: bold;">Total Vendido:</span> {{summary.Total | currency}}</p> 
+      <p><span style="font-weight: bold;">Total Anticipos:</span> {{summary.Anticipos | currency}}</p>
     </div>
-  </div>
-  <div class="col-md-2">
-    <br>
-      <input class="form-check-input" [(ngModel)]="liquidadas" (ngModelChange)="paidSalesSwitch()" name="liquidada" type="checkbox">
-      <label for="">Ventas liquidadas</label>
-  </div>
-  <div class="col-md-12">
-    <div class="table-responsive">
-      <table *ngIf="resumenVentasMirror" class="table table-hover">
-        <thead>
-          <tr>
-            <th scope="col">Venta Id</th>
-            <th scope="col">Folio Examen</th>
-            <th scope="col">Nombres</th>
-            <th scope="col">Apellido</th>
-            <th scope="col">Puesto</th>
-            <th scope="col">Requiere lentes</th>
-            <th scope="col">Material</th>
-            <th scope="col">Protección</th>
-            <th scope="col">Lente</th>
-            <th scope="col">Total</th>
-            <th scope="col">Método de pago</th>
-            <th scope="col">Anticipo</th>
-            <th scope="col">Abonos de</th>
-            <th scope="col">Número de pagos</th>
-            <th scope="col">Está liquidada</th>
-            <th scope="col">Fecha</th>
-            <th scope="col">Historial de Abonos</th>
-            <th scope="col">Detalles de armazón de la venta</th>
-            <th scope="col">Borrar Venta</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let venta of resumenVentasMirror.Ventas">
-            <td>{{venta.VentaId}}</td>
-            <td>{{venta.FolioExamen}}</td>
-            <td>{{venta.Nombres}}</td>
-            <td>{{venta.Apellido}}</td>
-            <td>{{venta.Puesto}}</td>
-            <td>{{venta.RequiereLentes===1?'Sí': 'No'}}</td>
-            <td>{{venta.Material}}</td>
-            <td>{{venta.Proteccion}}</td>
-            <td>{{venta.Lente}}</td>
-            <td>{{venta.Total | currency}}</td>
-            <td>{{venta.Tipo ===1? 'Efectivo' : venta.Tipo ===2? 'Tarjeta':'Nómina'}}</td>
-            <td>{{venta.Aticipo | currency}}</td>
-            <td>{{venta.Abonos | currency}}</td>
-            <td>{{venta.TotalPagos}}
-            </td>
-            <td>{{venta.EstaLiquidada === 1?'Sí':'No'}}</td>
-            <td>{{venta.Fecha | date:'dd/MM/yyyy'}}</td>
-            <td><button type="button" (click)="setCurrentVentaId(venta.VentaId)" class="btn btn-success"
-                data-toggle="modal" data-target="#exampleModal">Abonos</button>
-            </td>
-            <td><button (click)="GetArmazonDetails(venta.VentaId)" class="btn btn-info" data-toggle="modal" data-target="#modalArmazon">Armazón</button></td>
-            <td><button (click)="DeleteSale(venta.VentaId)" class="btn btn-danger">Borrar</button></td>
-          </tr>
-        </tbody>
-      </table>
-      <table hidden id="reporteVentas" *ngIf="resumenVentas" class="table table-hover">
-        <thead>
-          <tr>
-            <th scope="col">Venta Id</th>
-            <th scope="col">Folio Examen</th>
-            <th scope="col">Nombres</th>
-            <th scope="col">Apellido</th>
-            <th scope="col">Puesto</th>
-            <th scope="col">Requiere lentes</th>
-            <th scope="col">Material</th>
-            <th scope="col">Protección</th>
-            <th scope="col">Lente</th>
-            <th scope="col">Total</th>
-            <th scope="col">Método de pago</th>
-            <th scope="col">Anticipo</th>
-            <th scope="col">Abonos de</th>
-            <th scope="col">Número de pagos</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let venta of resumenVentas.Ventas">
-            <td>{{venta.VentaId}}</td>
-            <td>{{venta.FolioExamen}}</td>
-            <td>{{venta.Nombres}}</td>
-            <td>{{venta.Apellido}}</td>
-            <td>{{venta.Puesto}}</td>
-            <td>{{venta.RequiereLentes===1?'Sí': 'No'}}</td>
-            <td>{{venta.Material}}</td>
-            <td>{{venta.Proteccion}}</td>
-            <td>{{venta.Lente}}</td>
-            <td>{{venta.Total | currency}}</td>
-            <td>{{venta.Tipo ===1? 'Efectivo' : venta.Tipo ===2? 'Tarjeta':'Nómina'}}</td>
-            <td>{{venta.Aticipo | currency}}</td>
-            <td>{{venta.Abonos | currency}}</td>
-            <td>{{venta.TotalPagos}}
-            </td>
+    <div class="col-md-6">
+      <p><span style="font-weight: bold;">Total Abonos:</span> {{summary.Abonos | currency}}</p>
+      <p><span style="font-weight: bold;">Total Pendiente de cobro:</span> {{(summary.TotalFake - summary.AnticiposFake - summary.Abonos) | currency}}</p> 
+    </div>
+    <div class="col-md-5">
+      <div class="form-group">
+        <label for="">Folio a buscar</label>
+        <input [(ngModel)]="folioSearch" (ngModelChange)="searchFolio()" name="folio-search" type="text"
+          class="form-control">
+      </div>
+    </div>
+    <div class="col-md-5">
+      <div class="form-group">
+        <label for="">Busca por ID</label>
+        <input [(ngModel)]="idSearch" (ngModelChange)="searchId()" name="id-search" type="number" class="form-control">
+      </div>
+    </div>
+    <div class="col-md-2">
+      <br>
+        <input class="form-check-input" [(ngModel)]="liquidadas" (ngModelChange)="paidSalesSwitch()" name="liquidada" type="checkbox">
+        <label for="">Ventas liquidadas</label>
+    </div>
+    <div class="col-md-12">
+      <div class="table-responsive">
+        <table *ngIf="resumenVentasMirror" class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Venta Id</th>
+              <th scope="col">Folio Examen</th>
+              <th scope="col">Nombres</th>
+              <th scope="col">Apellido</th>
+              <th scope="col">Puesto</th>
+              <th scope="col">Requiere lentes</th>
+              <th scope="col">Material</th>
+              <th scope="col">Protección</th>
+              <th scope="col">Lente</th>
+              <th scope="col">Total</th>
+              <th scope="col">Método de pago</th>
+              <th scope="col">Anticipo</th>
+              <th scope="col">Abonos de</th>
+              <th scope="col">Número de pagos</th>
+              <th scope="col">Está liquidada</th>
+              <th scope="col">Fecha</th>
+              <th scope="col">Historial de Abonos</th>
+              <th scope="col">Detalles de armazón de la venta</th>
+              <th scope="col">Borrar Venta</th>
             </tr>
-        </tbody>
-      </table>
-      <p class="text-center" *ngIf="resumenVentasMirror.Ventas.length === 0">No se han encontrado ventas</p>
+          </thead>
+          <tbody>
+            <tr *ngFor="let venta of resumenVentasMirror.Ventas">
+              <td>{{venta.VentaId}}</td>
+              <td>{{venta.FolioExamen}}</td>
+              <td>{{venta.Nombres}}</td>
+              <td>{{venta.Apellido}}</td>
+              <td>{{venta.Puesto}}</td>
+              <td>{{venta.RequiereLentes===1?'Sí': 'No'}}</td>
+              <td>{{venta.Material}}</td>
+              <td>{{venta.Proteccion}}</td>
+              <td>{{venta.Lente}}</td>
+              <td>{{venta.Total | currency}}</td>
+              <td>{{venta.Tipo ===1? 'Efectivo' : venta.Tipo ===2? 'Tarjeta':'Nómina'}}</td>
+              <td>{{venta.Aticipo | currency}}</td>
+              <td>{{venta.Abonos | currency}}</td>
+              <td>{{venta.TotalPagos}}
+              </td>
+              <td>{{venta.EstaLiquidada === 1?'Sí':'No'}}</td>
+              <td>{{venta.Fecha | date:'dd/MM/yyyy'}}</td>
+              <td><button type="button" (click)="setCurrentVentaId(venta.VentaId)" class="btn btn-success"
+                  data-toggle="modal" data-target="#exampleModal">Abonos</button>
+              </td>
+              <td><button (click)="GetArmazonDetails(venta.VentaId)" class="btn btn-info" data-toggle="modal" data-target="#modalArmazon">Armazón</button></td>
+              <td><button (click)="DeleteSale(venta.VentaId)" class="btn btn-danger">Borrar</button></td>
+            </tr>
+          </tbody>
+        </table>
+        <table hidden id="reporteVentas" *ngIf="resumenVentas" class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Venta Id</th>
+              <th scope="col">Folio Examen</th>
+              <th scope="col">Nombres</th>
+              <th scope="col">Apellido</th>
+              <th scope="col">Puesto</th>
+              <th scope="col">Requiere lentes</th>
+              <th scope="col">Material</th>
+              <th scope="col">Protección</th>
+              <th scope="col">Lente</th>
+              <th scope="col">Total</th>
+              <th scope="col">Método de pago</th>
+              <th scope="col">Anticipo</th>
+              <th scope="col">Abonos de</th>
+              <th scope="col">Número de pagos</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let venta of resumenVentas.Ventas">
+              <td>{{venta.VentaId}}</td>
+              <td>{{venta.FolioExamen}}</td>
+              <td>{{venta.Nombres}}</td>
+              <td>{{venta.Apellido}}</td>
+              <td>{{venta.Puesto}}</td>
+              <td>{{venta.RequiereLentes===1?'Sí': 'No'}}</td>
+              <td>{{venta.Material}}</td>
+              <td>{{venta.Proteccion}}</td>
+              <td>{{venta.Lente}}</td>
+              <td>{{venta.Total | currency}}</td>
+              <td>{{venta.Tipo ===1? 'Efectivo' : venta.Tipo ===2? 'Tarjeta':'Nómina'}}</td>
+              <td>{{venta.Aticipo | currency}}</td>
+              <td>{{venta.Abonos | currency}}</td>
+              <td>{{venta.TotalPagos}}
+              </td>
+              </tr>
+          </tbody>
+        </table>
+        <p class="text-center" *ngIf="resumenVentasMirror.Ventas.length === 0">No se han encontrado ventas</p>
+      </div>
+      <br *ngIf="resumenVentasMirror.Ventas.length > 0">
+      <button (click)="ExportTable()" class="btn btn-success btn-lg" *ngIf="resumenVentas && resumenVentas.Ventas.length > 0">Genera reporte de ventas</button>
     </div>
-    <br *ngIf="resumenVentasMirror.Ventas.length > 0">
-    <button (click)="ExportTable()" class="btn btn-success btn-lg" *ngIf="resumenVentas && resumenVentas.Ventas.length > 0">Genera reporte de ventas</button>
+  </div>
+  <div *ngIf="loadingSales">
+    <app-loading></app-loading>
   </div>
 </div>
-<div *ngIf="loadingSales">
-  <app-loading></app-loading>
-</div>
+
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
   aria-hidden="true">
