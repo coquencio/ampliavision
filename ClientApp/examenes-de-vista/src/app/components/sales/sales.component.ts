@@ -23,20 +23,22 @@ import * as XLSX from 'xlsx';
 })
 export class SalesComponent implements OnInit {
 
-  folios: IFolios;
+  folios: IFolios = {
+    Folios: []
+  };
   currentEmpresaId: number;
   nombreEmpresa: string;
   tiposVenta: IOption[];
   armazones: any;
-  materiales: IMaterial[];
-  protecciones: IProteccion[];
-  lentes: ILente[];
+  materiales: IMaterial[] = [];
+  protecciones: IProteccion[] = [];
+  lentes: ILente[] = [];
   //For armazón
-  marcas: IMarca[];
-  colores: IColor[];
-  tamanios:ITamanio[];
-  modelos: IModelo[];
-  beneficiarios: IBeneficiario[];
+  marcas: IMarca[] = [];
+  colores: IColor[] = [];
+  tamanios:ITamanio[] = [];
+  modelos: IModelo[] = [];
+  beneficiarios: IBeneficiario[] = [];
 
   //For sale
   isSelectorDisabled: boolean = false;
