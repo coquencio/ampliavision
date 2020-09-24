@@ -15,7 +15,9 @@ export class MailComponent implements OnInit {
     ) { }
   
     mailForm: FormGroup;
-    mailResponse: IMailResponse;
+    mailResponse: IMailResponse = {
+      Emails: []
+    };
     isLoading: boolean = false;
   
     ngOnInit(): void {

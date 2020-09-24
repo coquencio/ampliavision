@@ -125,16 +125,17 @@ export class ListaEmpresasComponent implements OnInit {
         ()=> {
           this.loading = false;
           window.alert('No se ha encontrado una empresa con ese folio');
+          this.folio = '';
         }
       );
     }
     else{
       this.folio = null;
-      this.loading = true;
       if (!this.id){
         window.alert('Introduce un id de venta válido');
         return;
       }
+      this.loading = true;
       this.empresaService.GetIdBySale(this.id).subscribe(
         r=> {
             this.empresasMirror.Empresas=this.empresas.Empresas.filter(e=>e.EmpresaID === r.EmpresaID);
@@ -143,7 +144,9 @@ export class ListaEmpresasComponent implements OnInit {
         ()=> {
           this.loading = false;
           window.alert('No se ha encontrado una empresa con ese id de venta');
-        }
+          this.id = undefined;
+        },
+        ()=> this.loading = false
       );
     }
   }

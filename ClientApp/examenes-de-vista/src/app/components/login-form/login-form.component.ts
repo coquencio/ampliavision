@@ -56,13 +56,12 @@ export class LoginFormComponent implements OnInit {
           type: 'SET_TOKEN',
           payload: r.Token
         });
-        ()=> this.loading = false;
         window.location.href = "/";
       },
       err => {
         this.errorMessage = err.error;
         this.loading = false;
-      },()=>this.loading = false
+      }
       );
   }
 

@@ -30,7 +30,9 @@ export class DefectosVisualesComponent implements OnInit {
   nombreEmpresa: string;
   empresaId: number;
   resumen: IResumenExamenes;
-  resumenMirror:IResumenExamenes;
+  resumenMirror:IResumenExamenes = {
+    Examenes: []
+  };
   nombreBeneficiario: string;
   beneficiarioId: number;
   isoList: IIsos;
