@@ -19,7 +19,7 @@ import * as XLSX from 'xlsx';
 @Component({
   selector: 'app-sales',
   templateUrl: './sales.component.html',
-  styleUrls: ['./sales.component.css']
+  styleUrls: ['./sales.component.scss']
 })
 export class SalesComponent implements OnInit {
 
@@ -81,7 +81,13 @@ export class SalesComponent implements OnInit {
   liquidadas:boolean = false;
   armazonDetails: IArmazonResponse;
 
-  summary: IVentasResumen;
+  summary: IVentasResumen = {
+    Total: 0,
+    Anticipos: 0,
+    Abonos: 0,
+    TotalFake: 0,
+    AnticiposFake: 0
+  };
 
   currentAbonoId: number;
   currentFecha : string;
@@ -412,7 +418,10 @@ export class SalesComponent implements OnInit {
   }
   private getSummary(){
     this.SalesService.GetBalanceSummary(this.currentEmpresaId).subscribe(
-      r=> this.summary = r
+      r=> {
+        this.summary = r;
+        this.summary.Abonos !== undefined? r.Abonos : 0.00;
+      }
     );
   }
 }

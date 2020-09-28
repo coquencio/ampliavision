@@ -9,7 +9,7 @@ import html2canvas from 'html2canvas';
 @Component({
   selector: 'app-charts',
   templateUrl: './charts.component.html',
-  styleUrls: ['./charts.component.css']
+  styleUrls: ['./charts.component.scss']
 })
 export class ChartsComponent implements OnInit {
   ventas: IVentasChart[];

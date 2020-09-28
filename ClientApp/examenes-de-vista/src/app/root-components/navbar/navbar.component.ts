@@ -6,7 +6,7 @@ import { AuthorizationService } from 'src/app/services/authorization/authorizati
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.css']
+  styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
 

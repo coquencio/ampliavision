@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-examenes',
   templateUrl: './examenes.component.html',
-  styleUrls: ['./examenes.component.css']
+  styleUrls: ['./examenes.component.scss']
 })
 
 export class ExamenesComponent implements OnInit {

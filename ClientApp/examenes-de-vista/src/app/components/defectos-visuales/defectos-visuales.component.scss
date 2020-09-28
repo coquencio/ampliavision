@@ -1,0 +1,18 @@
+.hide-responsive{
+    @media (max-width: 770px) {
+        display: none !important;
+    }
+}
+.show-responsive{
+    @media (min-width: 770px) {
+        display: none !important;
+    }
+}
+.responsive-table-examen{
+    button{
+        margin: 10px 0;
+    }
+    span{
+        font-weight: lighter;
+    }
+}

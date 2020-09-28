@@ -30,7 +30,7 @@ export class MailComponent implements OnInit {
       this.mailForm = this.formBuilder.group({
         sender: ['', Validators.required],
         receiver: ['', Validators.compose([Validators.required, Validators.email])],
-        subject: ['', Validators.compose([Validators.required, Validators.minLength(5)])],
+        subject: ['', Validators.compose([Validators.required, Validators.minLength(2)])],
         message: ['', Validators.required],
       });
   }

@@ -33,12 +33,11 @@
 
 
 
-<div class="table-responsive">
+<div class="table-responsive hide-responsive">
   <h6>Simplemente has click sobre la empresa con la que quieras empezar a trabajar y las opciones aparecerán en la barra de navegación</h6>
 <table class="table table-hover table-sm">
     <thead>
       <tr>
-        <th scope="col">#</th>
         <th scope="col">Empresa</th>
         <th scope="col">Domicilio</th>
         <th scope="col">Telefono</th>
@@ -47,11 +46,37 @@
     </thead>
     <tbody *ngIf="empresasMirror">
       <tr *ngFor="let empresa of empresasMirror.Empresas" (click)="setEmpresa(empresa.EmpresaID, empresa.NombreEmpresa)">
-        <th scope="row">{{empresa.EmpresaID}}</th>
         <td>{{empresa.NombreEmpresa}}</td>
         <td>{{empresa.Domicilio}}</td>
         <td>{{empresa.Telefono}}</td>
         <td><Button class="btn btn-primary" data-toggle="modal" (click)="setEmpresaUpdate(empresa)" data-target="#editempresa">Actualizar</Button></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="table-responsive show-responsive empresa-table">
+  <p>Simplemente has click sobre la empresa con la que quieras empezar a trabajar y las opciones aparecerán en la barra de navegación</p>
+<table class="table table-hover table-sm">
+    <thead>
+      <tr>
+        <th scope="col">Empresas</th>
+      </tr>
+    </thead>
+    <tbody *ngIf="empresasMirror">
+      <tr *ngFor="let empresa of empresasMirror.Empresas" (click)="setEmpresa(empresa.EmpresaID, empresa.NombreEmpresa)">
+        <td>
+          <strong>Nombre: </strong>
+          <span>{{empresa.NombreEmpresa}}</span>
+          <br>
+          <strong>Domicilio: </strong>
+          <span>{{empresa.Domicilio}}</span>
+          <br>
+          <strong>Teléfono: </strong>
+          <span>{{empresa.Telefono}}</span> 
+          <br>
+          <Button class="btn btn-primary" style="margin: 10px 0;" data-toggle="modal" (click)="setEmpresaUpdate(empresa)" data-target="#editempresa">Actualizar</Button>
+        </td>
       </tr>
     </tbody>
   </table>
