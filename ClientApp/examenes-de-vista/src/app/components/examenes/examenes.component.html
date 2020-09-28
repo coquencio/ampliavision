@@ -51,7 +51,7 @@
                     <label for="">Busca por nombres y apellidos</label>
                     <input type="text" [(ngModel)]="criteria" (ngModelChange)="SearchByNames()" class="form-control">
                 </div>
-                <table *ngIf="beneficiariosEmpresa  && beneficiariosEmpresa.Beneficiarios.length > 0" class="table table-hover">
+                <table *ngIf="beneficiariosEmpresa  && beneficiariosEmpresa.Beneficiarios.length > 0" class="table table-hover hide-responsive">
                     <thead>
                         <tr>
                             <th scope="col">Nombre(s)</th>
@@ -72,6 +72,26 @@
                             <td><button (click)="SeleccionaBeneficiario(beneficiario.BeneficiarioID)" type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">
                                 Consulta/Actualiza
                               </button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table *ngIf="beneficiariosEmpresa  && beneficiariosEmpresa.Beneficiarios.length > 0" class="table table-hover show-responsive empleados-responsive-table">
+                    <tbody>
+                        <tr *ngFor="let beneficiario of beneficiariosMirror.Beneficiarios">
+                            <td>
+                                <strong>Nombres: </strong>
+                                <span>{{beneficiario.Nombres}} {{beneficiario.ApellidoPaterno}} {{beneficiario.ApellidoMaterno}}</span>
+                                <br>    
+                                <strong>Fecha nacimiento: </strong>
+                                <span>{{beneficiario.FechaNacimiento}}</span>
+                                <br>
+                                <strong>Ocupación: </strong>
+                                <span>{{beneficiario.Ocupacion}}</span>
+                                <br>
+                                <button (click)="SeleccionaBeneficiario(beneficiario.BeneficiarioID)" type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">
+                                    Consulta/Actualiza
+                                  </button>
+                            </td>
                         </tr>
                     </tbody>
                 </table>

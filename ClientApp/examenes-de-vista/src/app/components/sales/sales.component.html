@@ -136,14 +136,70 @@
         <input [(ngModel)]="idSearch" (ngModelChange)="searchId()" name="id-search" type="number" class="form-control">
       </div>
     </div>
-    <div class="col-md-2">
+    <div class="col-md-2" style="margin-left: 20px;">
       <br>
         <input class="form-check-input" [(ngModel)]="liquidadas" (ngModelChange)="paidSalesSwitch()" name="liquidada" type="checkbox">
         <label for="">Ventas liquidadas</label>
     </div>
     <div class="col-md-12">
       <div class="table-responsive">
-        <table *ngIf="resumenVentasMirror" class="table table-hover">
+        <table *ngIf="resumenVentasMirror" class="table table-hover show-responsive responsive-table-ventas">
+          <thead>
+            <tr>
+              <th scope="col">Ventas</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let venta of resumenVentasMirror.Ventas">
+              <td>
+                <strong>Id: </strong>
+                <span>{{venta.VentaId}}</span>
+                <br>
+                <strong>Foio: </strong>
+                <span>{{venta.FolioExamen}}</span>
+                <br>
+                <strong>Nombre: </strong>
+                <span>{{venta.Nombres}} {{venta.Apellido}}</span>
+                <br>
+                <strong>Material: </strong>
+                <span>{{venta.Material}}</span>
+                <br>
+                <strong>Protección: </strong>
+                <span>{{venta.Proteccion}}</span>
+                <br>
+                <strong>Lente: </strong>
+                <span>{{venta.Lente}}</span>
+                <br>
+                <strong>Total: </strong>
+                <span>{{venta.Total | currency}}</span>
+                <br>
+                <strong>Método de pago: </strong>
+                <span>{{venta.Tipo ===1? 'Efectivo' : venta.Tipo ===2? 'Tarjeta':'Nómina'}}</span>
+                <br>
+                <strong>Anticipo: </strong>
+                <span>{{venta.Aticipo | currency}}</span>
+                <br>
+                <strong>Abonos de: </strong>
+                <span>{{venta.Abonos | currency}}</span>
+                <br>
+                <strong>Número de pagos: </strong>
+                <span>{{venta.TotalPagos}}</span>
+                <br>
+                <strong>Está liquidada: </strong>
+                <span>{{venta.EstaLiquidada === 1?'Sí':'No'}}</span>
+                <br>
+                <strong>Fecha: </strong>
+                <span>{{venta.Fecha | date:'dd/MM/yyyy'}}</span>
+                <br>
+                <button type="button" (click)="setCurrentVentaId(venta.VentaId)" class="btn btn-success"
+                  data-toggle="modal" data-target="#exampleModal">Abonos</button>
+                  <button (click)="GetArmazonDetails(venta.VentaId)" class="btn btn-info" data-toggle="modal" data-target="#modalArmazon">Armazón</button>
+                  <button (click)="DeleteSale(venta.VentaId)" class="btn btn-danger">Borrar</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <table *ngIf="resumenVentasMirror" class="table table-hover hide-responsive">
           <thead>
             <tr>
               <th scope="col">Venta Id</th>
@@ -319,27 +375,35 @@
           </div>
           <div *ngIf="abonosList" class="table-responsive">
             <h5 style="margin-left: 20px;" *ngIf="abonosList.length === 0">Aún no hay abonos registrados</h5>
-            <table *ngIf="abonosList.length > 0" class="table table-hover table-sm">
+            <table *ngIf="abonosList.length > 0" class="table table-hover table-sm responsive-table-ventas" style="margin-left: 10px;">
               <thead>
                 <tr>
-                  <td scope="col">ID</td>
-                  <td scope="col">Monto</td>
-                  <td scope="col">Fecha de abono</td>
-                  <td scope="col">Fecha de registro</td>
-                  <td scope="col">Registrado por</td>
+                  <td scope="col">Abono</td>
                   <td scope="col">Acciones</td>
                 </tr>
               </thead>
               <tbody>
                 <tr  *ngFor="let abono of abonosList">
-                  <td>{{abono.AbonoID}}</td>
-                  <td>{{abono.Monto | currency}}</td>
-                  <td>{{abono.FechaAbono | date:'dd/MM/yyyy'}}</td>
-                  <td>{{abono.FechaRegistro | date:'dd/MM/yyyy'}}</td>
-                  <td>{{abono.RegistradoPor}}</td>
                   <td>
-                    <button (click)="DeletePayment(abono.AbonoID)" class="btn btn-danger btn-sm">Borrar</button>
-                    <button (click)="setUpdateCriteria(abono.AbonoID, abono.Monto, abono.FechaAbono)" data-toggle="modal" data-target="#updateModal" style="margin-top: 5px;" class="btn btn-info btn-sm">Editar</button>
+                    <strong>Id: </strong>
+                    <span>{{abono.AbonoID}}</span>
+                    <br>
+                    <strong>Monto: </strong>
+                    <span>{{abono.Monto | currency}}</span>
+                    <br>
+                    <strong>Fecha abono: </strong>
+                    <span>{{abono.FechaAbono | date:'dd/MM/yyyy'}}</span>
+                    <br>
+                    <strong>Fecha registro: </strong>
+                    <span>{{abono.FechaRegistro | date:'dd/MM/yyyy'}}</span>
+                    <br>
+                    <strong>Registrado por: </strong>
+                    <span>{{abono.RegistradoPor}}</span>
+                    <br>
+                  </td>
+                  <td>
+                    <button (click)="DeletePayment(abono.AbonoID)" class="btn btn-danger btn-md">Borrar</button>
+                    <button (click)="setUpdateCriteria(abono.AbonoID, abono.Monto, abono.FechaAbono)" data-toggle="modal" data-target="#updateModal" style="margin-top: 5px;" class="btn btn-info btn-md">Editar</button>
                   </td>
                 </tr>
               </tbody>
@@ -372,22 +436,25 @@
           <div class="col-sm-12">
             <div *ngIf="armazonDetails" class="table-responsive">
               <table class="table table-hover">
-                <thead>
-                  <tr>
-                    <th scope="col">Marca</th>
-                    <th scope="col">Color</th>
-                    <th scope="col">Tamaño</th>
-                    <th scope="col">Modelo</th>
-                    <th scope="col">Detalle</th>
-                  </tr>
-                </thead>
                 <tbody>
                   <tr>
-                    <td>{{armazonDetails.Marca}}</td>
-                    <td>{{armazonDetails.Color}}</td>
-                    <td>{{armazonDetails.Tamanio}}</td>
-                    <td>{{armazonDetails.Modelo}}</td>
-                    <td>{{armazonDetails.Detalle}}</td>
+                    <td>
+                      <strong>Marca: </strong>
+                      <span>{{armazonDetails.Marca}}</span>
+                      <br>
+                      <strong>Color: </strong>
+                      <span>{{armazonDetails.Color}}</span>
+                      <br>
+                      <strong>Tamaño: </strong>
+                      <span>{{armazonDetails.Tamanio}}</span>
+                      <br>
+                      <strong>Modelo: </strong>
+                      <span>{{armazonDetails.Modelo}}</span>
+                      <br>
+                      <strong>Detalle: </strong>
+                      <span>{{armazonDetails.Detalle}}</span>
+                      <br>
+                    </td>
                   </tr>
                 </tbody>
               </table>

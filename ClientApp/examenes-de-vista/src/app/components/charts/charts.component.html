@@ -1,54 +1,27 @@
 <div *ngIf="!(enfermedades && isos && ventas); else elseBlock">
     <app-loading></app-loading>
 </div>
-<ng-template #elseBlock>
-    <h3 *ngIf="enfermedadesData.length===0">Aún no se han registrado exámenes para procesar los datos del resumen</h3>
-    <div *ngIf="enfermedadesData.length>0" class="row">
-        <div class="col-md-3">
-            <img src={{imagePath}} class="img-fluid mx-auto d-block" alt="Responsive image">
-        </div>
-        <div class="col-md-12">
-            <hr>
-            <h2>Resumen ejecutivo para Empresa: {{nombreEmpresa}}</h2>
-        </div>
-        <div *ngIf="fastSummaryData.length > 0" class="col-md-12">
-            <ngx-charts-bar-horizontal [results]="fastSummaryData" [xAxisLabel]="'Número de beneficiarios'"
-                [showXAxisLabel]="true" [xAxis]="true" [yAxis]="true" [gradient]="false">
-            </ngx-charts-bar-horizontal>
-        </div>
-        <div *ngIf="fastSummaryData.length > 0" class="col-md-3">
-            <div class="table-responsive">
-                <table *ngIf="fullSumarySaleData.length > 0" class="table table-hover">
-                    <tbody>
-                        <tr *ngFor="let row of fullSumarySaleData">
-                            <th scope="col">{{row.name}}</th>
-                            <td>{{row.value}}</td>
-                        </tr>
-                        <tr>
-                            <th>
-                                Total
-                            </th>
-                            <td>{{fastSummaryData[0].value}}</td>
-                        </tr>
-                    </tbody>
-                </table>
+    <ng-template #elseBlock>
+        <div class="hide-responsive"> 
+        <h3 *ngIf="enfermedadesData.length===0">Aún no se han registrado exámenes para procesar los datos del resumen</h3>
+        <div *ngIf="enfermedadesData.length>0" class="row">
+            <div class="col-md-3">
+                <img src={{imagePath}} class="img-fluid mx-auto d-block" alt="Responsive image">
             </div>
-        </div>
-        <div *ngIf="fullSumarySaleData.length>0" class="col-md-9">
-            <ngx-charts-bar-vertical [results]="fullSumarySaleData" [yAxisLabel]="'Beneficiarios'"
-                [showYAxisLabel]="true" [xAxis]="true" [yAxis]="true" [gradient]="true">
-            </ngx-charts-bar-vertical>
-        </div>
-
-        <div class="row">
             <div class="col-md-12">
-                <h4>Enfermedades visuales</h4>
+                <hr>
+                <h2>Resumen ejecutivo para Empresa: {{nombreEmpresa}}</h2>
             </div>
-            <div *ngIf="enfermedadesData.length > 0" class="col-md-3">
+            <div *ngIf="fastSummaryData.length > 0" class="col-md-12">
+                <ngx-charts-bar-horizontal [results]="fastSummaryData" [xAxisLabel]="'Número de beneficiarios'"
+                    [showXAxisLabel]="true" [xAxis]="true" [yAxis]="true" [gradient]="false">
+                </ngx-charts-bar-horizontal>
+            </div>
+            <div *ngIf="fastSummaryData.length > 0" class="col-md-3">
                 <div class="table-responsive">
-                    <table *ngIf="enfermedadesData.length > 0" class="table table-hover">
+                    <table *ngIf="fullSumarySaleData.length > 0" class="table table-hover">
                         <tbody>
-                            <tr *ngFor="let row of enfermedadesData">
+                            <tr *ngFor="let row of fullSumarySaleData">
                                 <th scope="col">{{row.name}}</th>
                                 <td>{{row.value}}</td>
                             </tr>
@@ -56,38 +29,70 @@
                                 <th>
                                     Total
                                 </th>
-                                <td>{{fastSummaryData[0] ? fastSummaryData[0].value:''}}</td>
+                                <td>{{fastSummaryData[0].value}}</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
-            <div *ngIf="enfermedadesData.length > 0" class="col-md-9" style="margin-bottom: 50px;">
-                <ngx-charts-pie-chart [results]="enfermedadesData" [labels]="true">
-                </ngx-charts-pie-chart>
-            </div>
-            <div *ngIf="enfermedadesData.length > 0" class="col-md-12" style="margin-bottom: 30px;">
-                <ngx-charts-bar-vertical [view]="[1200,400]" [results]="enfermedadesData"
-                    [xAxisLabel]="'Número de beneficiarios'" [legendTitle]="'Enfermedades'" [legend]="true"
+            <div *ngIf="fullSumarySaleData.length>0" class="col-md-9">
+                <ngx-charts-bar-vertical [results]="fullSumarySaleData" [yAxisLabel]="'Beneficiarios'"
                     [showYAxisLabel]="true" [xAxis]="true" [yAxis]="true" [gradient]="true">
                 </ngx-charts-bar-vertical>
             </div>
-        </div>
-        <div class="row">
-            <div *ngIf="isosData.length > 0" class="col-md-12" style="margin-bottom: 50px;">
-                <h4>Control materiales para ISO 9000</h4>
+    
+            <div class="row">
+                <div class="col-md-12">
+                    <h4>Enfermedades visuales</h4>
+                </div>
+                <div *ngIf="enfermedadesData.length > 0" class="col-md-3">
+                    <div class="table-responsive">
+                        <table *ngIf="enfermedadesData.length > 0" class="table table-hover">
+                            <tbody>
+                                <tr *ngFor="let row of enfermedadesData">
+                                    <th scope="col">{{row.name}}</th>
+                                    <td>{{row.value}}</td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        Total
+                                    </th>
+                                    <td>{{fastSummaryData[0] ? fastSummaryData[0].value:''}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div *ngIf="enfermedadesData.length > 0" class="col-md-9" style="margin-bottom: 50px;">
+                    <ngx-charts-pie-chart [results]="enfermedadesData" [labels]="true">
+                    </ngx-charts-pie-chart>
+                </div>
+                <div *ngIf="enfermedadesData.length > 0" class="col-md-12" style="margin-bottom: 30px;">
+                    <ngx-charts-bar-vertical [view]="[1200,400]" [results]="enfermedadesData"
+                        [xAxisLabel]="'Número de beneficiarios'" [legendTitle]="'Enfermedades'" [legend]="true"
+                        [showYAxisLabel]="true" [xAxis]="true" [yAxis]="true" [gradient]="true">
+                    </ngx-charts-bar-vertical>
+                </div>
             </div>
-            <div *ngIf="isosData.length > 0" class="col-md-12" style="margin-bottom: 30px;">
-                <ngx-charts-advanced-pie-chart [results]="isosData" [gradient]="true">
-                </ngx-charts-advanced-pie-chart>
+            <div class="row">
+                <div *ngIf="isosData.length > 0" class="col-md-12" style="margin-bottom: 50px;">
+                    <h4>Control materiales para ISO 9000</h4>
+                </div>
+                <div *ngIf="isosData.length > 0" class="col-md-12" style="margin-bottom: 30px;">
+                    <ngx-charts-advanced-pie-chart [results]="isosData" [gradient]="true">
+                    </ngx-charts-advanced-pie-chart>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div *ngIf="!pdfGenerating && enfermedadesData.length>0" class="row">
+            <div class="col-md-12" style="text-align:center; margin-bottom: 30px">
+                <button (click)="downloadAsPdfasync()" *ngIf="!pdfGenerating" class="btn btn-lg btn-success">Generar
+                    Reporte</button>
             </div>
         </div>
     </div>
-    <hr>
-    <div *ngIf="!pdfGenerating && enfermedadesData.length>0" class="row">
-        <div class="col-md-12" style="text-align:center; margin-bottom: 30px">
-            <button (click)="downloadAsPdfasync()" *ngIf="!pdfGenerating" class="btn btn-lg btn-success">Generar
-                Reporte</button>
-        </div>
-    </div>
-</ng-template>
+    </ng-template>    
+<div class="show-responsive">
+    <h4>Resumen ejecutivo no disponible para dispositivos móviles</h4>
+</div>

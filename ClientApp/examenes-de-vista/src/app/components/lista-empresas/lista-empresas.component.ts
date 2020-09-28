@@ -6,7 +6,7 @@ import { Store } from '@ngrx/store';
 @Component({
   selector: 'app-lista-empresas',
   templateUrl: './lista-empresas.component.html',
-  styleUrls: ['./lista-empresas.component.css']
+  styleUrls: ['./lista-empresas.component.scss']
 })
 export class ListaEmpresasComponent implements OnInit {
 

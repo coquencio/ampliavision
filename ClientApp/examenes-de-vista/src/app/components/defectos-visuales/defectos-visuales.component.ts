@@ -10,7 +10,7 @@ import * as XLSX from 'xlsx';
 @Component({
   selector: 'app-defectos-visuales',
   templateUrl: './defectos-visuales.component.html',
-  styleUrls: ['./defectos-visuales.component.css']
+  styleUrls: ['./defectos-visuales.component.scss']
 })
 export class DefectosVisualesComponent implements OnInit {
 

@@ -7,6 +7,7 @@
         <div class="form-group">  
             <label for="sender">Enviar desde:</label>
             <select formControlName="sender" id="sender" class="form-control">
+                <option value="" selected disabled hidden>Selecciona un email</option>
                 <option *ngFor="let mail of mailResponse.Emails" [value]="mail.mail">
                     {{mail.mail}}
                 </option>

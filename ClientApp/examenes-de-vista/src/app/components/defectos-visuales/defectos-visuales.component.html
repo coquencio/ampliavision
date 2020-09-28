@@ -10,7 +10,45 @@
     </div>
 </div>
 <div *ngIf="resumenMirror" class="table-responsive">
-    <table *ngIf="resumenMirror.Examenes.length!=0; else elseBlock" class="table table-hover table-sm">
+    <table *ngIf="resumenMirror.Examenes.length!=0;" class="table table-hover table-sm show-responsive responsive-table-examen">
+        <thead>
+            <tr>
+                <th scope="col">Exámenes</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of resumenMirror.Examenes">
+                <th scope="row">
+                    <strong>Folio: </strong>
+                    <span>{{item.folio}}</span>
+                    <br>
+                    <strong>Nombres: </strong>
+                    <span>{{item.Nombres}} {{item.Apellidopaterno}}</span>
+                    <br>
+                    <strong>Ocupación: </strong>
+                    <span>{{item.ocupacion}}</span>
+                    <br>
+                    <strong>Enfermedad: </strong>
+                    <span>{{item.enfermedad}}</span>
+                    <br>
+                    <strong>Edad: </strong>
+                    <span>{{item.edad}}</span>
+                    <br>
+                    <strong>Requiere lentes: </strong>
+                    <span>{{item.requiereLentes===1?'Sí':'No'}}</span>
+                    <br>
+                    <strong>Compró lentes: </strong>
+                    <span>{{item.VentaID? 'Sí' : 'No'}}</span>
+                    <br>
+                    <button (click)="setName(item.BeneficiarioId, item.Nombres)" class="btn btn-primary"
+                        data-toggle="modal" data-target="#isoModal">Materiales para iso 9000</button>
+                        <br>
+                        <button (click)="RedirectToUpdate(item.folio)" class="btn btn-success">Modifica/Consulta Examen</button>
+                </th>
+            </tr>
+        </tbody>
+    </table>
+    <table *ngIf="resumenMirror.Examenes.length!=0; else elseBlock" class="table table-hover table-sm hide-responsive">
         <thead>
             <tr>
                 <th scope="col">Folio examen</th>
@@ -37,7 +75,7 @@
                 <td>{{item.VentaID? 'Sí' : 'No'}}</td>
                 <td><button (click)="setName(item.BeneficiarioId, item.Nombres)" class="btn btn-primary"
                         data-toggle="modal" data-target="#isoModal">Materiales para iso 9000</button></td>
-                        <td><button (click)="RedirectToUpdate(item.folio)" class="btn btn-success">Modificar datos examen</button></td>
+                        <td><button (click)="RedirectToUpdate(item.folio)" class="btn btn-success">Modifica/Consulta Examen</button></td>
             </tr>
         </tbody>
     </table>
