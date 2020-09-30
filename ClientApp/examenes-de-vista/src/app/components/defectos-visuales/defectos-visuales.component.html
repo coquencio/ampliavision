@@ -110,7 +110,7 @@
     <button class="btn btn-success" (click)="ExportTable()">Generar reporte Excel</button>
 </div>
 <ng-template #elseBlock>
-    <p>Aún no has registrado ningún examen para esta empresa</p>
+    <p *ngIf="!loading">Aún no has registrado ningún examen para esta empresa</p>
 </ng-template>
 <!-- Modal -->
 <div class="modal fade" id="isoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"

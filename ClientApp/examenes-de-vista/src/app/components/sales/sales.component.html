@@ -199,7 +199,7 @@
             </tr>
           </tbody>
         </table>
-        <table *ngIf="resumenVentasMirror" class="table table-hover hide-responsive">
+        <table *ngIf="resumenVentasMirror" class="table table-hover hide-responsive table-sm" style="font-size: 12px;">
           <thead>
             <tr>
               <th scope="col">Venta Id</th>
@@ -218,9 +218,7 @@
               <th scope="col">Número de pagos</th>
               <th scope="col">Está liquidada</th>
               <th scope="col">Fecha</th>
-              <th scope="col">Historial de Abonos</th>
-              <th scope="col">Detalles de armazón de la venta</th>
-              <th scope="col">Borrar Venta</th>
+              <th scope="col">Detalle</th>
             </tr>
           </thead>
           <tbody>
@@ -242,11 +240,10 @@
               </td>
               <td>{{venta.EstaLiquidada === 1?'Sí':'No'}}</td>
               <td>{{venta.Fecha | date:'dd/MM/yyyy'}}</td>
-              <td><button type="button" (click)="setCurrentVentaId(venta.VentaId)" class="btn btn-success"
+              <td><button type="button" (click)="setCurrentVentaId(venta.VentaId)" class="btn btn-success btn-sm" style="margin: 5px;"
                   data-toggle="modal" data-target="#exampleModal">Abonos</button>
-              </td>
-              <td><button (click)="GetArmazonDetails(venta.VentaId)" class="btn btn-info" data-toggle="modal" data-target="#modalArmazon">Armazón</button></td>
-              <td><button (click)="DeleteSale(venta.VentaId)" class="btn btn-danger">Borrar</button></td>
+              <button (click)="GetArmazonDetails(venta.VentaId)" class="btn btn-info btn-sm" data-toggle="modal" style="margin: 5px;" data-target="#modalArmazon">Armazón</button>
+              <button (click)="DeleteSale(venta.VentaId)" style="margin: 5px;" class="btn btn-danger btn-sm">Borrar</button></td>
             </tr>
           </tbody>
         </table>
