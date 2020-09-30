@@ -15,6 +15,7 @@ import { IVentaResponse } from 'src/app/Interfaces/ventaResponseInterface';
 import { IArmazonResponse } from 'src/app/Interfaces/armazonResponseInterface';
 import { IVentasResumen } from 'src/app/Interfaces/salesSummaryInterface';
 import * as XLSX from 'xlsx'; 
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-sales',
@@ -145,6 +146,7 @@ export class SalesComponent implements OnInit {
         window.alert(r);
         this.getAbonosList(this.currentVentaId);
         this.cleanCriterial();
+        this.getSummary();
       },
       err => window.alert(err.error)
     );
@@ -299,6 +301,7 @@ export class SalesComponent implements OnInit {
         this.getAbonosList(this.currentVentaId); 
         this.montoARegistrar = undefined;
         this.fechaAbono = undefined;
+        this.getSummary();
         window.alert('Abono registrado satisfactoriamente');
       },
       err => window.alert(err.error)
@@ -331,6 +334,7 @@ export class SalesComponent implements OnInit {
         r => {
           this.getAbonosList(this.currentVentaId);
           window.alert(r);
+          this.getSummary();
         },
         err => window.alert(err.error)
         );
@@ -391,6 +395,8 @@ export class SalesComponent implements OnInit {
     this.loadingSales = false;
     },
     ()=> this.loadingSales = false);
+    this.resumenVentas = {Ventas: []};
+    this.resumenVentasMirror = {Ventas: []};
     this.folioSearch = '';
     this.idSearch = null;
     this.getSummary();
@@ -420,7 +426,11 @@ export class SalesComponent implements OnInit {
     this.SalesService.GetBalanceSummary(this.currentEmpresaId).subscribe(
       r=> {
         this.summary = r;
-        this.summary.Abonos !== undefined? r.Abonos : 0.00;
+        this.summary.Abonos !== null? r.Abonos : 0;
+        this.summary.Total !== null? r.Total : 0;
+        this.summary.Anticipos !== null? r.Anticipos : 0;
+        this.summary.TotalFake !== null? r.TotalFake : 0;
+        this.summary.AnticiposFake !== null? r.AnticiposFake : 0;
       }
     );
   }
