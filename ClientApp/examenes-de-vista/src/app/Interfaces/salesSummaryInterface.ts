@@ -4,4 +4,5 @@ export interface IVentasResumen{
     Abonos: number;
     TotalFake: number;
     AnticiposFake: number;
+    AbonosTotal: number;
 }
