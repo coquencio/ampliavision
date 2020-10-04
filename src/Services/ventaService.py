@@ -175,6 +175,7 @@ class VentaService:
         real_balance = self.__sql_helper.sp_get(SpVentas.Get_real_balance, args, True)
         data["TotalFake"] = real_balance["TotalFake"]
         data["AnticiposFake"] = real_balance["AnticiposFake"]
+        data["AbonosTotal"] = self.__sql_helper.sp_get(SpVentas.Get_payments_summary, args, True)["Montos"]
         return serialize_data_set(data)
 
     def payment_update(self, abono_id, data, token):
