@@ -87,7 +87,8 @@ export class SalesComponent implements OnInit {
     Anticipos: 0,
     Abonos: 0,
     TotalFake: 0,
-    AnticiposFake: 0
+    AnticiposFake: 0,
+    AbonosTotal: 0
   };
 
   currentAbonoId: number;
