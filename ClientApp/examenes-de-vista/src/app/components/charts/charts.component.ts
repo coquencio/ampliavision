@@ -81,7 +81,7 @@ export class ChartsComponent implements OnInit {
       this.fullSumarySaleData.push(data);
     }
     if(!this.ventas.find(v=>v.comproLentes==0&&v.requiereLentes==1)){
-      const data = {name:'No Requiren lentes y compraron lentes', value:0};
+      const data = {name:'Requiren lentes y no compraron lentes', value:0};
       this.fullSumarySaleData.push(data);
     }
     if(!this.ventas.find(v=>v.comproLentes==0&&v.requiereLentes==0)){
@@ -89,7 +89,7 @@ export class ChartsComponent implements OnInit {
       this.fullSumarySaleData.push(data);
     }
     if(!this.ventas.find(v=>v.comproLentes==1&&v.requiereLentes==0)){
-      const data = {name:'Requiren lentes y no compraron lentes', value:0};
+      const data = {name:'No Requiren lentes y compraron lentes', value:0};
       this.fullSumarySaleData.push(data);
     }
   }
