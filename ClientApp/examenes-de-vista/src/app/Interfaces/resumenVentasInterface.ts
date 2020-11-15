@@ -20,4 +20,6 @@ export interface IVenta{
     Fecha: string;
     Tipo: number;
     TotalPagos: number;
+    Marca: string;
+    Color: string;
 }

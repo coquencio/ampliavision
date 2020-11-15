@@ -211,6 +211,8 @@
               <th scope="col">Material</th>
               <th scope="col">Protección</th>
               <th scope="col">Lente</th>
+              <th scope="col">Marca</th>
+              <th scope="col">Color</th>
               <th scope="col">Total</th>
               <th scope="col">Método de pago</th>
               <th scope="col">Anticipo</th>
@@ -232,11 +234,13 @@
               <td>{{venta.Material}}</td>
               <td>{{venta.Proteccion}}</td>
               <td>{{venta.Lente}}</td>
+              <td>{{venta.Marca}}</td>
+              <td>{{venta.Color}}</td>
               <td>{{venta.Total | currency}}</td>
               <td>{{venta.Tipo ===1? 'Efectivo' : venta.Tipo ===2? 'Tarjeta':'Nómina'}}</td>
               <td>{{venta.Aticipo | currency}}</td>
               <td>{{venta.Abonos | currency}}</td>
-              <td>{{venta.TotalPagos}}
+              <td>{{venta.TotalPagos}}vvv
               </td>
               <td>{{venta.EstaLiquidada === 1?'Sí':'No'}}</td>
               <td>{{venta.Fecha | date:'dd/MM/yyyy'}}</td>
@@ -259,6 +263,8 @@
               <th scope="col">Material</th>
               <th scope="col">Protección</th>
               <th scope="col">Lente</th>
+              <th scope="col">Marca</th>
+              <th scope="col">Color</th>
               <th scope="col">Total</th>
               <th scope="col">Método de pago</th>
               <th scope="col">Anticipo</th>
@@ -277,6 +283,8 @@
               <td>{{venta.Material}}</td>
               <td>{{venta.Proteccion}}</td>
               <td>{{venta.Lente}}</td>
+              <td>{{venta.Marca}}</td>
+              <td>{{venta.Color}}</td>
               <td>{{venta.Total | currency}}</td>
               <td>{{venta.Tipo ===1? 'Efectivo' : venta.Tipo ===2? 'Tarjeta':'Nómina'}}</td>
               <td>{{venta.Aticipo | currency}}</td>
