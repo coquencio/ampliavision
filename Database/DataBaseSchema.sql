@@ -1317,4 +1317,40 @@ BEGIN
 	DELETE from properties where propertyName = _name;
 END //
 delimiter ;
+drop PROCEDURE seleccionaResumenVentasPorEmpresa
 
+delimiter //
+CREATE PROCEDURE seleccionaResumenVentasPorEmpresa (in _empresaid int)
+BEGIN
+	select 
+    v.ventaId as VentaId,
+    v.TipoVentaID as Tipo,
+    v.FolioExamen,
+    b.nombres as Nombres,
+    v.EstaLiquidada as EstaLiquidada,
+    v.fechaVenta as Fecha ,
+    b.apellidoPaterno as Apellido,
+    b.Ocupacion as Puesto,
+    ex.RequiereLentes, ex.comprolentes,
+    m.descripcion as Material,
+    p.descripcion as Proteccion,
+    t.descripcion as Lente,
+    v.totalventa as Total,
+    v.anticipo as Aticipo,
+    v.abonos as Abonos,
+    v.NumeroPagos as TotalPagos ,
+    c.Descripcion as Color,
+    ma.Descripcion as Marca 
+    from Ventas v 
+    inner join Beneficiarios b on v.beneficiarioId = b.beneficiarioId 
+    inner join Materiales m on v.materialId = m.materialId 
+    inner join Protecciones p on v.proteccionId = p.proteccionId 
+    inner join TipoLente t on v.lenteId = t.lenteId
+    left join Armazones a on v.ArmazonId = a.ArmazonID
+    left join colores c on a.ColorID = c.ColorID
+    left join MarcasArmazones ma on a.MarcaID = ma.MarcaID
+    left join Examenes ex on v.examenId = ex.ExamenId 
+    where b.empresaId = _empresaId;
+
+END //
+delimiter ;
