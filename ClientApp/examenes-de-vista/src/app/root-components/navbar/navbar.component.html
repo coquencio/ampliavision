@@ -7,26 +7,26 @@
   
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul *ngIf="nombreEmpresa; else elseBlock" class="navbar-nav mr-auto">
-        <li class="nav-item" (click)="BrowseNavbar()">
-            <button class="btn btn-light nav-link button-nav" routerLinkActive='active' [routerLink]="['/Empresas']">Empresas</button>
+        <li class="nav-item">
+            <button (click)="BrowseNavbar()" class="btn btn-light nav-link button-nav" routerLinkActive='active' [routerLink]="['/Empresas']">Empresas</button>
         </li>
-        <li class="nav-item" (click)="BrowseNavbar()">
-          <button class="btn btn-light nav-link button-nav" routerLinkActive='active' [routerLink]="['/Examenes']">Examenes y Beneficiarios</button>
+        <li class="nav-item">
+          <button (click)="BrowseNavbar()" class="btn btn-light nav-link button-nav" routerLinkActive='active' [routerLink]="['/Examenes']">Examenes y Beneficiarios</button>
         </li>
-        <li class="nav-item" (click)="BrowseNavbar()">
-            <button class="btn btn-light nav-link button-nav" routerLinkActive='active' [routerLink]="['/Defectos']">Estatus defectos visuales</button>
+        <li class="nav-item">
+            <button (click)="BrowseNavbar()" class="btn btn-light nav-link button-nav" routerLinkActive='active' [routerLink]="['/Defectos']">Estatus defectos visuales</button>
           </li>
-          <li class="nav-item" (click)="BrowseNavbar()">
-            <button class="btn btn-light nav-link button-nav" routerLinkActive='active' [routerLink]="['/Productos']">Manejo de Productos</button>
+          <li class="nav-item">
+            <button (click)="BrowseNavbar()" class="btn btn-light nav-link button-nav" routerLinkActive='active' [routerLink]="['/Productos']">Manejo de Productos</button>
           </li>
-          <li class="nav-item" (click)="BrowseNavbar()">
-            <button class="btn btn-light nav-link button-nav" routerLinkActive='active' [routerLink]="['/Ventas']">Ventas</button>
+          <li class="nav-item">
+            <button (click)="BrowseNavbar()" class="btn btn-light nav-link button-nav" routerLinkActive='active' [routerLink]="['/Ventas']">Ventas</button>
           </li>
-          <li class="nav-item" (click)="BrowseNavbar()">
-            <button class="btn btn-light nav-link button-nav" routerLinkActive='active' [routerLink]="['/Resumen']">Resumen ejecutivo</button> 
+          <li class="nav-item">
+            <button (click)="BrowseNavbar()" class="btn btn-light nav-link button-nav" routerLinkActive='active' [routerLink]="['/Resumen']">Resumen ejecutivo</button> 
           </li>
-          <li class="nav-item" (click)="BrowseNavbar()">
-            <button class="btn btn-light nav-link button-nav" routerLinkActive='active' [routerLink]="['/Mail']">Mail</button> 
+          <li class="nav-item">
+            <button (click)="BrowseNavbar()" class="btn btn-light nav-link button-nav" routerLinkActive='active' [routerLink]="['/Mail']">Mail</button> 
           </li>
       </ul>
       <ul class="nav justify-content-end">
@@ -36,14 +36,14 @@
       </ul>
       <ng-template #elseBlock>
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item" (click)="BrowseNavbar()">
-            <button class="btn btn-light nav-link button-nav" routerLinkActive='active' [routerLink]="['/Empresas']">Selecciona empresa</button>
+          <li class="nav-item">
+            <button (click)="BrowseNavbar()" class="btn btn-light nav-link button-nav" routerLinkActive='active' [routerLink]="['/Empresas']">Selecciona empresa</button>
           </li>
-          <li class="nav-item" (click)="BrowseNavbar()">
-            <button class="btn btn-light nav-link button-nav" routerLinkActive='active' [routerLink]="['/Productos']">Manejo de Productos</button>
+          <li class="nav-item">
+            <button (click)="BrowseNavbar()" class="btn btn-light nav-link button-nav" routerLinkActive='active' [routerLink]="['/Productos']">Manejo de Productos</button>
           </li>
-            <li class="nav-item" (click)="BrowseNavbar()">
-              <button class="btn btn-light nav-link button-nav" routerLinkActive='active' [routerLink]="['/Mail']">Mail</button> 
+            <li class="nav-item">
+              <button (click)="BrowseNavbar()" class="btn btn-light nav-link button-nav" routerLinkActive='active' [routerLink]="['/Mail']">Mail</button> 
             </li>
         </ul>
         </ng-template>
