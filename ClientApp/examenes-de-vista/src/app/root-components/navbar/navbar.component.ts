@@ -14,11 +14,13 @@ export class NavbarComponent implements OnInit {
     private store: Store<any>,
     private router: Router,
     private authorizationService: AuthorizationService
-    ) { }
+    ) {
+    }
   
   nombreEmpresa: string;
   empresaId: number;
   islogged: boolean;
+  navButton: HTMLElement;
 
   ngOnInit(): void {
     this.islogged = this.authorizationService.IsLogged();
@@ -38,9 +40,17 @@ export class NavbarComponent implements OnInit {
       }
     }
   }
-
+  ngAfterViewInit(){
+    this.navButton = document.getElementById('navbar-toggle-button');
+  }
   LogOut(){
     localStorage.setItem('token', '');
     window.location.href = "/";
   } 
+  BrowseNavbar(){
+    window.scroll(0,0);
+    if (this.navButton && this.navButton.getAttribute('aria-expanded')){
+      this.navButton.click();
+    } 
+  }
 }

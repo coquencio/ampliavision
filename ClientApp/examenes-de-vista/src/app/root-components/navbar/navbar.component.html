@@ -1,31 +1,31 @@
 <div id="navbar" *ngIf="islogged" class="nav-ampliavision">
 <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="#"><h4>Ampliavisión Bajío</h4><p style="font-weight: lighter;">{{nombreEmpresa}}</p></a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <button id="navbar-toggle-button" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
   
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul *ngIf="nombreEmpresa; else elseBlock" class="navbar-nav mr-auto">
-        <li class="nav-item">
+        <li class="nav-item" (click)="BrowseNavbar()">
             <button class="btn btn-light nav-link button-nav" routerLinkActive='active' [routerLink]="['/Empresas']">Empresas</button>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" (click)="BrowseNavbar()">
           <button class="btn btn-light nav-link button-nav" routerLinkActive='active' [routerLink]="['/Examenes']">Examenes y Beneficiarios</button>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" (click)="BrowseNavbar()">
             <button class="btn btn-light nav-link button-nav" routerLinkActive='active' [routerLink]="['/Defectos']">Estatus defectos visuales</button>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" (click)="BrowseNavbar()">
             <button class="btn btn-light nav-link button-nav" routerLinkActive='active' [routerLink]="['/Productos']">Manejo de Productos</button>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" (click)="BrowseNavbar()">
             <button class="btn btn-light nav-link button-nav" routerLinkActive='active' [routerLink]="['/Ventas']">Ventas</button>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" (click)="BrowseNavbar()">
             <button class="btn btn-light nav-link button-nav" routerLinkActive='active' [routerLink]="['/Resumen']">Resumen ejecutivo</button> 
           </li>
-          <li class="nav-item">
+          <li class="nav-item" (click)="BrowseNavbar()">
             <button class="btn btn-light nav-link button-nav" routerLinkActive='active' [routerLink]="['/Mail']">Mail</button> 
           </li>
       </ul>
@@ -36,13 +36,13 @@
       </ul>
       <ng-template #elseBlock>
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item">
+          <li class="nav-item" (click)="BrowseNavbar()">
             <button class="btn btn-light nav-link button-nav" routerLinkActive='active' [routerLink]="['/Empresas']">Selecciona empresa</button>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" (click)="BrowseNavbar()">
             <button class="btn btn-light nav-link button-nav" routerLinkActive='active' [routerLink]="['/Productos']">Manejo de Productos</button>
           </li>
-            <li class="nav-item">
+            <li class="nav-item" (click)="BrowseNavbar()">
               <button class="btn btn-light nav-link button-nav" routerLinkActive='active' [routerLink]="['/Mail']">Mail</button> 
             </li>
         </ul>
