@@ -104,8 +104,7 @@ export class SalesComponent implements OnInit {
     private readonly SalesService: SalesService,
     private readonly generalService: GeneralService,
     private readonly armazonService: ArmazonesService,
-    private readonly beneficiarioService: BeneficiarioService,
-    private readonly examenService: ExamenesService
+    private readonly beneficiarioService: BeneficiarioService
     
     ) { 
       store.select('empresa').subscribe(
@@ -405,7 +404,7 @@ export class SalesComponent implements OnInit {
   OnFolioChange(){
     this.isSelectorDisabled = (this.folio !== undefined && this.folio !== null && this.folio !== '')
     if (this.isSelectorDisabled){
-      this.examenService.GetBeneficiarioIdByFolio(this.folio).subscribe(
+      this.ExamenesService.GetBeneficiarioIdByFolio(this.folio).subscribe(
         r=> {
           this.beneficiarioId = r.BeneficiarioID;
         }
