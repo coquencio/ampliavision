@@ -10,6 +10,7 @@ import { IResumenVentas } from 'src/app/Interfaces/resumenVentasInterface';
 import { IAbono } from 'src/app/Interfaces/abonosInterface';
 import { IArmazonResponse } from 'src/app/Interfaces/armazonResponseInterface';
 import { IVentasResumen } from 'src/app/Interfaces/salesSummaryInterface';
+import { IDetalleVentas } from 'src/app/Interfaces/salesDetailInterface';
 
 @Injectable({
   providedIn: 'root'
@@ -97,4 +98,15 @@ export class SalesService {
     const url = AppSettings.BASE_ADDRESS + 'ventas/abonos/'+abonoId+'?token=' + this.tokenService.GetToken();
     return this.httpClient.put(url, payment, {headers, responseType:'text'});
   }
+
+  GetSaleDetails(ventaId: number, empresaId: number): Observable<IDetalleVentas>{
+    const url = AppSettings.BASE_ADDRESS + 'empresas/'+empresaId+'/ventas/'+ventaId+'?token=' + this.tokenService.GetToken();
+    return this.httpClient.get<IDetalleVentas>(url);
+  }
+
+  UpdateSale(sale: {}): Observable<any>{
+    const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
+      const url = AppSettings.BASE_ADDRESS + 'venta?token=' + this.tokenService.GetToken();
+      return this.httpClient.put(url, sale, { headers, responseType: 'text' });
+    }
 }

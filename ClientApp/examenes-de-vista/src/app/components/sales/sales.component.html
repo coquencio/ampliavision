@@ -3,106 +3,132 @@
 </div>
 <div class="row align-items-center">
   <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-    <h3>Registra una venta &#8594;</h3>
+    <h3>Registra o actualiza una venta &#8594;</h3>
   </button>
 </div>
 <div id="collapseOne" *ngIf="!loadingRegis" class="row align-items-center collapse">
-  <div class="col-sm-6">
-    <div class="form-group">
-      <label for="">Beneficiario</label>
-      <select [disabled]="isSelectorDisabled" required [(ngModel)]="beneficiarioId" name="beneficiario" class="form-control" *ngIf="folios">Folio
-        <option *ngFor="let beneficiario of beneficiarios" [value]="beneficiario.BeneficiarioID">
-          {{beneficiario.Nombres}} {{beneficiario.ApellidoPaterno}} {{beneficiario.ApellidoMaterno}}</option>
-      </select>
+  <div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+          <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Registra</a>
+          <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Actualiza</a>
+        </div>
+      </nav>
     </div>
-    <div class="form-group">
-      <label for="">Folio (Opcional)</label>
-      <select [(ngModel)]="folio"  (ngModelChange)="OnFolioChange()"name="folio" class="form-control" *ngIf="folios">Folio
-        <option value="">(Vacío)</option>
-        <option *ngFor="let folio of folios.Folios" [value]="folio.folio">{{folio.folio}}</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label for="">Tipo de venta</label>
-      <select required [(ngModel)]="tipoVenta" name="tipo" class="form-control">Folio
-        <option *ngFor="let tipo of tiposVenta" [value]="tipo.value">{{tipo.label}}</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label for="">Monto total</label>
-      <input [(ngModel)]="montoTotal" name="total" required class="form-control" type="number" min="1">
-    </div>
-    <div class="form-group">
-      <label for="">Anticipo</label>
-      <input required [(ngModel)]="anticipo" class="form-control" type="number" name="anticipo" min="0">
-    </div>
-    <div class="form-group">
-      <label for="">Periodicidad de pagos (Días)</label>
-      <input required [(ngModel)]="periodicidad" name="periodicidad" class="form-control" type="number" min="1">
-    </div>
+  </div>
+  <div class="row">
+  <div class="tab-content container col-sm-12" id="nav-tabContent">
+    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+      <div class="container">
+      <div class="row">
+      <div class="col-sm-6">
         <div class="form-group">
-      <label for="">Total de pagos que se harán</label>
-      <input required [(ngModel)]="numeroPagos" name="numeroPagos" class="form-control" type="number" min="1">
-    </div>
-    <div class="form-group">
-      <label for="">Fecha de venta</label>
-      <input required class="form-control" [(ngModel)]="fechaExamen" name="fecha" type="date">
-    </div>
-    <div class="form-group">
-      <label for="">Material</label>
-      <select required [(ngModel)]="materialId" name="lenteId" class="form-control" *ngIf="materiales">Folio
-        <option *ngFor="let item of materiales" [value]="item.MaterialID">{{item.Descripcion}}</option>
-      </select>
+          <label for="">Beneficiario</label>
+          <select [disabled]="isSelectorDisabled" required [(ngModel)]="beneficiarioId" name="beneficiario" class="form-control" *ngIf="folios">Folio
+            <option *ngFor="let beneficiario of beneficiarios" [value]="beneficiario.BeneficiarioID">
+              {{beneficiario.Nombres}} {{beneficiario.ApellidoPaterno}} {{beneficiario.ApellidoMaterno}}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="">Folio (Opcional)</label>
+          <select [(ngModel)]="folio"  (ngModelChange)="OnFolioChange()"name="folio" class="form-control" *ngIf="folios">Folio
+            <option value="">(Vacío)</option>
+            <option *ngFor="let folio of folios.Folios" [value]="folio.folio">{{folio.folio}}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="">Tipo de venta</label>
+          <select required [(ngModel)]="tipoVenta" name="tipo" class="form-control">Folio
+            <option *ngFor="let tipo of tiposVenta" [value]="tipo.value">{{tipo.label}}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="">Monto total</label>
+          <input [(ngModel)]="montoTotal" name="total" required class="form-control" type="number" min="1">
+        </div>
+        <div class="form-group">
+          <label for="">Anticipo</label>
+          <input required [(ngModel)]="anticipo" class="form-control" type="number" name="anticipo" min="0">
+        </div>
+        <div class="form-group">
+          <label for="">Periodicidad de pagos (Días)</label>
+          <input required [(ngModel)]="periodicidad" name="periodicidad" class="form-control" type="number" min="1">
+        </div>
+            <div class="form-group">
+          <label for="">Total de pagos que se harán</label>
+          <input required [(ngModel)]="numeroPagos" name="numeroPagos" class="form-control" type="number" min="1">
+        </div>
+        <div class="form-group">
+          <label for="">Fecha de venta</label>
+          <input required class="form-control" [(ngModel)]="fechaExamen" name="fecha" type="date">
+        </div>
+        <div class="form-group">
+          <label for="">Material</label>
+          <select required [(ngModel)]="materialId" name="lenteId" class="form-control" *ngIf="materiales">Folio
+            <option *ngFor="let item of materiales" [value]="item.MaterialID">{{item.Descripcion}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label for="">Protección</label>
+          <select required [(ngModel)]="proteccionId" name="proteccionId" class="form-control" *ngIf="protecciones">Folio
+            <option *ngFor="let item of protecciones" [value]="item.ProteccionID">{{item.Descripcion}}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="">Lente</label>
+          <select required [(ngModel)]="lenteId" name="lenteId" class="form-control" *ngIf="lentes">Folio
+            <option *ngFor="let item of lentes" [value]="item.LenteID">{{item.Descripcion}}</option>
+          </select>
+        </div>
+    
+        <h5>Detalles de armazón para venta</h5>
+    
+        <div class="form-group">
+          <label for="">Descripción (Nombre, Detalles, Observaciones, Biselado, Perforado, Ranurado...)</label>
+          <input [(ngModel)]="descArmazon" name="descripcion" type="text" maxlength="35" class="form-control">
+        </div>
+        <div class="form-group">
+          <label for="">Marca</label>
+          <select [(ngModel)]="marcaId" class="form-control" name="marcaId" *ngIf="marcas">
+            <option *ngFor="let item of marcas" [value]="item.MarcaID">{{item.Descripcion}}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="">Color</label>
+          <select [(ngModel)]="colorId" class="form-control" name="colorId" *ngIf="colores">Folio
+            <option *ngFor="let item of colores" [value]="item.ColorID">{{item.Descripcion}}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="">Tamaño</label>
+          <select [(ngModel)]="tamanioId" class="form-control" name="tamanio" *ngIf="tamanios">Folio
+            <option *ngFor="let item of tamanios" [value]="item.TamanioID">{{item.Descripcion}}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="">Modelo</label>
+          <select [(ngModel)]="modeloId" class="form-control" name="modelo" *ngIf="modelos">Folio
+            <option *ngFor="let item of modelos" [value]="item.ModeloID">{{item.Descripcion}}</option>
+          </select>
+        </div>
+    
+        <br>
+        <button (click)="RegisterSale()" class="btn btn-primary">Registra venta</button>
+      </div>
+      
     </div>
   </div>
-  <div class="col-sm-6">
-    <div class="form-group">
-      <label for="">Protección</label>
-      <select required [(ngModel)]="proteccionId" name="proteccionId" class="form-control" *ngIf="protecciones">Folio
-        <option *ngFor="let item of protecciones" [value]="item.ProteccionID">{{item.Descripcion}}</option>
-      </select>
     </div>
-    <div class="form-group">
-      <label for="">Lente</label>
-      <select required [(ngModel)]="lenteId" name="lenteId" class="form-control" *ngIf="lentes">Folio
-        <option *ngFor="let item of lentes" [value]="item.LenteID">{{item.Descripcion}}</option>
-      </select>
+    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+      <app-update-sale (ReloadParent)="ngOnInit()"></app-update-sale>
     </div>
-
-    <h5>Detalles de armazón para venta</h5>
-
-    <div class="form-group">
-      <label for="">Descripción (Nombre, Detalles, Observaciones, Biselado, Perforado, Ranurado...)</label>
-      <input [(ngModel)]="descArmazon" name="descripcion" type="text" maxlength="35" class="form-control">
-    </div>
-    <div class="form-group">
-      <label for="">Marca</label>
-      <select [(ngModel)]="marcaId" class="form-control" name="marcaId" *ngIf="marcas">
-        <option *ngFor="let item of marcas" [value]="item.MarcaID">{{item.Descripcion}}</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label for="">Color</label>
-      <select [(ngModel)]="colorId" class="form-control" name="colorId" *ngIf="colores">Folio
-        <option *ngFor="let item of colores" [value]="item.ColorID">{{item.Descripcion}}</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label for="">Tamaño</label>
-      <select [(ngModel)]="tamanioId" class="form-control" name="tamanio" *ngIf="tamanios">Folio
-        <option *ngFor="let item of tamanios" [value]="item.TamanioID">{{item.Descripcion}}</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label for="">Modelo</label>
-      <select [(ngModel)]="modeloId" class="form-control" name="modelo" *ngIf="modelos">Folio
-        <option *ngFor="let item of modelos" [value]="item.ModeloID">{{item.Descripcion}}</option>
-      </select>
-    </div>
-
-    <br>
-    <button (click)="RegisterSale()" class="btn btn-primary">Registra venta</button>
   </div>
+</div>
+</div>
 </div>
 <hr>
 <div class="row align-items-center">

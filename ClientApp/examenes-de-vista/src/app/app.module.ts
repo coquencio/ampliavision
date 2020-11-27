@@ -23,6 +23,7 @@ import { LoadingComponent } from './root-components/loading/loading.component';
 import { MailComponent } from './components/mail/mail.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { UpdateSaleComponent } from './components/update-sale/update-sale.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { environment } from '../environments/environment';
     SalesComponent,
     ChartsComponent,
     LoadingComponent,
-    MailComponent
+    MailComponent,
+    UpdateSaleComponent
   ],
   imports: [
     BrowserModule,
