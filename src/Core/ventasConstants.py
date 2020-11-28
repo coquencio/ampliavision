@@ -71,3 +71,24 @@ Get_monto = "SeleccionaMontoAbono"
 
 # Abono Id
 Get_sale_by_abono = "SeleccionaVentaPorAbono"
+
+# Folio examen
+# Total venta
+# Anticipo
+# Periodicidad días
+# Fecha de la venta
+# Armazon ID
+# Material ID
+# ProteccionID
+# LenteID
+# Beneficiario ID
+# TipoVentaID
+# Numero pagos
+# Venta Id
+Update_sale = "ActualizaVenta"
+
+# Venta Id
+Get_details = "SeleccionaDetallesVenta"
+
+# Folio
+Get_id_by_folio = "ValidaFolioConVenta"

@@ -1354,3 +1354,68 @@ BEGIN
 
 END //
 delimiter ;
+
+delimiter //
+
+create PROCEDURE `ActualizaVenta` (IN `_FolioExamen` VARCHAR(10), IN `_totalVenta` DECIMAL(13,2), IN `_Anticipo` DECIMAL(13,2), IN `_Periodicidad` INT, IN `_fechaVenta` DATE, IN `_armazonID` INT, IN `_materialID` INT, IN `_proteccionID` INT, IN `_lenteID` INT, IN `_beneficiarioID` INT, IN `_tipoVentaID` INT, IN `_numeroPagos` INT, IN `_ventaID` INT)  BEGIN
+	select ExamenID into @ExamenID  from Examenes where folio = _FolioExamen;
+    update Ventas set folioExamen = _FolioExamen 
+		, totalVenta = _totalVenta
+		, anticipo = _Anticipo
+        , periodicidadDias = _periodicidad
+        , Abonos = (_totalVenta - _Anticipo)/_numeroPagos
+        , fechaVenta = _fechaventa
+        , EstaLiquidada = 0
+        , armazonID = _armazonID
+        , materialID = _materialID
+        , ProteccionID = _proteccionID
+        , LenteID = _lenteID
+        , ExamenID = @ExamenID
+        , BeneficiarioID = _beneficiarioID
+        , TipoVentaID = _tipoVentaID
+        , NumeroPagos = _numeroPagos
+        where ventaID = _ventaID;
+end//
+delimiter ;
+
+delimiter //
+CREATE PROCEDURE SeleccionaDetallesVenta (in _ventaId int, in _empresaId int)
+BEGIN
+	select 
+    v.FolioExamen,
+    v.TotalVenta,
+    v.Anticipo,
+    v.PeriodicidadDias,
+    v.Abonos,
+    v.fechaVenta,
+    v.EstaLiquidada,
+    v.ArmazonId,
+    v.MaterialID,
+    v.ProteccionID,
+    v.LenteID,
+    v.BeneficiarioID,
+    v.ExamenID,
+    v.TipoVentaID,
+    v.NumeroPagos,
+    a.MarcaID,
+    a.ColorID,
+    a.TamanioID,
+    a.ModeloID,
+    a.DetalleEnArmazon
+    
+    from Ventas v 
+    inner join armazones a 
+    on v.ArmazonId = a.ArmazonID
+    inner join Beneficiarios b 
+    on v.BeneficiarioID = b.BeneficiarioID
+    where v.VentaID = _ventaId and b.EmpresaID = _empresaId;
+END //
+delimiter ;
+
+delimiter //
+CREATE PROCEDURE ValidaFolioConVenta (IN _FolioExamen VARCHAR(10))
+  BEGIN
+	select VentaId from Ventas where FolioExamen = _FolioExamen;
+END //
+delimiter ;
+

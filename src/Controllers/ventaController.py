@@ -64,6 +64,7 @@ def get_abonos(venta_id):
     except ValueError as err:
         return Response(status=400, response=err.args)
 
+
 @VentaController.route('/api/ventas/<int:venta_id>/paid/<int:paying>', methods=['POST'])
 def mark_as_paid(venta_id, paying):
     try:
@@ -76,6 +77,7 @@ def mark_as_paid(venta_id, paying):
     except ValueError as err:
         return Response(status=400, response=err.args)
 
+
 @VentaController.route('/api/abono/<int:abono_id>', methods=['DELETE'])
 def delete_payment (abono_id):
     try:
@@ -87,6 +89,7 @@ def delete_payment (abono_id):
         return Response(status=201, response="Pago eliminado")
     except ValueError as err:
         return Response(status=400, response=err.args)
+
 
 @VentaController.route('/api/ventas/<int:venta_id>', methods=['DELETE'])
 def delete_sale(venta_id):
@@ -102,6 +105,7 @@ def delete_sale(venta_id):
     except AttributeError as err:
         return Response(status=400, response=err.args)
 
+
 @VentaController.route('/api/empresas/<int:empresa_id>/ventas/resumen', methods=['GET'])
 def get_balance_summary(empresa_id):
     try:
@@ -112,6 +116,7 @@ def get_balance_summary(empresa_id):
 
     except ValueError as err:
         return Response(status=400, response=err.args)
+
 
 @VentaController.route('/api/ventas/abonos/<int:abono_id>', methods=['PUT'])
 def update_payment(abono_id):
@@ -127,3 +132,30 @@ def update_payment(abono_id):
     except ValueError as err:
         return Response(status=400, response=err.args)
 
+
+@VentaController.route('/api/empresas/<int:empresa_id>/ventas/<int:venta_id>', methods=['GET'])
+def get_payment_details(empresa_id, venta_id):
+    try:
+        token = request.args.get('token')
+        if not user_service.token_validation(token):
+            return Response(status=401)
+
+        return venta_service.get_sales_details(venta_id, empresa_id)
+    except ValueError as err:
+        return Response(status=400, response=err.args)
+
+
+@VentaController.route('/api/venta', methods=['PUT'])
+def update_sale():
+    try:
+        token = request.args.get('token')
+        if not user_service.token_validation(token):
+            return Response(status=401)
+        data = request.get_json()
+        venta_service.update_sale(data)
+        return Response(status=201, response="Venta actualizada")
+
+    except ValueError as err:
+        return Response(status=400, response=err.args)
+    except KeyError as err:
+        return Response(status=400, response=err.args)

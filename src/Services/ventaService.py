@@ -14,7 +14,6 @@ class VentaService:
         self.__empresa_service = EmpresaService()
         self.__user_service = UsersService()
 
-
     def register_and_get(self, data):
         folio_examen = data['Folio']
         total_venta = data['TotalVenta']
@@ -54,11 +53,61 @@ class VentaService:
         beneficiario_id = str(beneficiario_id)
         number_of_payments = str(number_of_payments)
 
-        tipo_id =  str(tipo_id)
+        tipo_id = str(tipo_id)
 
         args = (folio_examen, total_venta, anticipo, periodicidad, fecha_venta, armazon_id, material_id,
                 proteccion_id, lente_id, beneficiario_id, tipo_id, number_of_payments)
         data = self.__sql_helper.sp_get(SpVentas.Register_and_get, args, True)
+        return serialize_data_set(data)
+
+    def update_sale(self, data):
+        venta_id = data['VentaId']
+        folio_examen = data['Folio']
+        total_venta = data['TotalVenta']
+        anticipo = data['Anticipo']
+        periodicidad = data['Periodicidad']
+        fecha_venta = data['FechaVenta']
+        armazon_id = data['ArmazonId']
+        material_id = data['MaterialId']
+        proteccion_id = data['ProteccionId']
+        lente_id = data['LenteId']
+        beneficiario_id = data['BeneficiarioId']
+        tipo_id = data['TipoVentaId']
+        number_of_payments = data['NumeroPagos']
+
+        if folio_examen:
+            returned_id = self.get_sale_id_by_folio(folio_examen)
+            if returned_id and returned_id != venta_id:
+                raise ValueError("Este folio ya pertenece a una venta")
+
+        if not isinstance(armazon_id, int) or not isinstance(material_id, int) or not isinstance(proteccion_id, int) \
+                or not isinstance(lente_id, int) or not isinstance(beneficiario_id, int)\
+                or not isinstance(tipo_id, int) or not isinstance(number_of_payments, int)\
+                or not isinstance(venta_id, int):
+            raise ValueError("Missing reference from product")
+
+        if not folio_examen:
+            folio_examen = "null"
+        else:
+            folio_examen = self.__string_helper.build_string(folio_examen)
+
+        fecha_venta = self.__string_helper.build_string(fecha_venta)
+        total_venta = str(total_venta)
+        anticipo = str(anticipo)
+        periodicidad = str(periodicidad)
+        armazon_id = str(armazon_id)
+        material_id = str(material_id)
+        proteccion_id = str(proteccion_id)
+        lente_id = str(lente_id)
+        beneficiario_id = str(beneficiario_id)
+        number_of_payments = str(number_of_payments)
+
+        tipo_id = str(tipo_id)
+        venta_id = str(venta_id)
+
+        args = (folio_examen, total_venta, anticipo, periodicidad, fecha_venta, armazon_id, material_id,
+                proteccion_id, lente_id, beneficiario_id, tipo_id, number_of_payments, venta_id)
+        data = self.__sql_helper.sp_set(SpVentas.Update_sale, args)
         return serialize_data_set(data)
 
     def get_summary_by_company(self, empresa_id):
@@ -76,7 +125,6 @@ class VentaService:
             row["Lente"] = unquote(row["Lente"])
         data = serialize_data_set(data, "Ventas")
         return data
-
 
     def payment_register(self, venta_id, data, name):
         monto = data['Monto']
@@ -126,7 +174,6 @@ class VentaService:
             self.paid_switch(venta_id)
         return total_venta >= total_abonos
 
-
     def delete_payment(self, payment_id, token):
         if not isinstance(payment_id, int):
             raise ValueError("Id inválido")
@@ -141,9 +188,15 @@ class VentaService:
 
         args = (folio, )
         data = self.__sql_helper.sp_get(SpVentas.Validate_folio, args, True);
-        if data['count(*)'] == 0:
-            return False
-        return True
+        return data['count(*)'] != 0
+
+    def get_sale_id_by_folio(self, folio):
+        folio = self.__string_helper.build_string(folio)
+
+        args = (folio,)
+        data = self.__sql_helper.sp_get(SpVentas.Get_id_by_folio, args, True);
+        return data['VentaId']
+
 
     def paid_switch(self, venta_id, marking_as_paid=True):
         if not isinstance(venta_id, int) or venta_id == 0:
@@ -198,4 +251,10 @@ class VentaService:
         fecha = self.__string_helper.build_string(fecha)
         args = (abono_id, fecha, monto)
         self.__sql_helper.sp_set(SpVentas.Update_payment, args)
+
+    def get_sales_details(self, venta_id, empresa_id):
+        args = (str(venta_id), str(empresa_id))
+        data = self.__sql_helper.sp_get(SpVentas.Get_details, args, True)
+        return serialize_data_set(data)
+
 
