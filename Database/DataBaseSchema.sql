@@ -1404,7 +1404,7 @@ BEGIN
     a.DetalleEnArmazon
     
     from Ventas v 
-    inner join Armazones a 
+    inner join Armazones a
     on v.ArmazonId = a.ArmazonID
     inner join Beneficiarios b 
     on v.BeneficiarioID = b.BeneficiarioID
