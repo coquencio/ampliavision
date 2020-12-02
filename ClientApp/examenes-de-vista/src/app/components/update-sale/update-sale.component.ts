@@ -221,8 +221,8 @@ export class UpdateSaleComponent implements OnInit {
     this.SalesService.GetSaleDetails(this.ventaId, this.currentEmpresaId).subscribe(
       r=> {
         if (!r){
-          this.ventaId = undefined;
           window.alert("No se ha encontrado una venta con el Id " + this.ventaId +" asociada a la empresa " + this.nombreEmpresa);
+          this.ventaId = undefined;
           this.isValidSaleId = false;
         }
         else{
